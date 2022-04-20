@@ -1,0 +1,6 @@
+#.  Lines starting with '#.' are ignored and are used as comments in this file. (But whitespace matters)
+dialogs.currentCurrency.ID
+dialogs.forceConvertFavor
+dialogs.sprite.gameObjectName
+dialogs.convertWindow.convertPanel.convertingFrom.ID
+dialogs.convertWindow.convertPanel.convertingTo.ID

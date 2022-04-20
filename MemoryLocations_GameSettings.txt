@@ -1,0 +1,8 @@
+#.  Lines starting with '#.' are ignored and are used as comments in this file. (But whitespace matters)
+UserID
+Hash
+Platform
+MobileClientVersion
+VersionPostFix
+_instance
+_instance.instanceID
