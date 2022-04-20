@@ -87,8 +87,11 @@ def buildMemoryString(classType, variablesStringArray, indexValue):
         isList = False
         isDict = True
     classType = tempClassType
-    if lastClassType.find("k__BackingField"):
-        classType = classType + "_k__BackingField"
+    if variablesStringArray[indexValue].find("k__BackingField") >= 0:
+        match = re.search("<.*>", variablesStringArray[indexValue])
+        match = match.group(0)
+        match = match[1:-1]
+        variablesStringArray[indexValue] = match + "_k__BackingField"
 
     # read class type and pick appropriate type for memory reading
     varType = ""
