@@ -1,8 +1,0 @@
-#.  Lines starting with '#.' are ignored and are used as comments in this file. (But whitespace matters)
-BuffDefines
-AreaDefines
-UpgradeDefines
-AdventureDefines
-ChestTypeDefines.ID
-ChestTypeDefines.NamePlural
-ChestTypeDefines.Name
