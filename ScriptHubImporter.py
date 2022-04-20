@@ -87,6 +87,8 @@ def buildMemoryString(classType, variablesStringArray, indexValue):
         isList = False
         isDict = True
     classType = tempClassType
+    if lastClassType.find("k__BackingField"):
+        classType = classType + "_k__BackingField"
 
     # read class type and pick appropriate type for memory reading
     varType = ""
@@ -185,7 +187,7 @@ if os.path.exists(memoryStructureLoc):
     baseClassType = "CrusadersGame.GameSettings"
     Import(baseClassType)
 else:
-    print("Could not open " + importFileLoc + ". It does not exist.")
+    print("Could not open " + memoryStructureLoc + ". It does not exist.")
 
 # read json file exported from CE ScriptHubExporter addon
 memoryStructureLoc = ".\\ScriptHubExport64.json"
