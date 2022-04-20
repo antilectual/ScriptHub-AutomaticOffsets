@@ -67,7 +67,8 @@ function ScriptHubExport(fileLoc)
       io.write(outputString)
       io.close(file)
       local current_dir=io.popen"cd":read'*l'.."\\"
-      print("Export to "..current_dir..filename.." complete. Last: "..tostring(value)..". Stop value: ".. tostring(stopValue))
+      -- print("Export to "..current_dir..filename.." complete. Last: "..tostring(value)..". Stop value: ".. tostring(stopValue))
+      print("Export to "..fileLoc.." complete. Last: "..tostring(value)..". Stop value: ".. tostring(stopValue))
     else
       print("getClass failed to find classes")
     end
