@@ -47,7 +47,7 @@ game.gameInstances.Controller.userData.HeroHandler.heroes.slotId
 game.gameInstances.Controller.userData.HeroHandler.heroes.Owned
 game.gameInstances.Controller.userData.HeroHandler.heroes.Benched
 game.gameInstances.Controller.userData.HeroHandler.heroes.<Level>k__BackingField
-
+game.gameInstances.Controller.userData.HeroHandler.heroes.purchasedUpgradeIDs
 
 #. ---======================================================================================
 #. ---Uncategorized
