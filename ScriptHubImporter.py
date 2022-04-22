@@ -16,6 +16,12 @@ def buildMemoryString(classType, variablesStringArray, indexValue):
     if classType == "System.Object":
         return isFound
     classTypeOriginal = classType
+    # test case TODO: Remove
+    if variablesStringArray[indexValue] == "TransitionOverrides":
+        test = classType
+    #fix for timescale using GameManager (IdleGameManager extends GameManager) instead of its starting top level of IdleGameManager
+    if classType == "GameManager":
+        classTypeOriginal = "IdleGameManager"
     # could not find the class (Parse Error?)
     if classType not in importedJson:
         subClassCheckString = '+'.join(classType.rsplit('.',1))
@@ -63,11 +69,13 @@ def buildMemoryString(classType, variablesStringArray, indexValue):
     
     isList = False
     isDict = False
+    isHashSet = False
     # list/dict test
     # e.g. list<list<CrusadersGame.Dialog>>
     # TODO: check if this ignores <[SOMETYPE]>k__BackingField 
     # TODO: Determine list vs Dict
-    # TODO: Transition override dictionary using action?
+    # TODO: TransitionOverride dictionary using action?
+    # TODO: Handle Dictionary<List<Action<>>> types (TransitionOverride)
     tempClassType = classType
     lastClassType = tempClassType
     while True:
@@ -81,11 +89,23 @@ def buildMemoryString(classType, variablesStringArray, indexValue):
         tempClassType = match.group(0)
         # remove angle brackets
         tempClassType = tempClassType[1:-1]
-    
+        # TODO: Store list of types and get last one that matches dict/hashset/list/other?
+
+    # TODO: iterate through list of types from above check if they are in the non System.x classes in the json
+    #       i.e. no int/string/dictionary/list/hashset
+    #       if they are not, check next highest. 
+    #       if none are, use the first item 
+    #       e.g. Dictionary<List<Action<Action>>> would ignore action/list and become dictionary    
+    #assumed list
     match = re.search("Dictionary", lastClassType)
     if match:
         isList = False
         isDict = True
+    else:
+        match = re.search("HashSet", lastClassType)
+        if match:
+            isList = False
+            isHashSet = True
     classType = tempClassType
     if variablesStringArray[indexValue].find("k__BackingField") >= 0:
         match = re.search("<.*>", variablesStringArray[indexValue])
@@ -99,6 +119,8 @@ def buildMemoryString(classType, variablesStringArray, indexValue):
         varType = "List"
     elif isDict:
         varType = "Dict"
+    elif isHashSet:
+        varType = "HashSet"
     elif classType == "System.Int32":
         varType = "Int"
     elif classType == "System.Boolean":
@@ -108,7 +130,7 @@ def buildMemoryString(classType, variablesStringArray, indexValue):
     elif classType == "System.Double":
         varType = "Double"
     elif classType == "System.Single":
-        varType = ""
+        varType = "Float"
     elif classType == "Engine.Numeric.Quad":
         varType = "Quad"                        # actually 2 sequential Int64
     elif classType == "UnityGameEngine.Utilities.ProtectedInt":
