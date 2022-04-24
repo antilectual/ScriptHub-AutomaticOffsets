@@ -3,6 +3,8 @@ import os.path
 import sys
 import re
 
+# TODO: Handle IEffectSource for effectKeys with source.ID 
+
 # global for storing dictionary of output strings (which reduces redundancy in code execution)
 outputStringsDict = {}
 exportedJson = ""
@@ -35,6 +37,14 @@ def StartImport(memFileLoc, is64Bit):
         baseClassType = "IdleGameManager"
         Import(baseClassType, is64Bit)
         baseClassType = "CrusadersGame.GameSettings"
+        Import(baseClassType, is64Bit)
+        baseClassType = "CrusadersGame.Effects.OminContractualObligationsHandler"
+        Import(baseClassType, is64Bit)
+        baseClassType = "TimeScaleWhenNotAttackedHandler"
+        Import(baseClassType, is64Bit)
+        baseClassType = "CrusadersGame.Effects.HavilarImpHandler"
+        Import(baseClassType, is64Bit)
+        baseClassType = "CrusadersGame.Effects.BrivUnnaturalHasteHandler"
         Import(baseClassType, is64Bit)
     else:
         print("Could not open " + memFileLoc + ". It does not exist.")
@@ -91,6 +101,8 @@ def buildMemoryString(classType, variablesStringArray, indexValue):
     if indexValue >= len(variablesStringArray):
         return isFound
     if classType == "System.Object":
+        return isFound
+    if classType == "CrusadersGame.Effects.IEffectSource":
         return isFound
     classTypeOriginal = classType
     #fix for timescale using GameManager (IdleGameManager extends GameManager) instead of its starting top level of IdleGameManager

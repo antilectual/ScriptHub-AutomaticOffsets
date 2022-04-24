@@ -1,0 +1,5 @@
+#.  Lines starting with '#.' are ignored and are used as comments in this file. (But whitespace matters)
+scaleActive
+effectTime
+effectKey.parentEffectKeyHandler.parent.def.ID
+effectKey.parentEffectKeyHandler.parent.source.ID

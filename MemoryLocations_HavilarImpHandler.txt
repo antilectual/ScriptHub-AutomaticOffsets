@@ -1,0 +1,7 @@
+#.  Lines starting with '#.' are ignored and are used as comments in this file. (But whitespace matters)
+activeImps
+currentOtherImpIndex
+summonImpUltimate.CooldownTimer
+sacrificeImpUltimate.CooldownTimer
+effectKey.parentEffectKeyHandler.parent.def.ID
+effectKey.parentEffectKeyHandler.parent.source.ID
