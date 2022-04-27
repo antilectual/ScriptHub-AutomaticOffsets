@@ -129,8 +129,8 @@ def BuildMemoryString(classType, variablesStringArray, indexValue, checkParent =
     static = exportedJson[classType]['fields'][variablesStringArray[indexValue]]['static']
     classType = exportedJson[classType]['fields'][variablesStringArray[indexValue]]['type']
     
-    # TODO: TransitionOverride dictionary using action?
-    # TODO: Handle Dictionary<List<Action<>>> types (TransitionOverride) | list<list<CrusadersGame.Dialog>> (Dialogs)
+    # TODO: Handle Dictionary<List<Action<>>> types (TransitionOverride)
+    # TODO: Use correct offsets for collections of collections
 
     currClassType = classType
     preMatch = None
