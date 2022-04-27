@@ -159,22 +159,16 @@ def BuildMemoryString(classType, variablesStringArray, indexValue, checkParent =
             BuildMemoryString(currClassType, variablesStringArray, indexValue + 1) 
             return isFound
 
-    if currClassType is None:
-        if preMatch is None:
-            currClassType = classType
-        else:
+    if preMatch is not None:
+        if currClassType is None:
             currClassType = FindCollectionValueType(classType)
-    if preMatch is None:
-        varType = GetMemoryTypeFromClassType(currClassType)
-    else:
         varType = GetMemoryTypeFromClassType(preMatch)
+    else:
+        varType = GetMemoryTypeFromClassType(currClassType)
 
-    # AHK Can't handle <> in names, such as k__BackingField
-    if variablesStringArray[indexValue].find("k__BackingField") >= 0:
-        match = re.search("<.*>", variablesStringArray[indexValue])
-        match = match.group(0)[1:-1]
-        variablesStringArray[indexValue] = match + "_k__BackingField"
-    
+    # Fix field name if it includes invalid characters for AHK
+    variablesStringArray[indexValue] = SpecialInvalidCharacterInFieldCheck(variablesStringArray, indexValue)
+
     # True location of int value from ProtectedInt
     if currClassType == "UnityGameEngine.Utilities.ProtectedInt":
         offset = hex(int(offset, 16) + int('0x8', 16))
@@ -191,6 +185,14 @@ def SpecialSubClassCaseCheck(classType, variablesStringArray, indexValue):
     if classType == "UnityGameEngine.Dialogs.Dialog":
         isFound = BuildMemoryString( "CrusadersGame.Dialogs.BlessingsStore.BlessingsStoreDialog", variablesStringArray, indexValue, False) or BuildMemoryString(exportedJson[classType]['Parent'], variablesStringArray, indexValue)
     return isFound
+
+def SpecialInvalidCharacterInFieldCheck(variablesStringArray, indexValue):
+    # AHK Can't handle <> in names, such as k__BackingField
+    if variablesStringArray[indexValue].find("k__BackingField") >= 0:
+        match = re.search("<.*>", variablesStringArray[indexValue])
+        return match.group(0)[1:-1] + "_k__BackingField"
+    else:
+        return variablesStringArray[indexValue]
 
 # Get the type from inside the collection params (inside <>)
 def FindCollectionValueType(classType):
