@@ -111,7 +111,7 @@ def BuildMemoryString(classType, variablesStringArray, indexValue, checkParent =
             classType = subClassCheckString 
     # class still not found, lookup failed. Pass.
     if classType not in exportedJson:
-        NotificationForMissingClass(variablesStringArray, indexValue)
+        NotificationForMissingClass(classType, variablesStringArray, indexValue)
         return isFound
 
     # could not find the variable in the class (Check parent classes?)
@@ -139,35 +139,49 @@ def BuildMemoryString(classType, variablesStringArray, indexValue, checkParent =
     # TODO: Determine list vs Dict
     # TODO: TransitionOverride dictionary using action?
     # TODO: Handle Dictionary<List<Action<>>> types (TransitionOverride) | list<list<CrusadersGame.Dialog>> (Dialogs)
-    match = re.search(".*<", classType)
-    if match is not None:
-        preMatch = match.group(0)
-        preMatch = preMatch[:-1]
-
-        # test for sub-types (more <>)
-        # if found, add current type to output
-        # otherwise continue
-        
-    currClassType = classType
-    lastClassType = classType
-    while True:
-        # regular expression to find if part of the string is wrapped in angle brackets       
-        match = re.search("<.*>", currClassType)
-        if match is None:
-            break
-        lastClassType = currClassType
-        currClassType = match.group(0)
-        # remove angle brackets
-        currClassType = currClassType[1:-1]
-        # TODO: Store list of types and get last one that matches dict/hashset/list/other?
-    varType = GetMemoryTypeFromClassType(currClassType, lastClassType)
-    # Fixes:
     # TODO: Fix effectKeysByKeyName from list to dict | Dictionary<string, List<EffectKey>> effectKeysByKeyName
+
+    currClassType = classType
+    preMatch = None
+    specialType = None
+    # Collection test:
+    match = re.search("[^<]*<", currClassType)
+    if match is not None:
+        preMatch = match.group(0)[:-1]
+        # find inner collection type if exists
+        currClassType = FindCollectionValueType(currClassType)
+        currClassType = FindCollectionValueType(currClassType) 
+        # add a special collection type to value string if the field has multiple collections
+        if currClassType is not None:
+            test = FindCollectionValueType(classType)
+            match = re.search("[^<]*<", test)
+            if match is not None:
+                test = match.group(0)[:-1]
+            specialType = GetMemoryTypeFromClassType(test)
+            # output current (Increment indexValue in call)
+            AppendToOutput(variablesStringArray, indexValue + 1, classTypeOriginal, static, offset, GetMemoryTypeFromClassType(preMatch))
+            variablesStringArray.insert(indexValue, test.rsplit('.',1)[-1:][0])
+            # output subcollection
+            indexValue += 1 
+            AppendToOutput(variablesStringArray, indexValue, classTypeOriginal, static, offset, specialType)
+            # build from current + subcollection
+            BuildMemoryString(currClassType, variablesStringArray, indexValue + 1) 
+            return isFound
+
+    if currClassType is None:
+        if preMatch is None:
+            currClassType = classType
+        else:
+            currClassType = FindCollectionValueType(classType)
+    if preMatch is None:
+        varType = GetMemoryTypeFromClassType(currClassType)
+    else:
+        varType = GetMemoryTypeFromClassType(preMatch)
+
     # AHK Can't handle <> in names, such as k__BackingField
     if variablesStringArray[indexValue].find("k__BackingField") >= 0:
         match = re.search("<.*>", variablesStringArray[indexValue])
-        match = match.group(0)
-        match = match[1:-1]
+        match = match.group(0)[1:-1]
         variablesStringArray[indexValue] = match + "_k__BackingField"
     
     # True location of int value from ProtectedInt
@@ -175,14 +189,7 @@ def BuildMemoryString(classType, variablesStringArray, indexValue, checkParent =
         offset = hex(int(offset, 16) + int('0x8', 16))
 
     indexValue += 1
-    # add new value to dictionary if it is not already there, then build next value
-    fullNameOfCurrentVariable = '.'.join(variablesStringArray[:indexValue])
-    if fullNameOfCurrentVariable not in outputStringsDict:
-        parentValue = '.'.join(variablesStringArray[:indexValue-1]) if indexValue > 1 else classTypeOriginal 
-        if static == "false":
-            outputStringsDict[fullNameOfCurrentVariable] = "this." + fullNameOfCurrentVariable + " := New GameObjectStructure(this." + parentValue + ",\"" + varType + "\", [" + str(offset) + "])\n"
-        else:
-            outputStringsDict[fullNameOfCurrentVariable] = "this." + fullNameOfCurrentVariable + " := New GameObjectStructure(this." + parentValue + ",\"" + varType + "\", [this.StaticOffset + " + str(offset) + "])\n"
+    AppendToOutput(variablesStringArray, indexValue, classTypeOriginal, static, offset, varType)
     BuildMemoryString(currClassType, variablesStringArray, indexValue) 
     return isFound
 
@@ -192,9 +199,21 @@ def SpecialSubClassCaseCheck(classType, variablesStringArray, indexValue):
     isFound = False
     if classType == "UnityGameEngine.Dialogs.Dialog":
         isFound = BuildMemoryString( "CrusadersGame.Dialogs.BlessingsStore.BlessingsStoreDialog", variablesStringArray, indexValue, False) or BuildMemoryString(exportedJson[classType]['Parent'], variablesStringArray, indexValue)
-
     return isFound
-def NotificationForMissingClass(variablesStringArray, indexValue):
+
+# Get the type from inside the collection params (inside <>)
+def FindCollectionValueType(classType):
+    if classType is None:
+        return None
+    match = re.search("<.*>", classType)
+    if match is not None:
+        currClassType = match.group(0)
+        currClassType = currClassType[1:-1] # trim <> from match edges 
+        return currClassType.rsplit(",",1)[-1:][0]      
+    else:
+        return None
+
+def NotificationForMissingClass(classType, variablesStringArray, indexValue):
     appended = ""
     if indexValue+1 < (len(variablesStringArray)):
         appended = "." + '.'.join(variablesStringArray[indexValue+1:])
@@ -216,22 +235,22 @@ def NotificationForMissingFields(classType, variablesStringArray, indexValue):
     print('.'.join(variablesStringArray[:indexValue]) + ".[" + variablesStringArray[indexValue] + "]" + appended)
 
 # Given a class type, return the memory read type to be used.
-def GetMemoryTypeFromClassType(classType, lastClassType):
+def GetMemoryTypeFromClassType(classType):
     # TODO: iterate through list of types from above check if they are in the non System.x classes in the json
     #       i.e. no int/string/dictionary/list/hashset
     #       if they are not, check next highest. 
     #       if none are, use the first item 
     #       e.g. Dictionary<List<Action<Action>>> would ignore action/list and become dictionary    
 
-    if re.search("List", lastClassType):
-        return "List"
-    elif re.search("Dictionary", lastClassType):
-        return "Dict"
-    elif re.search("HashSet", lastClassType):
-        return "HashSet"
+    # if re.search("List", classType):
+    #     return "List"
+    # elif re.search("Dictionary", classType):
+    #     return "Dict"
+    # elif re.search("HashSet", classType):
+    #     return "HashSet"
 
     # read class type and pick appropriate type for memory reading
-    varType = ""
+    varType = None
     if classType == "System.Int32":
         varType = "Int"
     elif classType == "System.Boolean":
@@ -246,9 +265,26 @@ def GetMemoryTypeFromClassType(classType, lastClassType):
         varType = "Quad"                        # actually 2 sequential Int64
     elif classType == "UnityGameEngine.Utilities.ProtectedInt":
         varType = "Int"
+    elif classType == "System.Collections.Generic.List":
+        varType = "List"
+    elif classType == "System.Collections.Generic.Dictionary":
+        varType = "Dict"
+    elif classType == "System.Collections.Generic.HashSet":
+        varType = "HashSet"
     else:
         varType = "Int"
     return varType
+
+def AppendToOutput(variablesStringArray, indexValue, classTypeOriginal, static, offset, varType):
+    # add new value to dictionary if it is not already there, then build next value
+    fullNameOfCurrentVariable = '.'.join(variablesStringArray[:indexValue])
+    if fullNameOfCurrentVariable not in outputStringsDict:
+        parentValue = '.'.join(variablesStringArray[:indexValue-1]) if indexValue > 1 else classTypeOriginal 
+        if static == "false":
+            outputStringsDict[fullNameOfCurrentVariable] = "this." + fullNameOfCurrentVariable + " := New GameObjectStructure(this." + parentValue + ",\"" + varType + "\", [" + str(offset) + "])\n"
+        else:
+            outputStringsDict[fullNameOfCurrentVariable] = "this." + fullNameOfCurrentVariable + " := New GameObjectStructure(this." + parentValue + ",\"" + varType + "\", [this.StaticOffset + " + str(offset) + "])\n"
+    return
 
 if __name__ == "__main__":
     main()
