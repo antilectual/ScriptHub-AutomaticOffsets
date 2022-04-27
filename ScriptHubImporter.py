@@ -104,18 +104,16 @@ def BuildMemoryString(classType, variablesStringArray, indexValue, checkParent =
     #fix for timescale using GameManager (IdleGameManager extends GameManager) instead of its starting top level of IdleGameManager
     if classType == "GameManager":
         classTypeOriginal = "IdleGameManager"
-    # could not find the class (Parse Error?)
+    # could not find the class, test for variation with + (e.g. 'CrusadersGame.User.UserModronHandler.ModronCoreData' -> 'CrusadersGame.User.UserModronHandler+ModronCoreData') 
     if classType not in exportedJson:
         subClassCheckString = '+'.join(classType.rsplit('.',1))
-        if subClassCheckString not in exportedJson:
-            appended = ""
-            if indexValue+1 < (len(variablesStringArray)):
-                appended = "." + '.'.join(variablesStringArray[indexValue+1:])
-            variableInQuestion = '.'.join(variablesStringArray[:indexValue]) + ".[" + variablesStringArray[indexValue] + "]" + appended
-            print("Class \"" + classType + "\" not found when looking up " + variableInQuestion + ". Continuing...")
-            return isFound
-        else:
+        if subClassCheckString in exportedJson:
             classType = subClassCheckString 
+    # class still not found, lookup failed. Pass.
+    if classType not in exportedJson:
+        NotificationForMissingClass(variablesStringArray, indexValue)
+        return isFound
+
     # could not find the variable in the class (Check parent classes?)
     if variablesStringArray[indexValue] not in exportedJson[classType]['fields']:
         # Check special cases of collections that include derived objects
@@ -125,30 +123,31 @@ def BuildMemoryString(classType, variablesStringArray, indexValue, checkParent =
             isFound = BuildMemoryString(exportedJson[classType]['Parent'], variablesStringArray, indexValue)
         if isFound:
             return
-        if checkParent:        
-            MissingFieldsNotification(classType, variablesStringArray, indexValue)
+        elif checkParent:        
+            NotificationForMissingFields(classType, variablesStringArray, indexValue)
         return isFound
 
-    # ============================================================================
-    if exportedJson[classType]['fields'][variablesStringArray[indexValue]] is not None:
-        offset = hex(int(exportedJson[classType]['fields'][variablesStringArray[indexValue]]['offset']))
-        static = exportedJson[classType]['fields'][variablesStringArray[indexValue]]['static']
-        classType = exportedJson[classType]['fields'][variablesStringArray[indexValue]]['type']
-        #TODO: temporary - create better solution
-        isFound = True
-    else:
-        return isFound
 
+    # ================================================================
+    # passed checks, set variables
+    isFound = True
+    offset = hex(int(exportedJson[classType]['fields'][variablesStringArray[indexValue]]['offset']))
+    static = exportedJson[classType]['fields'][variablesStringArray[indexValue]]['static']
+    classType = exportedJson[classType]['fields'][variablesStringArray[indexValue]]['type']
+    
     # list/dict test
-    # e.g. list<list<CrusadersGame.Dialog>>
-    # TODO: check if this ignores <[SOMETYPE]>k__BackingField 
     # TODO: Determine list vs Dict
     # TODO: TransitionOverride dictionary using action?
-    # TODO: Handle Dictionary<List<Action<>>> types (TransitionOverride)
+    # TODO: Handle Dictionary<List<Action<>>> types (TransitionOverride) | list<list<CrusadersGame.Dialog>> (Dialogs)
     match = re.search(".*<", classType)
     if match is not None:
         preMatch = match.group(0)
         preMatch = preMatch[:-1]
+
+        # test for sub-types (more <>)
+        # if found, add current type to output
+        # otherwise continue
+        
     currClassType = classType
     lastClassType = classType
     while True:
@@ -161,11 +160,9 @@ def BuildMemoryString(classType, variablesStringArray, indexValue, checkParent =
         # remove angle brackets
         currClassType = currClassType[1:-1]
         # TODO: Store list of types and get last one that matches dict/hashset/list/other?
-
     varType = GetMemoryTypeFromClassType(currClassType, lastClassType)
-
     # Fixes:
-    # TODO: Fix effectKeysByKeyName from list to dict
+    # TODO: Fix effectKeysByKeyName from list to dict | Dictionary<string, List<EffectKey>> effectKeysByKeyName
     # AHK Can't handle <> in names, such as k__BackingField
     if variablesStringArray[indexValue].find("k__BackingField") >= 0:
         match = re.search("<.*>", variablesStringArray[indexValue])
@@ -186,9 +183,7 @@ def BuildMemoryString(classType, variablesStringArray, indexValue, checkParent =
             outputStringsDict[fullNameOfCurrentVariable] = "this." + fullNameOfCurrentVariable + " := New GameObjectStructure(this." + parentValue + ",\"" + varType + "\", [" + str(offset) + "])\n"
         else:
             outputStringsDict[fullNameOfCurrentVariable] = "this." + fullNameOfCurrentVariable + " := New GameObjectStructure(this." + parentValue + ",\"" + varType + "\", [this.StaticOffset + " + str(offset) + "])\n"
-        BuildMemoryString(currClassType, variablesStringArray, indexValue) 
-    else:
-        BuildMemoryString(currClassType, variablesStringArray, indexValue) 
+    BuildMemoryString(currClassType, variablesStringArray, indexValue) 
     return isFound
 
 # For cases where there is a collection of a base class that can contain objects that may be sub classes of the base class.
@@ -199,9 +194,15 @@ def SpecialSubClassCaseCheck(classType, variablesStringArray, indexValue):
         isFound = BuildMemoryString( "CrusadersGame.Dialogs.BlessingsStore.BlessingsStoreDialog", variablesStringArray, indexValue, False) or BuildMemoryString(exportedJson[classType]['Parent'], variablesStringArray, indexValue)
 
     return isFound
+def NotificationForMissingClass(variablesStringArray, indexValue):
+    appended = ""
+    if indexValue+1 < (len(variablesStringArray)):
+        appended = "." + '.'.join(variablesStringArray[indexValue+1:])
+    variableInQuestion = '.'.join(variablesStringArray[:indexValue]) + ".[" + variablesStringArray[indexValue] + "]" + appended
+    print("Class \"" + classType + "\" not found when looking up " + variableInQuestion + ". Continuing...")
 
 # When a field is not found, print a messsage displaying suggested alternative (if available), as well as the offending offset.
-def MissingFieldsNotification(classType, variablesStringArray, indexValue):
+def NotificationForMissingFields(classType, variablesStringArray, indexValue):
     # When the class is still not found, test for case mis-match and print alert if found
     for fieldName in exportedJson[classType]['fields']:
         if variablesStringArray[indexValue].lower() == fieldName.lower():
