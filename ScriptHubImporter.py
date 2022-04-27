@@ -127,19 +127,14 @@ def BuildMemoryString(classType, variablesStringArray, indexValue, checkParent =
             NotificationForMissingFields(classType, variablesStringArray, indexValue)
         return isFound
 
-
-    # ================================================================
-    # passed checks, set variables
+    # passed existence checks, set variables
     isFound = True
     offset = hex(int(exportedJson[classType]['fields'][variablesStringArray[indexValue]]['offset']))
     static = exportedJson[classType]['fields'][variablesStringArray[indexValue]]['static']
     classType = exportedJson[classType]['fields'][variablesStringArray[indexValue]]['type']
     
-    # list/dict test
-    # TODO: Determine list vs Dict
     # TODO: TransitionOverride dictionary using action?
     # TODO: Handle Dictionary<List<Action<>>> types (TransitionOverride) | list<list<CrusadersGame.Dialog>> (Dialogs)
-    # TODO: Fix effectKeysByKeyName from list to dict | Dictionary<string, List<EffectKey>> effectKeysByKeyName
 
     currClassType = classType
     preMatch = None
@@ -160,9 +155,9 @@ def BuildMemoryString(classType, variablesStringArray, indexValue, checkParent =
             specialType = GetMemoryTypeFromClassType(test)
             # output current (Increment indexValue in call)
             AppendToOutput(variablesStringArray, indexValue + 1, classTypeOriginal, static, offset, GetMemoryTypeFromClassType(preMatch))
+            indexValue += 1 
             variablesStringArray.insert(indexValue, test.rsplit('.',1)[-1:][0])
             # output subcollection
-            indexValue += 1 
             AppendToOutput(variablesStringArray, indexValue, classTypeOriginal, static, offset, specialType)
             # build from current + subcollection
             BuildMemoryString(currClassType, variablesStringArray, indexValue + 1) 
@@ -236,19 +231,6 @@ def NotificationForMissingFields(classType, variablesStringArray, indexValue):
 
 # Given a class type, return the memory read type to be used.
 def GetMemoryTypeFromClassType(classType):
-    # TODO: iterate through list of types from above check if they are in the non System.x classes in the json
-    #       i.e. no int/string/dictionary/list/hashset
-    #       if they are not, check next highest. 
-    #       if none are, use the first item 
-    #       e.g. Dictionary<List<Action<Action>>> would ignore action/list and become dictionary    
-
-    # if re.search("List", classType):
-    #     return "List"
-    # elif re.search("Dictionary", classType):
-    #     return "Dict"
-    # elif re.search("HashSet", classType):
-    #     return "HashSet"
-
     # read class type and pick appropriate type for memory reading
     varType = None
     if classType == "System.Int32":
@@ -275,6 +257,7 @@ def GetMemoryTypeFromClassType(classType):
         varType = "Int"
     return varType
 
+# Adds an item to the output strings dictionary if it does not already exist
 def AppendToOutput(variablesStringArray, indexValue, classTypeOriginal, static, offset, varType):
     # add new value to dictionary if it is not already there, then build next value
     fullNameOfCurrentVariable = '.'.join(variablesStringArray[:indexValue])
