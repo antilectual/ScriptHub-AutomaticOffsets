@@ -23,7 +23,6 @@ def main():
     StartImport(memoryStructureLoc, False)
     memoryStructureLoc = ".\\ScriptHubExport64.json"
     StartImport(memoryStructureLoc, True)
-    return
 
 # Read json file exported from CE ScriptHubExporter addon and import from files based on types
 def StartImport(memFileLoc, is64Bit):
@@ -42,7 +41,6 @@ def StartImport(memFileLoc, is64Bit):
             Import(baseClassType, is64Bit)
     else:
         print("Could not open " + memFileLoc + ". It does not exist.")
-    return
 
 # Reads MemoryLocations file for target variables and builds them into ScriptHub import code (AHK).
 def Import(baseClass, is64Bit = False):
@@ -76,7 +74,6 @@ def Import(baseClass, is64Bit = False):
     OutputImportToFile(fileNameBase, version)
     outputStringsDict = {}
     print(baseClass + " " + version + "bit output complete.")
-    return
 
 # Writes outputStringsDict to the appropriate file.
 def OutputImportToFile(fileNameBase, version):
@@ -87,7 +84,6 @@ def OutputImportToFile(fileNameBase, version):
     outputFile = open(".\\Imports\\IC_" + fileNameBase + version + "_Import.ahk", 'w')
     outputFile.write(memoryFileString)
     outputFile.close()
-    return
 
 # recursive function that will search for the current indexValue of variablesStringArray and call itself for the rest of the variables in variablesStringArray
 # appending strings for final output as it goes
@@ -267,7 +263,6 @@ def AppendToOutput(variablesStringArray, indexValue, classTypeOriginal, static, 
             outputStringsDict[fullNameOfCurrentVariable] = "this." + fullNameOfCurrentVariable + " := New GameObjectStructure(this." + parentValue + ",\"" + varType + "\", [" + str(offset) + "])\n"
         else:
             outputStringsDict[fullNameOfCurrentVariable] = "this." + fullNameOfCurrentVariable + " := New GameObjectStructure(this." + parentValue + ",\"" + varType + "\", [this.StaticOffset + " + str(offset) + "])\n"
-    return
 
 if __name__ == "__main__":
     main()
