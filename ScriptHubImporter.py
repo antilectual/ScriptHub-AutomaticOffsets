@@ -16,6 +16,7 @@ baseClassTypeList.append("CrusadersGame.Effects.OminContractualObligationsHandle
 baseClassTypeList.append("TimeScaleWhenNotAttackedHandler")
 baseClassTypeList.append("CrusadersGame.Effects.HavilarImpHandler")
 baseClassTypeList.append("CrusadersGame.Effects.BrivUnnaturalHasteHandler")
+baseClassTypeList.append("CrusadersGame.Effects.NerdWagonHandler")
 
 # Main
 def main():
