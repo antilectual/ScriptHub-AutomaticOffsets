@@ -104,23 +104,22 @@ def BuildMemoryString(classType, variablesStringArray, indexValue, checkParent =
     if classType not in exportedJson:
         subClassCheckString = '+'.join(classType.rsplit('.',1))
         if subClassCheckString in exportedJson:
-            classType = subClassCheckString 
-    # class still not found, lookup failed. Pass.
-    if classType not in exportedJson:
-        NotificationForMissingClass(classType, variablesStringArray, indexValue)
-        return isFound
+            classType = subClassCheckString
+        else:
+            # class still not found, lookup failed. Pass.
+            NotificationForMissingClass(classType, variablesStringArray, indexValue)
+            return isFound        
 
     # could not find the variable in the class (Check parent classes?)
     if variablesStringArray[indexValue] not in exportedJson[classType]['fields']:
         # Check special cases of collections that include derived objects
         isFound = SpecialSubClassCaseCheck(classType, variablesStringArray, indexValue)
         # otherwise, check the parent class
-        if checkParent and not isFound:
-            isFound = BuildMemoryString(exportedJson[classType]['Parent'], variablesStringArray, indexValue)
-        if isFound:
-            return
-        elif checkParent:        
-            NotificationForMissingFields(classType, variablesStringArray, indexValue)
+        if checkParent:
+            if isFound or BuildMemoryString(exportedJson[classType]['Parent'], variablesStringArray, indexValue):
+                return
+            else:
+                NotificationForMissingFields(classType, variablesStringArray, indexValue)
         return isFound
 
     # passed existence checks, set variables
@@ -154,7 +153,7 @@ def BuildMemoryString(classType, variablesStringArray, indexValue, checkParent =
             indexValue += 1 
             variablesStringArray.insert(indexValue, test.rsplit('.',1)[-1:][0])
             # output subcollection
-            AppendToOutput(variablesStringArray, indexValue, classTypeOriginal, static, offset, specialType)
+            AppendToOutput(variablesStringArray, indexValue + 1, classTypeOriginal, static, "", specialType)
             # build from current + subcollection
             BuildMemoryString(currClassType, variablesStringArray, indexValue + 1) 
             return isFound
@@ -186,6 +185,7 @@ def SpecialSubClassCaseCheck(classType, variablesStringArray, indexValue):
         isFound = BuildMemoryString( "CrusadersGame.Dialogs.BlessingsStore.BlessingsStoreDialog", variablesStringArray, indexValue, False) or BuildMemoryString(exportedJson[classType]['Parent'], variablesStringArray, indexValue)
     return isFound
 
+# For cases where a field name uses reserved characters in AHK code
 def SpecialInvalidCharacterInFieldCheck(variablesStringArray, indexValue):
     # AHK Can't handle <> in names, such as k__BackingField
     if variablesStringArray[indexValue].find("k__BackingField") >= 0:
@@ -206,6 +206,7 @@ def FindCollectionValueType(classType):
     else:
         return None
 
+# When a class is not found, print a messsage displaying the offending class type and variable.
 def NotificationForMissingClass(classType, variablesStringArray, indexValue):
     appended = ""
     if indexValue+1 < (len(variablesStringArray)):
