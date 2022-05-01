@@ -275,6 +275,11 @@ def AppendToOutput(variablesStringArray, indexValue, classTypeOriginal, static, 
         parentValue = '.'.join(variablesStringArray[:indexValue-1]) if indexValue > 1 else classTypeOriginal 
         if isEffectHandler:
             fullNameOfCurrentVariable =  currentEffectClass + "." + fullNameOfCurrentVariable
+            if indexValue > 1:
+                parentValue = '.'.join(variablesStringArray[:indexValue-1]) + "."
+                parentValue = currentEffectClass + "." + parentValue
+            else:
+                parentValue = currentEffectClass
         if static == "false":
             outputStringsDict[fullNameOfCurrentVariable] = "this." + fullNameOfCurrentVariable + " := New GameObjectStructure(this." + parentValue + ",\"" + varType + "\", [" + str(offset) + "])\n"
         else:
