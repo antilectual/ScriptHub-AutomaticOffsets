@@ -270,13 +270,15 @@ def GetMemoryTypeFromClassType(classType):
 def AppendToOutput(variablesStringArray, indexValue, classTypeOriginal, static, offset, varType, isEffectHandler):
     global currentEffectClass
     # add new value to dictionary if it is not already there, then build next value
+
     fullNameOfCurrentVariable = '.'.join(variablesStringArray[:indexValue])
+    if isEffectHandler:
+        fullNameOfCurrentVariable =  currentEffectClass + "." + fullNameOfCurrentVariable
     if fullNameOfCurrentVariable not in outputStringsDict:
         parentValue = '.'.join(variablesStringArray[:indexValue-1]) if indexValue > 1 else classTypeOriginal 
         if isEffectHandler:
-            fullNameOfCurrentVariable =  currentEffectClass + "." + fullNameOfCurrentVariable
             if indexValue > 1:
-                parentValue = '.'.join(variablesStringArray[:indexValue-1]) + "."
+                parentValue = '.'.join(variablesStringArray[:indexValue-1])
                 parentValue = currentEffectClass + "." + parentValue
             else:
                 parentValue = currentEffectClass
