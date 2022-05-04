@@ -189,7 +189,13 @@ end
 function mono_findClass_ScriptHub(namespace, classname)
   local ass=mono_enumAssemblies()
   local result
-    if ass==nil then return nil end
+  if ass==nil then return nil end
+  for i=1, #ass do
+    result=mono_image_findClass(mono_getImageFromAssembly(ass[i]), namespace, classname)
+    if (result~=0) then
+      return result;
+    end
+  end
   for i=1, #ass do
     result=mono_image_findClass_for_ScriptHub(mono_getImageFromAssembly(ass[i]), namespace, classname)
     if (result~=0) then
