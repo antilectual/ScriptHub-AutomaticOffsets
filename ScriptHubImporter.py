@@ -12,7 +12,7 @@ baseClassTypeList.append("UnityGameEngine.Dialogs.DialogManager")
 baseClassTypeList.append("UnityGameEngine.Core.EngineSettings")
 baseClassTypeList.append("IdleGameManager")
 baseClassTypeList.append("CrusadersGame.GameSettings")
-baseClassTypeList.append("CrusadersGame.Effects.ActiveEffectKeyHandler")
+# baseClassTypeList.append("CrusadersGame.Effects.ActiveEffectKeyHandler")
 effectClassTypeList = []
 effectClassTypeList.append("CrusadersGame.Effects.OminContractualObligationsHandler")
 effectClassTypeList.append("TimeScaleWhenNotAttackedHandler")
