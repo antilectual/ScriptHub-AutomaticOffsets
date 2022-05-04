@@ -5,12 +5,13 @@ elapsed3 = 0.0
 elapsed4 = 0.0
 elapsed5 = 0.0
 
-classTable = {}
+classTable = nil
 
 function PreComputeClasses()
   if (monopipe==nil)  then
     LaunchMonoDataCollector()
   end
+  classTable = {}
   local clockA = os.clock()
   local assemblies=mono_enumAssemblies()
   for i=1, #assemblies do
@@ -74,6 +75,9 @@ function ScriptHubExport(fileLoc)
   local elapsedG = 0.0
   local elapsedH = 0.0
   local elapsedZ = 0.0
+  if classTable==nil then
+    PreComputeClasses()
+  end
   if (monopipe==nil)  then
     LaunchMonoDataCollector()
   end
@@ -85,7 +89,7 @@ function ScriptHubExport(fileLoc)
   local i,j
   local outputString = "{\"classes\" : {"
   if classes~=nil then
-    local stopValue = 500 -- #classes
+    local stopValue = #classes
     local value = 1
     -- Iterate from i to stopValue indexes of classses
     for i=1, stopValue do --#classes do
@@ -302,46 +306,6 @@ function mono_findClass_ScriptHub(namespace, classname)
   return nil
 end
 
--- --find a class in a specific image
--- function mono_image_findClass_ScriptHub(image, namespace, classname)
---   --if debug_canBreak() then return nil end
---   if monopipe==nil then return 0 end
---   monopipe.lock()
---   monopipe.writeByte(MONOCMD_FINDCLASS)
---   monopipe.writeQword(image)
---   monopipe.writeWord(#classname)
---   monopipe.writeString(classname)
---   if (namespace~=nil) then
---     monopipe.writeWord(#namespace)
---     monopipe.writeString(namespace)
---   else
---     monopipe.writeWord(0)
---   end
---   result=monopipe.readQword()
---   monopipe.unlock()
---   return result
--- end
-
--- --find a class in a specific image
--- function mono_image_findClassSlow_ScriptHub(image, namespace, classname)
---   local result=0
---   if monopipe==nil then return 0 end 
---   monopipe.lock()
---   local c=mono_image_enumClasses(image)
---   if c then
---     local i
---     for i=1, #c do
---       --check that classname is in c[i].classname
---       if c[i].classname==classname then
---         result=c[i].class
---         break;
---       end
---     end
---   end
---   monopipe.unlock()
---   return result
--- end
-
 -- find a class in a specific image
 function mono_image_findClassSlow_ScriptHub(image, namespace, classname)
   local result=0
@@ -352,38 +316,6 @@ function mono_image_findClassSlow_ScriptHub(image, namespace, classname)
   end
   return result
 end
-
--- function mono_image_get_name_ScriptHub(image)
---   --if debug_canBreak() then return nil end
---   if monopipe==nil then return nil end  
---   monopipe.lock()
---   if monopipe==nil then return nil end
---   monopipe.writeByte(MONOCMD_GETIMAGENAME)
---   monopipe.writeQword(image)
---   local namelength=monopipe.readWord()
---   local name=monopipe.readString(namelength)
---   monopipe.unlock()
---   return name
--- end
-
--- function mono_enumAssemblies_ScriptHub()
---   local result=nil
---   if monopipe then
---     monopipe.lock()
---     monopipe.writeByte(MONOCMD_ENUMASSEMBLIES)
---     local count=monopipe.readDword()
---     if count~=nil then
---       result={}
---       local i
---       for i=1, count do
---         result[i]=monopipe.readQword()
---       end
---     end
---     monopipe.unlock()
---   end
---   return result
--- end
-
 
 function monoform_miSaveClickTargeted(sender)
   local saveDialog=createSaveDialog()
@@ -396,5 +328,4 @@ function monoform_miSaveClickTargeted(sender)
   end
 end
 
-PreComputeClasses()
 ScriptHubAddMenuItem()
