@@ -28,6 +28,7 @@ def main():
     StartImport(memoryStructureLoc, False)
     memoryStructureLoc = ".\\ScriptHubExport64.json"
     StartImport(memoryStructureLoc, True)
+    os.system("pause")
 
 # Read json file exported from CE ScriptHubExporter addon and import from files based on types
 def StartImport(memFileLoc, is64Bit):
