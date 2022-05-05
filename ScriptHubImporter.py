@@ -35,6 +35,8 @@ def StartImport(memFileLoc, is64Bit):
     global exportedJson
     global baseClassTypeList
     global currentEffectClass
+    if not os.path.exists(".\\Imports\\ActiveEffectHandlers\\"):
+        os.makedirs(".\\Imports\\ActiveEffectHandlers\\")
     if os.path.exists(memFileLoc):
         jsonFile = open(memFileLoc, 'r')
         exportedJson = json.load(jsonFile)
