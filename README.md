@@ -19,7 +19,7 @@
 
 > * Note: Alternatively ``ScriptHubImporter.py`` along with the ``MemoryLocations`` txt files and the ``ScriptHubExport`` json files may be placed in the ``.\SharedFunctions\MemoryRead\`` directory of Script Hub and run from there.
 
-## TroubleShooting:
+## Troubleshooting:
  ``game.gameInstances.Controller.userData.HeroHandler.heroes.[_level]`` or ``game.gameInstances.Controller.userData.HeroHandler.heroes.[<Level>k__BackingField]`` are not being found.  
 
 * These are the same variable which was renamed. Both are being kept for backwards compatability to older DLL versions. If you wish to not see the error anymore, you can remove the associated line from the ``MemoryLocations_IdleGameManager.txt`` file.  
