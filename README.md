@@ -28,3 +28,30 @@ When running the script, the window immediately closes.
 
 * If the script runs successfully it wait for a keypress before closing. If it is not then the script likely had an error and exited. Run the script from a command prompt/powershell window to see the error.
 
+The script worked before a game update but after there are multiple ``--ERROR--`` in the FullMemoryRead addon, even after importing pointers.
+
+* This typically means the pointers changed and not just the offsets.\
+\
+To update pointers in ``IdleGameManager`` and other dynamic pointers follow the instructions here:\
+https://github.com/mikebaldi/Idle-Champions/blob/main/Pointers.pdf  
+\
+If you are familiar with that, then to update pointers in ``CrusadersGameDataSet``, ``DialogManager``, ``EngineSettings``, ``GameSettings`` and other static pointers follow the instructions here**:\
+https://github.com/mikebaldi/Idle-Champions/blob/main/GameSettingsStaticInstructions.pdf  
+
+  
+> ** Note: The instructions say you typically only need a depth of 2 for static, but be aware sometimes it may require more. As of v435 Steam is using a pointer with a depth of 5.  
+  
+  \
+Which pointer is causing the problem?
+
+* If errors show up in functions referencing **Favor** or **Blessings** then the problem is likely in ``DialogManager``\
+\
+If errors show up in multiple functions referencing **Chests** then the problem is likely in ``CrusadersGameDialogSet``\
+\
+If **webroot** cannot be found, there is an issue with ``EngineSettings``\
+\
+If **UserID**, **Hash**, or **Game version** are not working there is an issue with ``GameSettings``\
+\
+Most other problems will be in ``IdleGameManager``\
+\
+The relevent files will be found in ``.\SharedFunctions\MemoryRead\`` using a format of ``IC_[NAME]_Class.ahk`` where ``[NAME]`` is one of the above. E.G. ``IC_DialogManager_Class.ahk``
