@@ -26,7 +26,7 @@
 
 When running the script, the window immediately closes.  
 
-* If the script runs successfully it wait for a keypress before closing. If it is not then the script likely had an error and exited. Run the script from a command prompt/powershell window to see the error.
+* If the script runs successfully it will wait for a keypress before closing. If it is not then the script likely had an error and exited. Run the script from a command prompt/powershell window to see the error.
 
 The script worked before a game update but after there are multiple ``--ERROR--`` in the FullMemoryRead addon, even after importing pointers.
 
