@@ -11,7 +11,7 @@
 ## Importing using ScriptHubImporter.py:
 > Note: Before continuing, ensure Script Hub has been updated to have the automatic offsets update.  
 
-> Note: Requires [Python](https://www.python.org/) to run. 
+> Note: Requires [Python](https://www.python.org/) v3.9.2 or later to run. 
 * Copy the exported json to the same folder as ``ScriptHubImporter.py`` replacing ScriptHubExport``32``.json or ScriptHubExport``64``.json depending on if you are exporting from steam (``32``) or EGS (``64``)
 * Run ``ScriptHubImporter.py``
 * Copy the resulting ``Imports`` folder and files to Script Hub's ``.\SharedFunctions\MemoryRead\`` directory. *
