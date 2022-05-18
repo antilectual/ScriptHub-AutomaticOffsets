@@ -55,3 +55,9 @@ If **UserID**, **Hash**, or **Game version** are not working there is an issue w
 Most other problems will be in ``IdleGameManager``\
 \
 The relevent files will be found in ``.\SharedFunctions\MemoryRead\`` using a format of ``IC_[NAME]_Class.ahk`` where ``[NAME]`` is one of the above. E.G. ``IC_DialogManager_Class.ahk``
+
+Script Hub is almost all ``-- ERROR --`` in FullMemoryFunctions after importing.
+
+* First, make sure the ``Import`` files are in the correct locations.\
+\
+Using an old version of Python could cause the AHK files to build offsets out of order and they won't load correctly in ScriptHhub. Versions 3.10.4 and 3.9.2 have been verified to work correctly. Type ``python -V`` in a cmd or powershell window to see the version.
