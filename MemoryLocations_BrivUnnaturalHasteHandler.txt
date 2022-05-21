@@ -4,6 +4,5 @@ areasSkipped
 areaSkipChance
 areaSkipAmount
 alwaysSkipOneLess
-stacksToConsume
 effectKey.parentEffectKeyHandler.parent.def.ID
 effectKey.parentEffectKeyHandler.parent.source.ID
