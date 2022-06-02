@@ -19,6 +19,7 @@ effectClassTypeList.append("TimeScaleWhenNotAttackedHandler")
 effectClassTypeList.append("CrusadersGame.Effects.HavilarImpHandler")
 effectClassTypeList.append("CrusadersGame.Effects.BrivUnnaturalHasteHandler")
 effectClassTypeList.append("CrusadersGame.Effects.NerdWagonHandler")
+effectClassTypeList.append("CrusadersGame.Effects.HewMaanTeamworkHandler")
 currentEffectClass = ""
 
 
