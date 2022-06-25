@@ -38,7 +38,7 @@ game.gameInstances.Controller.userData.HeroHandler.heroes.def.name
 game.gameInstances.Controller.userData.HeroHandler.heroes.def.SeatID
 game.gameInstances.Controller.userData.HeroHandler.heroes.effects.effectKeysByKeyName.parentEffectKeyHandler.activeEffectHandlers
 game.gameInstances.Controller.userData.HeroHandler.heroes.allUpgradesOrdered.ID
-game.gameInstances.Controller.userData.HeroHandler.heroes.allUpgradesOrdered.SpecializationName
+game.gameInstances.Controller.userData.HeroHandler.heroes.allUpgradesOrdered.specializationName
 game.gameInstances.Controller.userData.HeroHandler.heroes.allUpgradesOrdered.RequiredLevel
 game.gameInstances.Controller.userData.HeroHandler.heroes.allUpgradesOrdered.RequiredUpgradeID
 game.gameInstances.Controller.userData.HeroHandler.heroes.allUpgradesOrdered.SpecializationGraphic
@@ -46,8 +46,9 @@ game.gameInstances.Controller.userData.HeroHandler.heroes.health
 game.gameInstances.Controller.userData.HeroHandler.heroes.slotId
 game.gameInstances.Controller.userData.HeroHandler.heroes.Owned
 game.gameInstances.Controller.userData.HeroHandler.heroes.Benched
-game.gameInstances.Controller.userData.HeroHandler.heroes.<Level>k__BackingField
-game.gameInstances.Controller.userData.HeroHandler.heroes._level
+#game.gameInstances.Controller.userData.HeroHandler.heroes.<Level>k__BackingField
+#game.gameInstances.Controller.userData.HeroHandler.heroes._level
+game.gameInstances.Controller.userData.HeroHandler.heroes.level
 game.gameInstances.Controller.userData.HeroHandler.heroes.purchasedUpgradeIDs
 
 #. ---======================================================================================
