@@ -27,8 +27,10 @@ currentEffectClass = ""
 def main():
     memoryStructureLoc = ".\\ScriptHubExport32.json"
     StartImport(memoryStructureLoc, False)
+    os.system(".\\FindGameVersion.py 32")
     memoryStructureLoc = ".\\ScriptHubExport64.json"
     StartImport(memoryStructureLoc, True)
+    os.system(".\\FindGameVersion.py 64")
     os.system("pause")
 
 # Read json file exported from CE ScriptHubExporter addon and import from files based on types
