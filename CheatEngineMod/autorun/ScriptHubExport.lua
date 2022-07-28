@@ -1,5 +1,5 @@
 classTable = nil
-variableValuesTable = {["CrusadersGame.GameSettings.MobileClientVersion"] = 1}
+variableValuesTable = {["CrusadersGame.GameSettings.MobileClientVersion"] = 1, ["CrusadersGame.GameSettings.VersionPostFix"] = 1}
 
 -- Creates a table of assemblies which each have a table of all of their classes in the global variable classTable
 function PreComputeClasses()
@@ -238,6 +238,28 @@ function ScriptHubReadStaticValue(field, class)
   local staticAddr = mono_class_getStaticFieldAddress(class, nil)
   if field.typename == 'System.Int32' then
     return readInteger(staticAddr + field.offset)
+  else
+    return nil
+  end
+end
+
+function ScriptHubReadStaticValue(field, class)
+  local staticAddr = mono_class_getStaticFieldAddress(class, nil)
+  if field.typename == 'System.Int32' then
+    return readInteger(staticAddr + field.offset)
+  elseif field.typename == 'System.String' then
+    local lenLocOffset = 0x8
+    local strLocOffset = 0xC
+    if targetIs64Bit() then
+      lenLocOffset = 0x10
+      strLocOffset = 0x14
+    end
+    length=readInteger(readPointer(staticAddr + field.offset)+lenLocOffset)
+    if length == nil then
+       return nil
+    else
+       return readString(readPointer(staticAddr + field.offset)+strLocOffset,length*2,true)
+    end
   else
     return nil
   end
