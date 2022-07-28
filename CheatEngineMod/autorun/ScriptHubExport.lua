@@ -1,4 +1,5 @@
 classTable = nil
+variableValuesTable = {["CrusadersGame.GameSettings.MobileClientVersion"] = 1}
 
 -- Creates a table of assemblies which each have a table of all of their classes in the global variable classTable
 function PreComputeClasses()
@@ -86,7 +87,14 @@ function ScriptHubExport(fileLoc)
           end
           outputString = outputString.." \"fields\" : {"
           for j=1, #tempClass.fields do
-            outputString = outputString.."\""..tempClass.fields[j].name.."\":{".."\"offset\":\""..tempClass.fields[j].offset.."\",\"type\":\""..tempClass.fields[j].typename.."\",\"static\":\""..tostring(tempClass.fields[j].isStatic).."\"}"
+            local value = nil
+            outputString = outputString.."\""..tempClass.fields[j].name.."\":{".."\"offset\":\""..tempClass.fields[j].offset.."\",\"type\":\""..tempClass.fields[j].typename.."\",\"static\":\""..tostring(tempClass.fields[j].isStatic)
+            if variableValuesTable[tempClass.fqname .. "." .. tempClass.fields[j].name] == 1 then
+              local fieldValue = ScriptHubReadStaticValue(tempClass.fields[j], classData)
+              outputString = outputString.."\",\"value\":\""..tostring(fieldValue).."\"}"
+            else
+              outputString = outputString.."\"}"
+            end
             if j < #tempClass.fields then
               outputString = outputString..","
             else
@@ -224,6 +232,15 @@ function monoform_miSaveClickTargeted(sender)
   saveDialog.Options='['..string.sub(string.sub(saveDialog.Options,2),1,#saveDialog.Options-2)..',ofOverwritePrompt'..']'
   if saveDialog.Execute() then
     ScriptHubExport(saveDialog.Filename)
+  end
+end
+
+function ScriptHubReadStaticValue(field, class) 
+  local staticAddr = mono_class_getStaticFieldAddress(class, nil)
+  if field.typename == 'System.Int32' then
+    return readInteger(staticAddr + field.offset)
+  else
+    return nil
   end
 end
 
