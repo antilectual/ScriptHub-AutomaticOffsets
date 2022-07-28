@@ -11,7 +11,7 @@
 ## Importing using ScriptHubImporter.py:
 > Note: Before continuing, ensure Script Hub has been updated to have the automatic offsets update.    
 
-> `NEW!` Importer now requires the `wheel` and `pythonnet` packages. Although the script with still mostly function without them, without these packages the game's version will not be able to be found and Script Hub will display a warning that imports do not match the game version. See how to set up the Importer to read the game's version [here](./FILEGAMEVERSION.MD).
+`UPDATE 2022-07-27` ScriptHubExport.lua has been updated so update the script in your Cheat Engine autorun folder! With this change, the ScriptHubImporter.py script no longer requires wheel or pythonnet. (Special thanks to Ismo for helping with this!)
 
 > Note: Requires [Python](https://www.python.org/) v3.9.2 or later to run.  
   
