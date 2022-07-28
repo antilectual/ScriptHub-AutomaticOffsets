@@ -87,7 +87,6 @@ function ScriptHubExport(fileLoc)
           end
           outputString = outputString.." \"fields\" : {"
           for j=1, #tempClass.fields do
-            local value = nil
             outputString = outputString.."\""..tempClass.fields[j].name.."\":{".."\"offset\":\""..tempClass.fields[j].offset.."\",\"type\":\""..tempClass.fields[j].typename.."\",\"static\":\""..tostring(tempClass.fields[j].isStatic)
             if variableValuesTable[tempClass.fqname .. "." .. tempClass.fields[j].name] == 1 then
               local fieldValue = ScriptHubReadStaticValue(tempClass.fields[j], classData)
