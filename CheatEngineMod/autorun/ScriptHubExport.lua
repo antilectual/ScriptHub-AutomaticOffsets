@@ -234,15 +234,6 @@ function monoform_miSaveClickTargeted(sender)
   end
 end
 
-function ScriptHubReadStaticValue(field, class) 
-  local staticAddr = mono_class_getStaticFieldAddress(class, nil)
-  if field.typename == 'System.Int32' then
-    return readInteger(staticAddr + field.offset)
-  else
-    return nil
-  end
-end
-
 function ScriptHubReadStaticValue(field, class)
   local staticAddr = mono_class_getStaticFieldAddress(class, nil)
   if field.typename == 'System.Int32' then
