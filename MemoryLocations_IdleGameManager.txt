@@ -41,7 +41,7 @@ game.gameInstances.Controller.userData.HeroHandler.heroes.allUpgradesOrdered.ID
 game.gameInstances.Controller.userData.HeroHandler.heroes.allUpgradesOrdered.specializationName
 game.gameInstances.Controller.userData.HeroHandler.heroes.allUpgradesOrdered.RequiredLevel
 game.gameInstances.Controller.userData.HeroHandler.heroes.allUpgradesOrdered.RequiredUpgradeID
-game.gameInstances.Controller.userData.HeroHandler.heroes.allUpgradesOrdered.SpecializationGraphic
+game.gameInstances.Controller.userData.HeroHandler.heroes.allUpgradesOrdered.defaultSpecGraphic
 game.gameInstances.Controller.userData.HeroHandler.heroes.health
 game.gameInstances.Controller.userData.HeroHandler.heroes.slotId
 game.gameInstances.Controller.userData.HeroHandler.heroes.Owned
