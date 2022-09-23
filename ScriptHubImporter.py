@@ -121,9 +121,14 @@ def BuildMemoryString(classType, variablesStringArray, indexValue, isEffectHandl
         classTypeOriginal = "IdleGameManager"
     # could not find the class, test for variation with + (e.g. 'CrusadersGame.User.UserModronHandler.ModronCoreData' -> 'CrusadersGame.User.UserModronHandler+ModronCoreData') 
     if classType not in exportedJson:
+        #fix for subclasses
         subClassCheckString = '+'.join(classType.rsplit('.',1))
+        #fix for ActiveEffectKeyHandler classes that use the new typed BaseActiveEffectKeyHandler
+        typedClassCheckString = classType.rsplit('[',1)[0] + "[T]"
         if subClassCheckString in exportedJson:
             classType = subClassCheckString
+        elif typedClassCheckString in exportedJson:
+            classType = typedClassCheckString
         else:
             # class still not found, lookup failed. Pass.
             NotificationForMissingClass(classType, variablesStringArray, indexValue)
@@ -209,6 +214,9 @@ def SpecialInvalidCharacterInFieldCheck(variablesStringArray, indexValue):
     # AHK Can't handle <> in names, such as k__BackingField
     if variablesStringArray[indexValue].find("k__BackingField") >= 0:
         match = re.search("<.*>", variablesStringArray[indexValue])
+        # fix for activeeffectkeyhandlers using k_backingfields
+        if variablesStringArray[indexValue] == "<effectKey>k__BackingField":
+            return match.group(0)[1:-1]
         return match.group(0)[1:-1] + "_k__BackingField"
     else:
         return variablesStringArray[indexValue]
