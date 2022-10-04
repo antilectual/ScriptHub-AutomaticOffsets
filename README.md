@@ -16,7 +16,8 @@
 > Note: Requires [Python](https://www.python.org/) v3.9.2 or later to run.  
   
 
-* Copy the exported json to the same folder as ``ScriptHubImporter.py`` replacing ScriptHubExport``32``.json or ScriptHubExport``64``.json depending on if you are exporting from steam (``32``) or EGS (``64``)
+* Copy the exported json to the same folder as ``ScriptHubImporter.py`` replacing ScriptHubExport``32``.json or ScriptHubExport``64``.json depending on if you are exporting from steam (~~``32``~~) (``64``) or EGS (``64``)
+  > Note: In late 2022 all PC platforms have switched to using the ``64`` bit versions of the game.   
 * Run ``ScriptHubImporter.py``
 * Copy the resulting ``Imports`` folder and files to Script Hub's ``.\SharedFunctions\MemoryRead\`` directory. *
 * Start Script Hub.
