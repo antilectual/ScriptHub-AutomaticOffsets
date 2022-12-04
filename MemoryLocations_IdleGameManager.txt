@@ -121,11 +121,18 @@ game.gameInstances.Controller.formation.numRangedAttackingMonsters
 #. ---==============================
 #. ---offlineprogress and modronsave
 #. ---==============================
-game.gameInstances.offlineProgressHandler.inGameNumSecondsToProcess
-game.gameInstances.offlineProgressHandler.monstersSpawnedThisArea
-game.gameInstances.offlineProgressHandler.modronSave.ExpTotal
-game.gameInstances.offlineProgressHandler.modronSave.targetArea
-game.gameInstances.offlineProgressHandler.finishedOfflineProgressType
+#. game.gameInstances.offlineProgressHandler.inGameNumSecondsToProcess
+#. game.gameInstances.offlineProgressHandler.monstersSpawnedThisArea
+#. game.gameInstances.offlineProgressHandler.modronSave.ExpTotal
+#. game.gameInstances.offlineProgressHandler.modronSave.targetArea
+#. game.gameInstances.offlineProgressHandler.finishedOfflineProgressType
+#.
+#. game.gameInstances.OfflineHandler.currentModronCore.ExpTotal
+#. game.gameInstances.OfflineHandler.currentModronCore.targetArea
+game.gameInstances.OfflineHandler.<OfflineTimeRequested>k__BackingField
+game.gameInstances.OfflineHandler.<OfflineTimeSimulated>k__BackingField
+game.gameInstances.OfflineHandler.<CurrentStopReason>k__BackingField
+game.gameInstances.OfflineHandler.<CurrentState>k__BackingField
 #. ---=================
 #. ---Screen and UI
 #. ---=================
