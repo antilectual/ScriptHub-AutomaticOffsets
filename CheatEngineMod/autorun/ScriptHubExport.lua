@@ -87,12 +87,16 @@ function ScriptHubExport(fileLoc)
           end
           outputString = outputString.." \"fields\" : {"
           for j=1, #tempClass.fields do
-            outputString = outputString.."\""..tempClass.fields[j].name.."\":{".."\"offset\":\""..tempClass.fields[j].offset.."\",\"type\":\""..tempClass.fields[j].typename.."\",\"static\":\""..tostring(tempClass.fields[j].isStatic)
+            outputString = outputString.."\""..tempClass.fields[j].name.."\":{".."\"offset\":\""..tempClass.fields[j].offset.."\",\"type\":\""..tempClass.fields[j].typename.."\",\"static\":"..tostring(tempClass.fields[j].isStatic)
             if variableValuesTable[tempClass.fqname .. "." .. tempClass.fields[j].name] == 1 then
               local fieldValue = ScriptHubReadStaticValue(tempClass.fields[j], classData)
-              outputString = outputString.."\",\"value\":\""..tostring(fieldValue).."\"}"
+              if tempClass.fields[j].typename == "System.Boolean" then
+                outputString = outputString..",\"value\":"..tostring(fieldValue).."}"
+              else
+                outputString = outputString..",\"value\":\""..tostring(fieldValue).."\"}"
+              end
             else
-              outputString = outputString.."\"}"
+              outputString = outputString.."}"
             end
             if j < #tempClass.fields then
               outputString = outputString..","

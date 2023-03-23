@@ -326,7 +326,7 @@ def AppendToOutput(variablesStringArray, indexValue, classTypeOriginal, static, 
                 parentValue = currentEffectClass + "." + parentValue
             else:
                 parentValue = currentEffectClass
-        if static == "false":
+        if static == "false" or static == False:
             outputStringsDict[fullNameOfCurrentVariable] = "this." + fullNameOfCurrentVariable + " := New GameObjectStructure(this." + parentValue + ",\"" + varType + "\", [" + str(offset) + "])\n"
         else:
             outputStringsDict[fullNameOfCurrentVariable] = "this." + fullNameOfCurrentVariable + " := New GameObjectStructure(this." + parentValue + ",\"" + varType + "\", [this.StaticOffset + " + str(offset) + "])\n"
