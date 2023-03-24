@@ -21,6 +21,7 @@ effectClassTypeList.append("CrusadersGame.Effects.BrivUnnaturalHasteHandler")
 effectClassTypeList.append("CrusadersGame.Effects.NerdWagonHandler")
 effectClassTypeList.append("CrusadersGame.Effects.HewMaanTeamworkHandler")
 effectClassTypeList.append("CrusadersGame.Effects.SpurtWaspirationHandlerV2")
+effectClassTypeList.append("CrusadersGame.Effects.NordomModronCoreToolboxHandler")
 currentEffectClass = ""
 
 
@@ -157,7 +158,7 @@ def BuildMemoryString(classType, variablesStringArray, indexValue, isEffectHandl
         # otherwise, check the parent class
         if checkParent:
             if isFound or BuildMemoryString(exportedJson[classType]['Parent'], variablesStringArray, indexValue, isEffectHandler):
-                return
+                return True
             else:
                 NotificationForMissingFields(classType, variablesStringArray, indexValue)
         return isFound
