@@ -139,6 +139,7 @@ game.gameInstances.OfflineHandler.<CurrentState>k__BackingField
 game.gameInstances.Screen.uiController.topBar.objectiveProgressBox.areaBar.autoProgressButton.toggled
 game.gameInstances.Screen.uiController.bottomBar.heroPanel.activeBoxes.nextUpgrade.IsPurchased
 game.gameInstances.Screen.uiController.ultimatesBar.ultimateItems.hero.def.ID
+game.gameInstances.Screen.uiController.ultimatesBar.ultimateItems.ultimateAttack.CooldownTimer
 game.gameInstances.Screen.uiController.notificationManager.notificationDisplay.welcomeBackNotification.Active
 #. ---=========================================
 #. ---Shandie's Dash
