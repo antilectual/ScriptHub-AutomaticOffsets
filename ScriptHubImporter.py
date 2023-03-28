@@ -1,5 +1,5 @@
 import json
-import os.path
+import os
 import sys
 import re
 
@@ -29,14 +29,14 @@ currentEffectClass = ""
 # Main
 def main():
     global exportedJson
-    os.chdir(os.path.dirname(os.path.realpath(__file__)))
+    os.chdir(Path(__file__).resolve().parent)
     memoryStructureLoc = Path(".") / "ScriptHubExport32.json"
     StartImport(memoryStructureLoc, False)
-    if os.path.exists(memoryStructureLoc) and "value" in exportedJson["CrusadersGame.GameSettings"]["fields"]["MobileClientVersion"]:
+    if memoryStructureLoc.exists() and "value" in exportedJson["CrusadersGame.GameSettings"]["fields"]["MobileClientVersion"]:
         CreateVersionFile(32)
     memoryStructureLoc = Path(".") / "ScriptHubExport64.json"
     StartImport(memoryStructureLoc, True)
-    if os.path.exists(memoryStructureLoc) and "value" in exportedJson["CrusadersGame.GameSettings"]["fields"]["MobileClientVersion"]:
+    if memoryStructureLoc.exists() and "value" in exportedJson["CrusadersGame.GameSettings"]["fields"]["MobileClientVersion"]:
         CreateVersionFile(64)
     os.system("pause")
 
@@ -45,9 +45,9 @@ def StartImport(memFileLoc, is64Bit):
     global exportedJson
     global baseClassTypeList
     global currentEffectClass
-    if not os.path.exists(Path(".", "Imports", "ActiveEffectHandlers")):
-        os.makedirs(Path(".", "Imports", "ActiveEffectHandlers"))
-    if os.path.exists(memFileLoc):
+    if not Path(".", "Imports", "ActiveEffectHandlers").exists():
+        Path(".", "Imports", "ActiveEffectHandlers").mkdir(parents=True)
+    if memFileLoc.exists():
         jsonFile = open(memFileLoc, 'r')
         exportedJson = json.load(jsonFile)
         jsonFile.close()
@@ -76,7 +76,7 @@ def Import(baseClass, is64Bit = False, isEffectHandler = False):
     baseClassParts = baseClass.split('.')
     fileNameBase = baseClassParts[len(baseClassParts) - 1]
     memoryFileLocation = Path(".", "MemoryLocations_" + fileNameBase + ".txt")
-    if os.path.exists(memoryFileLocation):
+    if memoryFileLocation.exists():
         memoryFile = open(memoryFileLocation, 'r')
     else:
         print("Could not open " + str(memoryFileLocation) + ". It does not exist.")
