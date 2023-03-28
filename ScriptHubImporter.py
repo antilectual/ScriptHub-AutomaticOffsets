@@ -27,7 +27,7 @@ currentEffectClass = ""
 # Main
 def main():
     global exportedJson
-    os.chdir(os.path.realpath(__file__) + "\\..")
+    os.chdir(os.path.dirname(os.path.realpath(__file__)))
     memoryStructureLoc =  ".\\ScriptHubExport32.json"
     StartImport(memoryStructureLoc, False)
     if os.path.exists(memoryStructureLoc) and "value" in exportedJson["CrusadersGame.GameSettings"]["fields"]["MobileClientVersion"]:
