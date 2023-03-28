@@ -48,8 +48,7 @@ def StartImport(memFileLoc, is64Bit):
     if not memFileLoc.exists():
         print("Could not open " + str(memFileLoc) + ". It does not exist.")
         return
-    if not Path(".", "Imports", "ActiveEffectHandlers").exists():
-        Path(".", "Imports", "ActiveEffectHandlers").mkdir(parents=True)
+    Path(".", "Imports", "ActiveEffectHandlers").mkdir(parents=True, exist_ok=True)
     with memFileLoc.open('r') as jsonFile:
         exportedJson = json.load(jsonFile)
     # get classes object
