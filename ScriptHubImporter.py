@@ -45,25 +45,25 @@ def StartImport(memFileLoc, is64Bit):
     global exportedJson
     global baseClassTypeList
     global currentEffectClass
+    if not memFileLoc.exists():
+        print("Could not open " + str(memFileLoc) + ". It does not exist.")
+        return
     if not Path(".", "Imports", "ActiveEffectHandlers").exists():
         Path(".", "Imports", "ActiveEffectHandlers").mkdir(parents=True)
-    if memFileLoc.exists():
-        jsonFile = open(memFileLoc, 'r')
-        exportedJson = json.load(jsonFile)
-        jsonFile.close()
-        # get classes object    
-        exportedJson = exportedJson['classes']
-        # set the base class starting point (object the base pointer points to)
-        # filename is based on the last chunk
-        # e.g. CrusadersGame.Defs.CrusadersGameDataSet will check MemoryLocations_CrusadersGameDataSet.txt for offset lookup items.
-        for baseClassType in baseClassTypeList:
-            Import(baseClassType, is64Bit)
-        for effectClassType in effectClassTypeList:
-            currentEffectClass = effectClassType.rsplit('.',1)[-1:][0]
-            Import(effectClassType, is64Bit, True)
-        OutputHandlerIncludeFile(effectClassType, is64Bit)
-    else:
-        print("Could not open " + str(memFileLoc) + ". It does not exist.")
+    jsonFile = open(memFileLoc, 'r')
+    exportedJson = json.load(jsonFile)
+    jsonFile.close()
+    # get classes object
+    exportedJson = exportedJson['classes']
+    # set the base class starting point (object the base pointer points to)
+    # filename is based on the last chunk
+    # e.g. CrusadersGame.Defs.CrusadersGameDataSet will check MemoryLocations_CrusadersGameDataSet.txt for offset lookup items.
+    for baseClassType in baseClassTypeList:
+        Import(baseClassType, is64Bit)
+    for effectClassType in effectClassTypeList:
+        currentEffectClass = effectClassType.rsplit('.',1)[-1:][0]
+        Import(effectClassType, is64Bit, True)
+    OutputHandlerIncludeFile(effectClassType, is64Bit)
 
 # Reads MemoryLocations file for target variables and builds them into ScriptHub import code (AHK).
 def Import(baseClass, is64Bit = False, isEffectHandler = False):
@@ -76,11 +76,10 @@ def Import(baseClass, is64Bit = False, isEffectHandler = False):
     baseClassParts = baseClass.split('.')
     fileNameBase = baseClassParts[len(baseClassParts) - 1]
     memoryFileLocation = Path(".", "MemoryLocations_" + fileNameBase + ".txt")
-    if memoryFileLocation.exists():
-        memoryFile = open(memoryFileLocation, 'r')
-    else:
+    if not memoryFileLocation.exists():
         print("Could not open " + str(memoryFileLocation) + ". It does not exist.")
         return
+    memoryFile = open(memoryFileLocation, 'r')
     # read lines from text file without newline breaks
     memoryFileLines = memoryFile.read().splitlines() 
     memoryFile.close()
