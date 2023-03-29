@@ -23,6 +23,7 @@ effectClassTypeList.append("CrusadersGame.Effects.BrivUnnaturalHasteHandler")
 effectClassTypeList.append("CrusadersGame.Effects.NerdWagonHandler")
 effectClassTypeList.append("CrusadersGame.Effects.HewMaanTeamworkHandler")
 effectClassTypeList.append("CrusadersGame.Effects.SpurtWaspirationHandlerV2")
+effectClassTypeList.append("CrusadersGame.Effects.NordomModronCoreToolboxHandler")
 currentEffectClass = ""
 
 
@@ -152,7 +153,7 @@ def BuildMemoryString(classType, variablesStringArray, indexValue, isEffectHandl
         # otherwise, check the parent class
         if checkParent:
             if isFound or BuildMemoryString(exportedJson[classType]['Parent'], variablesStringArray, indexValue, isEffectHandler):
-                return
+                return True
             else:
                 NotificationForMissingFields(classType, variablesStringArray, indexValue)
         return isFound
@@ -321,7 +322,7 @@ def AppendToOutput(variablesStringArray, indexValue, classTypeOriginal, static, 
                 parentValue = currentEffectClass + "." + parentValue
             else:
                 parentValue = currentEffectClass
-        if static == "false":
+        if static == "false" or static == False:
             outputStringsDict[fullNameOfCurrentVariable] = "this." + fullNameOfCurrentVariable + " := New GameObjectStructure(this." + parentValue + ",\"" + varType + "\", [" + str(offset) + "])\n"
         else:
             outputStringsDict[fullNameOfCurrentVariable] = "this." + fullNameOfCurrentVariable + " := New GameObjectStructure(this." + parentValue + ",\"" + varType + "\", [this.StaticOffset + " + str(offset) + "])\n"

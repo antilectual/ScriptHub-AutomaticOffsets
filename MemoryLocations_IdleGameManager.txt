@@ -37,11 +37,18 @@ game.gameInstances.Controller.userData.ResetCurrencyHandler.isForceConverting
 game.gameInstances.Controller.userData.HeroHandler.heroes.def.name
 game.gameInstances.Controller.userData.HeroHandler.heroes.def.SeatID
 game.gameInstances.Controller.userData.HeroHandler.heroes.effects.effectKeysByKeyName.parentEffectKeyHandler.activeEffectHandlers
+game.gameInstances.Controller.userData.HeroHandler.heroes.allUpgrades.ID
+game.gameInstances.Controller.userData.HeroHandler.heroes.allUpgrades.specializationName
+game.gameInstances.Controller.userData.HeroHandler.heroes.allUpgrades.RequiredLevel
+game.gameInstances.Controller.userData.HeroHandler.heroes.allUpgrades.RequiredUpgradeID
+game.gameInstances.Controller.userData.HeroHandler.heroes.allUpgrades.defaultSpecGraphic
+game.gameInstances.Controller.userData.HeroHandler.heroes.allUpgrades.IsPurchased
 game.gameInstances.Controller.userData.HeroHandler.heroes.allUpgradesOrdered.ID
 game.gameInstances.Controller.userData.HeroHandler.heroes.allUpgradesOrdered.specializationName
 game.gameInstances.Controller.userData.HeroHandler.heroes.allUpgradesOrdered.RequiredLevel
 game.gameInstances.Controller.userData.HeroHandler.heroes.allUpgradesOrdered.RequiredUpgradeID
 game.gameInstances.Controller.userData.HeroHandler.heroes.allUpgradesOrdered.defaultSpecGraphic
+game.gameInstances.Controller.userData.HeroHandler.heroes.allUpgradesOrdered.IsPurchased
 game.gameInstances.Controller.userData.HeroHandler.heroes.health
 game.gameInstances.Controller.userData.HeroHandler.heroes.slotId
 game.gameInstances.Controller.userData.HeroHandler.heroes.Owned
@@ -139,6 +146,7 @@ game.gameInstances.OfflineHandler.<CurrentState>k__BackingField
 game.gameInstances.Screen.uiController.topBar.objectiveProgressBox.areaBar.autoProgressButton.toggled
 game.gameInstances.Screen.uiController.bottomBar.heroPanel.activeBoxes.nextUpgrade.IsPurchased
 game.gameInstances.Screen.uiController.ultimatesBar.ultimateItems.hero.def.ID
+game.gameInstances.Screen.uiController.ultimatesBar.ultimateItems.ultimateAttack.CooldownTimer
 game.gameInstances.Screen.uiController.notificationManager.notificationDisplay.welcomeBackNotification.Active
 #. ---=========================================
 #. ---Shandie's Dash
