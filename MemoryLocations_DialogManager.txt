@@ -4,3 +4,4 @@ dialogs.forceConvertFavor
 dialogs.sprite.gameObjectName
 dialogs.convertWindow.convertPanel.convertingFrom.ID
 dialogs.convertWindow.convertPanel.convertingTo.ID
+dialogs.Active
