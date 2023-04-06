@@ -186,14 +186,15 @@ def BuildMemoryString(classType, variablesStringArray, indexValue, isEffectHandl
             valType = GetMemoryTypeFromClassType(subType)
             match = re.search("[^<]*<", subType) # if there are still brackets, the collection contains other collections.
             if match is not None:
-                test = match.group(0)[:-1]
-            specialType = GetMemoryTypeFromClassType(test)
+                collectionType = match.group(0)[:-1]
+                collectionSubType = FindCollectionValueType(subType)
+            specialType = GetMemoryTypeFromClassType(collectionType)
             # output current (Increment indexValue in call)
             AppendToOutput(variablesStringArray, indexValue + 1, classTypeOriginal, static, offset, GetMemoryTypeFromClassType(preMatch), isEffectHandler, keyType, subType)
             indexValue += 1 
-            variablesStringArray.insert(indexValue, test.rsplit('.',1)[-1:][0])
+            variablesStringArray.insert(indexValue, collectionType.rsplit('.',1)[-1:][0])
             # output subcollection
-            AppendToOutput(variablesStringArray, indexValue + 1, classTypeOriginal, static, "", specialType, isEffectHandler, keyType, subType)
+            AppendToOutput(variablesStringArray, indexValue + 1, classTypeOriginal, static, "", specialType, isEffectHandler, keyType, collectionSubType)
             # build from current + subcollection
             BuildMemoryString(currClassType, variablesStringArray, indexValue + 1, isEffectHandler) 
             return isFound
@@ -338,10 +339,10 @@ def AppendToOutput(variablesStringArray, indexValue, classTypeOriginal, static, 
         if static == "false" or static == False:
             outputStringsDict[fullNameOfCurrentVariable] = "this." + fullNameOfCurrentVariable + " := New GameObjectStructure(this." + parentValue + ",\"" + varType + "\", [" + str(offset) + "])\n"
             if varType == "Dict":
-                outputStringsDict[fullNameOfCurrentVariable + "_key"] = "this." + fullNameOfCurrentVariable + ".CollectionKeyType := \"" + keyType + "\"\n"
-                outputStringsDict[fullNameOfCurrentVariable + "_value"] = "this." + fullNameOfCurrentVariable + ".CollectionValType := \"" + valType + "\"\n"
-            # elif varType == "List" and valType is not None:
-            #     outputStringsDict[fullNameOfCurrentVariable + "_key"] = "this." + fullNameOfCurrentVariable + ".CollectionKeyType := \"" + valType + "\"\n"
+                outputStringsDict[fullNameOfCurrentVariable + "_key"] = "this." + fullNameOfCurrentVariable + "._CollectionKeyType := \"" + keyType + "\"\n"
+                outputStringsDict[fullNameOfCurrentVariable + "_value"] = "this." + fullNameOfCurrentVariable + "._CollectionValType := \"" + valType + "\"\n"
+            elif varType == "List" and valType is not None:
+                outputStringsDict[fullNameOfCurrentVariable + "_key"] = "this." + fullNameOfCurrentVariable + "._CollectionValType := \"" + valType + "\"\n"
         else:
             outputStringsDict[fullNameOfCurrentVariable] = "this." + fullNameOfCurrentVariable + " := New GameObjectStructure(this." + parentValue + ",\"" + varType + "\", [this.StaticOffset + " + str(offset) + "])\n"
 
