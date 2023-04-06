@@ -170,26 +170,30 @@ def BuildMemoryString(classType, variablesStringArray, indexValue, isEffectHandl
     currClassType = classType
     preMatch = None
     specialType = None
+    keyType = None
+    valType = None
     # Collection test:
     match = re.search("[^<]*<", currClassType)
     if match is not None:
         preMatch = match.group(0)[:-1]
         # find inner collection type if exists
-        currClassType = FindCollectionValueType(currClassType)
-        currClassType = FindCollectionValueType(currClassType) 
+        currClassType = FindCollectionValueType(currClassType) # strip <> from type (normal)
+        currClassType = FindCollectionValueType(currClassType) # strip <> from type again (collection) OR if not found - not a collection.
         # add a special collection type to value string if the field has multiple collections
         if currClassType is not None:
-            test = FindCollectionValueType(classType)
-            match = re.search("[^<]*<", test)
+            keyType = FindCollectionValueType(classType, key = True) # strip <> and select key type in collection
+            subType = FindCollectionValueType(classType) # strip <> and select item right of , to find collection value type
+            valType = GetMemoryTypeFromClassType(subType)
+            match = re.search("[^<]*<", subType) # if there are still brackets, the collection contains other collections.
             if match is not None:
                 test = match.group(0)[:-1]
             specialType = GetMemoryTypeFromClassType(test)
             # output current (Increment indexValue in call)
-            AppendToOutput(variablesStringArray, indexValue + 1, classTypeOriginal, static, offset, GetMemoryTypeFromClassType(preMatch), isEffectHandler, )
+            AppendToOutput(variablesStringArray, indexValue + 1, classTypeOriginal, static, offset, GetMemoryTypeFromClassType(preMatch), isEffectHandler, keyType, subType)
             indexValue += 1 
             variablesStringArray.insert(indexValue, test.rsplit('.',1)[-1:][0])
             # output subcollection
-            AppendToOutput(variablesStringArray, indexValue + 1, classTypeOriginal, static, "", specialType, isEffectHandler)
+            AppendToOutput(variablesStringArray, indexValue + 1, classTypeOriginal, static, "", specialType, isEffectHandler, keyType, subType)
             # build from current + subcollection
             BuildMemoryString(currClassType, variablesStringArray, indexValue + 1, isEffectHandler) 
             return isFound
@@ -208,8 +212,14 @@ def BuildMemoryString(classType, variablesStringArray, indexValue, isEffectHandl
     if currClassType == "UnityGameEngine.Utilities.ProtectedInt":
         offset = hex(int(offset, 16) + int('0x8', 16))
 
+    if(varType == "List"):
+        valType = currClassType
+    elif(varType == "Dict"):
+        keyType = FindCollectionValueType(classType, key = True)
+        valType = FindCollectionValueType(classType)
+
     indexValue += 1
-    AppendToOutput(variablesStringArray, indexValue, classTypeOriginal, static, offset, varType, isEffectHandler)
+    AppendToOutput(variablesStringArray, indexValue, classTypeOriginal, static, offset, varType, isEffectHandler, keyType, valType)
     BuildMemoryString(currClassType, variablesStringArray, indexValue, isEffectHandler) 
     return isFound
 
@@ -234,14 +244,17 @@ def SpecialInvalidCharacterInFieldCheck(variablesStringArray, indexValue):
         return variablesStringArray[indexValue]
 
 # Get the type from inside the collection params (inside <>)
-def FindCollectionValueType(classType):
+def FindCollectionValueType(classType, key = False):
     if classType is None:
         return None
     match = re.search("<.*>", classType)
     if match is not None:
         currClassType = match.group(0)
         currClassType = currClassType[1:-1] # trim <> from match edges 
-        return currClassType.rsplit(",",1)[-1:][0]      
+        if key:
+            return currClassType.split(",",1)[0]    
+        else:
+            return currClassType.rsplit(",",1)[-1:][0]      
     else:
         return None
 
@@ -307,7 +320,7 @@ def GetMemoryTypeFromClassType(classType):
     return varType
 
 # Adds an item to the output strings dictionary if it does not already exist
-def AppendToOutput(variablesStringArray, indexValue, classTypeOriginal, static, offset, varType, isEffectHandler):
+def AppendToOutput(variablesStringArray, indexValue, classTypeOriginal, static, offset, varType, isEffectHandler, keyType = "", valType = ""):
     global currentEffectClass
     # add new value to dictionary if it is not already there, then build next value
 
@@ -324,6 +337,11 @@ def AppendToOutput(variablesStringArray, indexValue, classTypeOriginal, static, 
                 parentValue = currentEffectClass
         if static == "false" or static == False:
             outputStringsDict[fullNameOfCurrentVariable] = "this." + fullNameOfCurrentVariable + " := New GameObjectStructure(this." + parentValue + ",\"" + varType + "\", [" + str(offset) + "])\n"
+            if varType == "Dict":
+                outputStringsDict[fullNameOfCurrentVariable + "_key"] = "this." + fullNameOfCurrentVariable + ".CollectionKeyType := \"" + keyType + "\"\n"
+                outputStringsDict[fullNameOfCurrentVariable + "_value"] = "this." + fullNameOfCurrentVariable + ".CollectionValType := \"" + valType + "\"\n"
+            # elif varType == "List" and valType is not None:
+            #     outputStringsDict[fullNameOfCurrentVariable + "_key"] = "this." + fullNameOfCurrentVariable + ".CollectionKeyType := \"" + valType + "\"\n"
         else:
             outputStringsDict[fullNameOfCurrentVariable] = "this." + fullNameOfCurrentVariable + " := New GameObjectStructure(this." + parentValue + ",\"" + varType + "\", [this.StaticOffset + " + str(offset) + "])\n"
 
