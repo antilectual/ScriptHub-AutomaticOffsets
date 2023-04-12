@@ -92,6 +92,7 @@ game.gameInstances.Controller.userData.redRubiesSpent
 game.gameInstances.Controller.userData.StatHandler.BlackViperTotalGems
 game.gameInstances.Controller.userData.StatHandler.BrivSteelbonesStacks
 game.gameInstances.Controller.userData.StatHandler.BrivSprintStacks
+game.gameInstances.StatHandler.NordomAwardedEXP
 
 #. ---======================================================================================
 #. ---ActiveCampaignData related fields - current zone, highest zone, monsters spawned, etc.
