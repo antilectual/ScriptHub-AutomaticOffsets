@@ -41,7 +41,6 @@ function ScriptHubAddMenuItem()
 end
 
 function ScriptHubExport(fileLoc)
-  local clockA = os.clock()
   local classTable = PreComputeClasses()
   if (monopipe==nil)  then
     LaunchMonoDataCollector()
@@ -89,24 +88,13 @@ function ScriptHubExport(fileLoc)
     end
     outputString[#outputString+1] = "}}"
     local fullJSONOutput = table.concat(outputString)
-
-    -- local filename = "ScriptHubExport.json"
-    -- clear old file
-    local file = io.open (fileLoc ,"w+")
-    io.close(file)
-    -- open for writing
-    file = io.open (fileLoc ,"a+")
-    io.output(file)
-    io.write(fullJSONOutput)
-    io.close(file)
-    local current_dir=io.popen"cd":read'*l'.."\\"
+    -- local current_dir=io.popen"cd":read'*l'.."\\"
     -- print("Export to "..current_dir..filename.." complete. Last: "..tostring(value)..". Stop value: ".. tostring(stopValue))
-    print("Export to "..fileLoc.." complete. Last: "..tostring(value)..". Stop value: ".. tostring(stopValue))
-    
-    print("Total Elapsed time: "..tostring(os.clock()-clockA))
+    print("[Class Details] - Last: "..tostring(value)..". Stop value: ".. tostring(stopValue))
   else
     print("getClass failed to find classes")
   end
+  return table.concat(outputString)
 end
 
 function getImage()
@@ -207,7 +195,11 @@ function monoform_miSaveClickTargeted(sender)
   saveDialog.Filter=translate('JSON files (*.json )|*.json')
   saveDialog.Options='['..string.sub(string.sub(saveDialog.Options,2),1,#saveDialog.Options-2)..',ofOverwritePrompt'..']'
   if saveDialog.Execute() then
-    ScriptHubExport(saveDialog.Filename)
+    local clockA = os.clock()
+    local outputString = ScriptHubExport(saveDialog.Filename)
+    ScritpHubWriteToFile(saveDialog.Filename, outputString)
+    print("Export to "..saveDialog.Filename.." complete.")
+    print("Total Elapsed time: "..tostring(os.clock()-clockA))
   end
 end
 
@@ -267,6 +259,17 @@ function BuildJsonFromFields(class, classData, fields, parent)
     outputString[#outputString+1] = "}"
     return table.concat(outputString)
   end
+end
+
+function ScritpHubWriteToFile(fileLoc, output)
+  -- clear old file
+  local file = io.open (fileLoc ,"w+")
+  io.close(file)
+  -- open for writing
+  file = io.open (fileLoc ,"a+")
+  io.output(file)
+  io.write(output)
+  io.close(file)
 end
 
 ScriptHubAddMenuItem()
