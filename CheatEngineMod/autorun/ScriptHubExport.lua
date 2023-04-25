@@ -1,12 +1,9 @@
-classTable = nil
-variableValuesTable = {["CrusadersGame.GameSettings.MobileClientVersion"] = 1, ["CrusadersGame.GameSettings.VersionPostFix"] = 1}
-
 -- Creates a table of assemblies which each have a table of all of their classes in the global variable classTable
 function PreComputeClasses()
   if (monopipe==nil)  then
     LaunchMonoDataCollector()
   end
-  classTable = {}
+  local classTable = {}
   local clockA = os.clock()
   local assemblies=mono_enumAssemblies()
   for i=1, #assemblies do
@@ -25,6 +22,7 @@ function PreComputeClasses()
   end
   local clockB = os.clock()
   print("PreComputeClasses Elapsed Time: " .. tostring(clockB - clockA))
+  return classTable
 end
 
 function ScriptHubAddMenuItem()
@@ -47,18 +45,20 @@ end
 
 function ScriptHubExport(fileLoc)
   local clockA = os.clock()
-  PreComputeClasses()
+  local classTable = PreComputeClasses()
   if (monopipe==nil)  then
     LaunchMonoDataCollector()
   end
   local image=getImage()
   local classes=mono_image_enumClasses(image)
   local i,j
-  local outputString = "{\"classes\" : {"
+  local outputString = {}
+  outputString[#outputString+1] = "{\"classes\" : {"
   if classes~=nil then
     local stopValue = #classes
     local value = 1
     -- Iterate from i to stopValue indexes of classses
+    local builtJSON = {}
     for i=1, stopValue do --#classes do
       value = i
       -- Ensure class has a name for comparisons
@@ -73,24 +73,26 @@ function ScriptHubExport(fileLoc)
       --print(classes[i].fqname)
       -- Only continue if the class has a valid name note: short circuit eval works in LUA
       if classes[i].fqname~=nil and classes[i].fqname~='' and classes[i].fqname~='<unnamed>' and not string.find(classes[i].fqname, "<") then
-        local classData = mono_findClass_ScriptHub(classes[i].namespace, classes[i].classname) -- retrieve the class object reference (not a string)
+        local classData = mono_findClass_ScriptHub(classes[i].namespace, classes[i].classname, classTable) -- retrieve the class object reference (not a string)
         local fields = mono_class_enumFields_ScriptHub(classData, false) -- 2nd parameter is whether to include offsets from parent classes
         local parent = mono_class_getParent(classes[i].class)
         -- Build JSON string from fields
         local currentJSON = BuildJsonFromFields(classes[i], classData, fields, parent)
         if currentJSON~=nil then
-          outputString = outputString..currentJSON
+          outputString[#outputString+1] = currentJSON
           if i < stopValue then
-            outputString = outputString..","
+            outputString[#outputString+1] = ","
           end
         end
       end
     end
     -- test in case the last classes read was nil/empty/unamed or <> and didn't add a new object as expected
-    if string.sub(outputString, -1) == ',' then
-      outputString = outputString:sub(1, -2)
+    if(outputString[#outputString] == ',') then
+      table.remove(outputString, #outputString)
     end
-    outputString = outputString.."}}"
+    outputString[#outputString+1] = "}}"
+    local fullJSONOutput = table.concat(outputString)
+
     -- local filename = "ScriptHubExport.json"
     -- clear old file
     local file = io.open (fileLoc ,"w+")
@@ -98,7 +100,7 @@ function ScriptHubExport(fileLoc)
     -- open for writing
     file = io.open (fileLoc ,"a+")
     io.output(file)
-    io.write(outputString)
+    io.write(fullJSONOutput)
     io.close(file)
     local current_dir=io.popen"cd":read'*l'.."\\"
     -- print("Export to "..current_dir..filename.." complete. Last: "..tostring(value)..". Stop value: ".. tostring(stopValue))
@@ -172,7 +174,7 @@ function mono_class_enumFields_ScriptHub(class, includeParents)
 end
 
 --searches all images for a specific class
-function mono_findClass_ScriptHub(namespace, classname)
+function mono_findClass_ScriptHub(namespace, classname, classTable)
   local ass=mono_enumAssemblies()
   local result
   if ass==nil then return nil end
@@ -183,7 +185,7 @@ function mono_findClass_ScriptHub(namespace, classname)
     end
   end
   for i=1, #ass do
-    result=mono_image_findClass_for_ScriptHub(mono_getImageFromAssembly(ass[i]), namespace, classname)
+    result=mono_image_findClass_for_ScriptHub(mono_getImageFromAssembly(ass[i]), namespace, classname, classTable)
     if (result~=0) then
       return result;
     end
@@ -192,7 +194,7 @@ function mono_findClass_ScriptHub(namespace, classname)
 end
 
 -- find a class in a specific image
-function mono_image_findClass_for_ScriptHub(image, namespace, classname)
+function mono_image_findClass_for_ScriptHub(image, namespace, classname, classTable)
   local result=0
   if monopipe==nil then return 0 end 
   local assemblyName = mono_image_get_name(image)
@@ -237,36 +239,37 @@ end
 
 -- Build JSON string from fields
 function BuildJsonFromFields(class, classData, fields, parent)
+  local variableValuesTable = {["CrusadersGame.GameSettings.MobileClientVersion"] = 1, ["CrusadersGame.GameSettings.VersionPostFix"] = 1}
   if fields ~= nil and #fields > 0 then
-    local outputString = ""
+    local outputString = {}
     class.fields = fields
     local tempClass = class
-    outputString = outputString.."\""..tempClass.fqname.."\" : {\"ShortName\": \""..tempClass.classname.."\","
+    outputString[#outputString+1] = "\""..tempClass.fqname.."\" : {\"ShortName\": \""..tempClass.classname.."\","
     if parent ~= nil then
       local parentName = mono_class_getFullName(parent)
-      outputString = outputString.."\"Parent\": \""..parentName.."\","
+      outputString[#outputString+1] = "\"Parent\": \""..parentName.."\","
     end
-    outputString = outputString.." \"fields\" : {"
+    outputString[#outputString+1] = " \"fields\" : {"
     for j=1, #tempClass.fields do
-      outputString = outputString.."\""..tempClass.fields[j].name.."\":{".."\"offset\":\""..tempClass.fields[j].offset.."\",\"type\":\""..tempClass.fields[j].typename.."\",\"static\":"..tostring(tempClass.fields[j].isStatic)
+      outputString[#outputString+1] = "\""..tempClass.fields[j].name.."\":{".."\"offset\":\""..tempClass.fields[j].offset.."\",\"type\":\""..tempClass.fields[j].typename.."\",\"static\":"..tostring(tempClass.fields[j].isStatic)
       if variableValuesTable[tempClass.fqname .. "." .. tempClass.fields[j].name] == 1 then
         local fieldValue = ScriptHubReadStaticValue(tempClass.fields[j], classData)
         if tempClass.fields[j].typename == "System.Boolean" then
-          outputString = outputString..",\"value\":"..tostring(fieldValue).."}"
+          outputString[#outputString+1] = ",\"value\":"..tostring(fieldValue).."}"
         else
-          outputString = outputString..",\"value\":\""..tostring(fieldValue).."\"}"
+          outputString[#outputString+1] = ",\"value\":\""..tostring(fieldValue).."\"}"
         end
       else
-        outputString = outputString.."}"
+        outputString[#outputString+1] = "}"
       end
       if j < #tempClass.fields then
-        outputString = outputString..","
+        outputString[#outputString+1] = ","
       else
-        outputString = outputString.."}"
+        outputString[#outputString+1] = "}"
       end
     end
-    outputString = outputString.."}"
-    return outputString
+    outputString[#outputString+1] = "}"
+    return table.concat(outputString)
   end
 end
 
