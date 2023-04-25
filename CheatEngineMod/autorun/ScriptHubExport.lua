@@ -77,34 +77,9 @@ function ScriptHubExport(fileLoc)
         local fields = mono_class_enumFields_ScriptHub(classData, false) -- 2nd parameter is whether to include offsets from parent classes
         local parent = mono_class_getParent(classes[i].class)
         -- Build JSON string from fields
-        if fields ~= nil and #fields > 0 then
-          classes[i].fields = fields
-          local tempClass = classes[i]
-          outputString = outputString.."\""..tempClass.fqname.."\" : {\"ShortName\": \""..tempClass.classname.."\","
-          if parent ~= nil then
-            local parentName = mono_class_getFullName(parent)
-            outputString = outputString.."\"Parent\": \""..parentName.."\","
-          end
-          outputString = outputString.." \"fields\" : {"
-          for j=1, #tempClass.fields do
-            outputString = outputString.."\""..tempClass.fields[j].name.."\":{".."\"offset\":\""..tempClass.fields[j].offset.."\",\"type\":\""..tempClass.fields[j].typename.."\",\"static\":"..tostring(tempClass.fields[j].isStatic)
-            if variableValuesTable[tempClass.fqname .. "." .. tempClass.fields[j].name] == 1 then
-              local fieldValue = ScriptHubReadStaticValue(tempClass.fields[j], classData)
-              if tempClass.fields[j].typename == "System.Boolean" then
-                outputString = outputString..",\"value\":"..tostring(fieldValue).."}"
-              else
-                outputString = outputString..",\"value\":\""..tostring(fieldValue).."\"}"
-              end
-            else
-              outputString = outputString.."}"
-            end
-            if j < #tempClass.fields then
-              outputString = outputString..","
-            else
-              outputString = outputString.."}"
-            end
-          end
-          outputString = outputString.."}"
+        local currentJSON = BuildJsonFromFields(classes[i], classData, fields, parent)
+        if currentJSON~=nil then
+          outputString = outputString..currentJSON
           if i < stopValue then
             outputString = outputString..","
           end
@@ -257,6 +232,41 @@ function ScriptHubReadStaticValue(field, class)
     end
   else
     return nil
+  end
+end
+
+-- Build JSON string from fields
+function BuildJsonFromFields(class, classData, fields, parent)
+  if fields ~= nil and #fields > 0 then
+    local outputString = ""
+    class.fields = fields
+    local tempClass = class
+    outputString = outputString.."\""..tempClass.fqname.."\" : {\"ShortName\": \""..tempClass.classname.."\","
+    if parent ~= nil then
+      local parentName = mono_class_getFullName(parent)
+      outputString = outputString.."\"Parent\": \""..parentName.."\","
+    end
+    outputString = outputString.." \"fields\" : {"
+    for j=1, #tempClass.fields do
+      outputString = outputString.."\""..tempClass.fields[j].name.."\":{".."\"offset\":\""..tempClass.fields[j].offset.."\",\"type\":\""..tempClass.fields[j].typename.."\",\"static\":"..tostring(tempClass.fields[j].isStatic)
+      if variableValuesTable[tempClass.fqname .. "." .. tempClass.fields[j].name] == 1 then
+        local fieldValue = ScriptHubReadStaticValue(tempClass.fields[j], classData)
+        if tempClass.fields[j].typename == "System.Boolean" then
+          outputString = outputString..",\"value\":"..tostring(fieldValue).."}"
+        else
+          outputString = outputString..",\"value\":\""..tostring(fieldValue).."\"}"
+        end
+      else
+        outputString = outputString.."}"
+      end
+      if j < #tempClass.fields then
+        outputString = outputString..","
+      else
+        outputString = outputString.."}"
+      end
+    end
+    outputString = outputString.."}"
+    return outputString
   end
 end
 
