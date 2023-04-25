@@ -11,6 +11,8 @@
 ## Importing using ScriptHubImporter.py:
 > Note: Before continuing, ensure Script Hub has been updated to have the automatic offsets update.    
 
+`UPDATE 2023-04-25` ScriptHubExport.lua has been updated to be much faster. Depending on the speed of your system it may take as few as 10s!
+
 `UPDATE 2022-07-27` ScriptHubExport.lua has been updated so update the script in your Cheat Engine autorun folder! With this change, the ScriptHubImporter.py script no longer requires wheel or pythonnet. (Special thanks to Ismo for helping with this!)
 
 > Note: Requires [Python](https://www.python.org/) v3.9.2 or later to run.  
