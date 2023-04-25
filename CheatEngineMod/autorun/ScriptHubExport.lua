@@ -4,7 +4,6 @@ function PreComputeClasses()
     LaunchMonoDataCollector()
   end
   local classTable = {}
-  local clockA = os.clock()
   local assemblies=mono_enumAssemblies()
   for i=1, #assemblies do
     local assembly = mono_getImageFromAssembly(assemblies[i])
@@ -20,8 +19,6 @@ function PreComputeClasses()
       end
     end
   end
-  local clockB = os.clock()
-  print("PreComputeClasses Elapsed Time: " .. tostring(clockB - clockA))
   return classTable
 end
 
