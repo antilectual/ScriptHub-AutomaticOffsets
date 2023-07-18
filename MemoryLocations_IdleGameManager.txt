@@ -21,6 +21,12 @@ game.gameInstances.Controller.userData.LootHandler.inventoryLoot.HeroID
 game.gameInstances.Controller.userData.LootHandler.inventoryLoot.rarityValue
 game.gameInstances.Controller.userData.LootHandler.inventoryLoot.count
 game.gameInstances.Controller.userData.LootHandler.inventoryLoot.gild
+game.gameInstances.Controller.userData.LootHandler.LootByHeroID.ID
+game.gameInstances.Controller.userData.LootHandler.LootByHeroID.Name
+game.gameInstances.Controller.userData.LootHandler.LootByHeroID.HeroID
+game.gameInstances.Controller.userData.LootHandler.LootByHeroID.enchant
+game.gameInstances.Controller.userData.LootHandler.LootByHeroID.gild
+game.gameInstances.Controller.userData.LootHandler.LootByHeroID.rarityValue
 
 game.gameInstances.Controller.userData.ChestHandler.chestCounts
 
