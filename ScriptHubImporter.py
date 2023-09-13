@@ -24,6 +24,7 @@ effectClassTypeList.append("CrusadersGame.Effects.NerdWagonHandler")
 effectClassTypeList.append("CrusadersGame.Effects.HewMaanTeamworkHandler")
 effectClassTypeList.append("CrusadersGame.Effects.SpurtWaspirationHandlerV2")
 effectClassTypeList.append("CrusadersGame.Effects.NordomModronCoreToolboxHandler")
+effectClassTypeList.append("CrusadersGame.Effects.JimMagicalMysteryTourHandler")
 currentEffectClass = ""
 
 
