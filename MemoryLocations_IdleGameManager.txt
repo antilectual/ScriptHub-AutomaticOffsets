@@ -41,6 +41,7 @@ game.gameInstances.Controller.userData.ResetCurrencyHandler.isForceConverting
 #.  ---- Name is the index of the dictionary ---
 #.  game.gameInstances.Controller.userData.HeroHandler.heroes.effects.effectKeysByKeyName.Name
 game.gameInstances.Controller.userData.HeroHandler.heroes.def.name
+game.gameInstances.Controller.userData.HeroHandler.heroes.def.ID
 game.gameInstances.Controller.userData.HeroHandler.heroes.def.SeatID
 game.gameInstances.Controller.userData.HeroHandler.heroes.effects.effectKeysByKeyName.parentEffectKeyHandler.activeEffectHandlers
 game.gameInstances.Controller.userData.HeroHandler.heroes.allUpgrades.ID
