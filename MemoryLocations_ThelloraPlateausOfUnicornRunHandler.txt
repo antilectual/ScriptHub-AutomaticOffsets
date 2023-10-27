@@ -1,0 +1,3 @@
+#.  Lines starting with '#.' are ignored and are used as comments in this file. (But whitespace matters)
+baseFavorExponent
+controller.userData.StatHandler.ServerStats
