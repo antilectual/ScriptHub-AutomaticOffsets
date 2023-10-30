@@ -14,6 +14,8 @@ baseClassTypeList.append("UnityGameEngine.Dialogs.DialogManager")
 baseClassTypeList.append("UnityGameEngine.Core.EngineSettings")
 baseClassTypeList.append("IdleGameManager")
 baseClassTypeList.append("CrusadersGame.GameSettings")
+baseClassTypeList.append("CrusadersGame.User.UserStatHandler")
+baseClassTypeList.append("CrusadersGame.User.UserData")
 # baseClassTypeList.append("CrusadersGame.Effects.ActiveEffectKeyHandler")
 effectClassTypeList = []
 effectClassTypeList.append("CrusadersGame.Effects.OminContractualObligationsHandler")
