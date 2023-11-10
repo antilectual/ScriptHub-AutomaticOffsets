@@ -1,8 +1,8 @@
 #.  Lines starting with '#.' are ignored and are used as comments in this file. (But whitespace matters)
-#. numContractsFufilled
-#. secondsOnGoldFind
-#. effectKey.parentEffectKeyHandler.parent.def.ID
-#. effectKey.parentEffectKeyHandler.parent.source.ID
-obligationsFufilled
+#.  Lines starting with '#!' are for the full class location
+#!  CrusadersGame.Effects.NerdWagonHandler
+nerd0.type
+nerd1.type
+nerd2.type
 <effectKey>k__BackingField.parentEffectKeyHandler.parent.def.ID
 <effectKey>k__BackingField.parentEffectKeyHandler.parent.source.ID

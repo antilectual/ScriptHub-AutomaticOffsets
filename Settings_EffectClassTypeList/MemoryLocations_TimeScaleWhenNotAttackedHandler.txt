@@ -1,8 +1,7 @@
 #.  Lines starting with '#.' are ignored and are used as comments in this file. (But whitespace matters)
-sprintStacks.stackCount
-areasSkipped
-areaSkipChance
-areaSkipAmount
-alwaysSkipOneLess
+#.  Lines starting with '#!' are for the full class location
+#!  TimeScaleWhenNotAttackedHandler
+scaleActive
+effectTime
 effectKey.parentEffectKeyHandler.parent.def.ID
 effectKey.parentEffectKeyHandler.parent.source.ID

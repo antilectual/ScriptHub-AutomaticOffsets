@@ -1,6 +1,0 @@
-#.  Lines starting with '#.' are ignored and are used as comments in this file. (But whitespace matters)
-nerd0.type
-nerd1.type
-nerd2.type
-<effectKey>k__BackingField.parentEffectKeyHandler.parent.def.ID
-<effectKey>k__BackingField.parentEffectKeyHandler.parent.source.ID

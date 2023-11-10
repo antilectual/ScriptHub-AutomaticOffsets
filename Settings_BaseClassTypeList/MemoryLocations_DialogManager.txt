@@ -1,4 +1,6 @@
 #.  Lines starting with '#.' are ignored and are used as comments in this file. (But whitespace matters)
+#.  Lines starting with '#!' are for the full class location
+#!  UnityGameEngine.Dialogs.DialogManager
 dialogs.currentCurrency.ID
 dialogs.forceConvertFavor
 dialogs.sprite.gameObjectName

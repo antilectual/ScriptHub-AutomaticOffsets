@@ -1,2 +1,4 @@
 #.  Lines starting with '#.' are ignored and are used as comments in this file. (But whitespace matters)
+#.  Lines starting with '#!' are for the full class location
+#!  CrusadersGame.User.UserData
 _instance.StatHandler.ServerStats
