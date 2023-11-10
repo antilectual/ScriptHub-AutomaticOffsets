@@ -8,26 +8,7 @@ from pathlib import Path
 # global for storing dictionary of output strings (which reduces redundancy in code execution)
 outputStringsDict = {}
 exportedJson = ""
-baseClassTypeList = []
-baseClassTypeList.append("CrusadersGame.Defs.CrusadersGameDataSet")
-baseClassTypeList.append("UnityGameEngine.Dialogs.DialogManager")
-baseClassTypeList.append("UnityGameEngine.Core.EngineSettings")
-baseClassTypeList.append("IdleGameManager")
-baseClassTypeList.append("CrusadersGame.GameSettings")
-baseClassTypeList.append("CrusadersGame.User.UserStatHandler")
-baseClassTypeList.append("CrusadersGame.User.UserData")
-# baseClassTypeList.append("CrusadersGame.Effects.ActiveEffectKeyHandler")
 effectClassTypeList = []
-effectClassTypeList.append("CrusadersGame.Effects.OminContractualObligationsHandler")
-effectClassTypeList.append("TimeScaleWhenNotAttackedHandler")
-effectClassTypeList.append("CrusadersGame.Effects.HavilarImpHandler")
-effectClassTypeList.append("CrusadersGame.Effects.BrivUnnaturalHasteHandler")
-effectClassTypeList.append("CrusadersGame.Effects.NerdWagonHandler")
-effectClassTypeList.append("CrusadersGame.Effects.HewMaanTeamworkHandler")
-effectClassTypeList.append("CrusadersGame.Effects.SpurtWaspirationHandlerV2")
-effectClassTypeList.append("CrusadersGame.Effects.NordomModronCoreToolboxHandler")
-effectClassTypeList.append("CrusadersGame.Effects.JimMagicalMysteryTourHandler")
-effectClassTypeList.append("CrusadersGame.Effects.ThelloraPlateausOfUnicornRunHandler")
 currentEffectClass = ""
 
 
@@ -48,7 +29,6 @@ def main():
 # Read json file exported from CE ScriptHubExporter addon and import from files based on types
 def StartImport(memFileLoc, is64Bit):
     global exportedJson
-    global baseClassTypeList
     global currentEffectClass
     if not memFileLoc.exists():
         print("Could not open " + str(memFileLoc) + ". It does not exist.")
@@ -60,43 +40,74 @@ def StartImport(memFileLoc, is64Bit):
     exportedJson = exportedJson['classes']
     # set the base class starting point (object the base pointer points to)
     # filename is based on the last chunk
-    # e.g. CrusadersGame.Defs.CrusadersGameDataSet will check MemoryLocations_CrusadersGameDataSet.txt for offset lookup items.
-    for baseClassType in baseClassTypeList:
-        Import(baseClassType, is64Bit)
-    for effectClassType in effectClassTypeList:
-        currentEffectClass = effectClassType.rsplit('.',1)[-1:][0]
-        Import(effectClassType, is64Bit, True)
-    OutputHandlerIncludeFile(effectClassType, is64Bit)
+    Import(is64Bit)
 
-# Reads MemoryLocations file for target variables and builds them into ScriptHub import code (AHK).
-def Import(baseClass, is64Bit = False, isEffectHandler = False):
+# Reads file names for files with target variables and builds them into ScriptHub import code (AHK).
+def Import(is64Bit = False, isEffectHandler = False):
     global exportedJson
     # Make sure output is clear before doing an import
     global outputStringsDict
     outputStringsDict = {}
     # read input file with list of offsets to find
     memoryFile = ""
-    baseClassParts = baseClass.split('.')
-    fileNameBase = baseClassParts[len(baseClassParts) - 1]
-    memoryFileLocation = Path(".", "MemoryLocations_" + fileNameBase + ".txt")
-    if not memoryFileLocation.exists():
-        print("Could not open " + str(memoryFileLocation) + ". It does not exist.")
-        return
-    # read lines from text file without newline breaks
-    memoryFileLines = memoryFileLocation.read_text().splitlines()
-    # remove empty strings
-    memoryFileLines = [i for i in memoryFileLines if i != '']
-    # remove commented lines
-    memoryFileLines = [i for i in memoryFileLines if i[0] != '#']
+    currentBlock = -1
+    files = []
+    # TODO: create files list - 1 loop base, 1 loop effects
+    files = [f for f in os.listdir(Path(".", "Settings_BaseClassTypeList")) if f.endswith(".txt")]
+    ImportClasses(is64Bit, files, isBaseTypes = True)
+    files = [f for f in os.listdir(Path(".", "Settings_EffectClassTypeList")) if f.endswith(".txt")]
+    ImportClasses(is64Bit, files, isBaseTypes = False)
+    OutputHandlerIncludeFile(len(files), is64Bit)
 
-    # iterate lines and build ahk file to outputStringsDict
-    for line in memoryFileLines:
-        offsetsLocationStringSplit = line.split(".")
-        BuildMemoryString(baseClass, offsetsLocationStringSplit, 0, isEffectHandler ) 
-    version = "64" if is64Bit else "32"
-    OutputImportToFile(fileNameBase, version, isEffectHandler)
-    outputStringsDict = {}
-    print(baseClass + " " + version + "bit output complete.")
+# Reads files, parses them, and builds valid variables into ScriptHub import code files (AHK).
+def ImportClasses(is64bit, files, isBaseTypes = True):
+    global outputStringsDict
+    global currentEffectClass
+    for f in files:
+        if(isBaseTypes):
+            memoryFileLocation = Path(".", "Settings_BaseClassTypeList", f)
+        else:
+            memoryFileLocation = Path(".", "Settings_EffectClassTypeList", f)
+        if not memoryFileLocation.exists():
+            print("Could not open " + str(memoryFileLocation) + ". It does not exist.")
+            continue
+        # read lines from text file without newline breaks
+        memoryFileLines = memoryFileLocation.read_text().splitlines()
+        # remove unused lines (blank/comments)
+        memoryFileLines = [i for i in memoryFileLines if isValidLine(i)]
+        # ensure an initial class name exists
+        if(memoryFileLines[0][0] != '#' or memoryFileLines[0][1] != '!'):
+            print("File format invalid in " + str(memoryFileLocation) + ". Class definition header not found.")
+            return
+        className = ""
+        memoryFileBlocks = {}
+        # split by #! sections
+        for line in memoryFileLines:
+            if line[0] == '#' and line[1] == '!':
+                className = line[2:].strip()
+                if not className in memoryFileBlocks:
+                    memoryFileBlocks[className] = []
+                else:
+                    print("Duplicate class not expected. (" + str(className) + ").")
+                continue
+            memoryFileBlocks[className].append(line)
+        for className, classBlock in memoryFileBlocks.items():
+
+            baseClassParts = className.split('.')
+            fileNameBase = baseClassParts[len(baseClassParts) - 1]
+
+            if not isBaseTypes:
+                currentEffectClass = className.rsplit('.',1)[-1:][0]
+                effectClassTypeList.append(className)
+
+            # iterate lines and build ahk file to outputStringsDict
+            for line in classBlock:
+                offsetsLocationStringSplit = line.split(".")
+                BuildMemoryString(className, offsetsLocationStringSplit, 0, not isBaseTypes ) 
+            version = "64" if is64bit else "32"
+            OutputImportToFile(fileNameBase, version, not isBaseTypes)
+            outputStringsDict = {}
+            print(className + " " + version + "bit output complete.")
 
 # Writes outputStringsDict to the appropriate file.
 def OutputImportToFile(fileNameBase, version, isEffectHandler):
@@ -109,8 +120,8 @@ def OutputImportToFile(fileNameBase, version, isEffectHandler):
     outputFile.write_text(memoryFileString)
 
 # Writes a single include file that includes all other hero handlers.
-def OutputHandlerIncludeFile(effectClassType, is64Bit ):
-    if effectClassType:
+def OutputHandlerIncludeFile(count, is64Bit ):
+    if count > 0:
         version = "64" if is64Bit else "32"
         handlerImportsString = "; This file was automatically generated by ScriptHubImporter.py\n"
         for effectClassType in effectClassTypeList:
@@ -362,6 +373,20 @@ def CreateVersionFile(architecture):
     versionFileString = versionFileString + "global g_ImportsGameVersionPostFix" + str(architecture) + " := \"" + str(versionPostFix) + "\""
     outputFile = Path(".", "Imports", "IC_GameVersion" + str(architecture) + "_Import.ahk")
     outputFile.write_text(versionFileString)
+
+# Only allows a text line that is not blank and is not a comment.
+def isValidLine(line: str):
+        line = line.strip()
+        # remove blank lines
+        if line == '':
+            return False
+        # remove commented lines
+        if line[0] == "#":
+            # except commented bang lines - special use
+            if line[0:2] == "#!":
+                return True
+            return False
+        return True
 
 if __name__ == "__main__":
     main()
