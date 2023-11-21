@@ -41,7 +41,7 @@ function ScriptHubAddMenuItem()
   miSHTopMenuItem.Caption=translate("Script Hub")
 end
 
-function ScriptHubExport(fileLoc)
+function ScriptHubExport()
   local classTable = PreComputeClasses()
   if (monopipe==nil)  then
     LaunchMonoDataCollector()
@@ -52,7 +52,7 @@ function ScriptHubExport(fileLoc)
   local classes = nil
   for i = 1, #assemblyNames do
     classes = classTable[assemblyNames[i]]["class_set"]
-    if classes and (classes~=0) then
+    if (classes~=nil) and (classes~=0) then
       break
     end
   end
@@ -147,33 +147,20 @@ end
 
 --searches all images for a specific class
 function mono_findClass_ScriptHub(namespace, classname, classTable)
-  local ass=mono_enumAssemblies()
-  local result
-  if ass==nil then return nil end
-  for i=1, #ass do
-    result=mono_image_findClass(mono_getImageFromAssembly(ass[i]), namespace, classname)
+  local result = 0
+  if classTable==nil then return nil end
+  for k,v in pairs(classTable) do
+    result=mono_image_findClass(v["image"], namespace, classname)
     if (result~=0) then
       return result;
     end
-  end
-  for i=1, #ass do
-    result=mono_image_findClass_for_ScriptHub(mono_getImageFromAssembly(ass[i]), namespace, classname, classTable)
-    if (result~=0) then
-      return result;
+  end 
+  for k,v in pairs(classTable) do
+    if v["classes"] ~= nil and v["classes"][classname] ~= nil and v["classes"][classname] ~= 0 then
+      return v["classes"][classname]
     end
-  end  
+  end 
   return nil
-end
-
--- find a class in a specific image
-function mono_image_findClass_for_ScriptHub(image, namespace, classname, classTable)
-  local result=0
-  if monopipe==nil then return 0 end 
-  local assemblyName = mono_image_get_name(image)
-  if classTable[assemblyName] ~= nil and classTable[assemblyName]["classes"] ~= nil and classTable[assemblyName]["classes"][classname] ~= nil then
-    result = classTable[assemblyName]["classes"][classname]
-  end
-  return result
 end
 
 function monoform_miSaveClickTargeted(sender)
@@ -184,7 +171,7 @@ function monoform_miSaveClickTargeted(sender)
   saveDialog.Options='['..string.sub(string.sub(saveDialog.Options,2),1,#saveDialog.Options-2)..',ofOverwritePrompt'..']'
   if saveDialog.Execute() then
     local clockA = os.clock()
-    local outputString = ScriptHubExport(saveDialog.Filename)
+    local outputString = ScriptHubExport()
     if (outputString == nil) or (outputString == '') then
       return
     end
