@@ -57,55 +57,52 @@ function ScriptHubExport(fileLoc)
     end
   end
   if (classes == nil) or (classes==0) then
+    print("mono_image_enumClasses failed to find classes")
     return
   end
   local i,j
   local outputString = {}
   outputString[#outputString+1] = "{\"classes\" : {"
-  if classes~=nil then
-    local stopValue = #classes
-    local value = 1
-    -- Iterate from i to stopValue indexes of classses
-    local builtJSON = {}
-    for i=1, stopValue do --#classes do
-      value = i
-      -- Ensure class has a name for comparisons
-      classes[i].fqname = mono_class_getFullName(classes[i].class)
-      --classes[i].name = classes[i].classname-- mono_class_getName(node.Data)
+  local stopValue = #classes
+  local value = 1
+  -- Iterate from i to stopValue indexes of classses
+  local builtJSON = {}
+  for i=1, stopValue do --#classes do
+    value = i
+    -- Ensure class has a name for comparisons
+    classes[i].fqname = mono_class_getFullName(classes[i].class)
+    --classes[i].name = classes[i].classname-- mono_class_getName(node.Data)
+    if classes[i].fqname==nil or classes[i].fqname=='' then
+      classes[i].fqname=classes[i].classname
       if classes[i].fqname==nil or classes[i].fqname=='' then
-        classes[i].fqname=classes[i].classname
-        if classes[i].fqname==nil or classes[i].fqname=='' then
-          classes[i].fqname='<unnamed>'
-        end
+        classes[i].fqname='<unnamed>'
       end
-      --print(classes[i].fqname)
-      -- Only continue if the class has a valid name note: short circuit eval works in LUA
-      if classes[i].fqname~=nil and classes[i].fqname~='' and classes[i].fqname~='<unnamed>' and not string.find(classes[i].fqname, "<") then
-        local classData = mono_findClass_ScriptHub(classes[i].namespace, classes[i].classname, classTable) -- retrieve the class object reference (not a string)
-        local fields = mono_class_enumFields_ScriptHub(classData, false) -- 2nd parameter is whether to include offsets from parent classes
-        local parent = mono_class_getParent(classes[i].class)
-        -- Build JSON string from fields
-        local currentJSON = BuildJsonFromFields(classes[i], classData, fields, parent)
-        if currentJSON~=nil then
-          outputString[#outputString+1] = currentJSON
-          if i < stopValue then
-            outputString[#outputString+1] = ","
-          end
+    end
+    --print(classes[i].fqname)
+    -- Only continue if the class has a valid name note: short circuit eval works in LUA
+    if classes[i].fqname~=nil and classes[i].fqname~='' and classes[i].fqname~='<unnamed>' and not string.find(classes[i].fqname, "<") then
+      local classData = mono_findClass_ScriptHub(classes[i].namespace, classes[i].classname, classTable) -- retrieve the class object reference (not a string)
+      local fields = mono_class_enumFields_ScriptHub(classData, false) -- 2nd parameter is whether to include offsets from parent classes
+      local parent = mono_class_getParent(classes[i].class)
+      -- Build JSON string from fields
+      local currentJSON = BuildJsonFromFields(classes[i], classData, fields, parent)
+      if currentJSON~=nil then
+        outputString[#outputString+1] = currentJSON
+        if i < stopValue then
+          outputString[#outputString+1] = ","
         end
       end
     end
-    -- test in case the last classes read was nil/empty/unamed or <> and didn't add a new object as expected
-    if(outputString[#outputString] == ',') then
-      table.remove(outputString, #outputString)
-    end
-    outputString[#outputString+1] = "}}"
-    local fullJSONOutput = table.concat(outputString)
-    -- local current_dir=io.popen"cd":read'*l'.."\\"
-    -- print("Export to "..current_dir..filename.." complete. Last: "..tostring(value)..". Stop value: ".. tostring(stopValue))
-    print("[Class Details] - Last: "..tostring(value)..". Stop value: ".. tostring(stopValue))
-  else
-    print("getClass failed to find classes")
   end
+  -- test in case the last classes read was nil/empty/unamed or <> and didn't add a new object as expected
+  if(outputString[#outputString] == ',') then
+    table.remove(outputString, #outputString)
+  end
+  outputString[#outputString+1] = "}}"
+  local fullJSONOutput = table.concat(outputString)
+  -- local current_dir=io.popen"cd":read'*l'.."\\"
+  -- print("Export to "..current_dir..filename.." complete. Last: "..tostring(value)..". Stop value: ".. tostring(stopValue))
+  print("[Class Details] - Last: "..tostring(value)..". Stop value: ".. tostring(stopValue))
   return table.concat(outputString)
 end
 
