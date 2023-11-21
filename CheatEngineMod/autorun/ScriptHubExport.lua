@@ -12,6 +12,7 @@ function PreComputeClasses()
     classTable[assemblyName]["image"] = assembly
     classTable[assemblyName]["classes"] = {}
     local classes = mono_image_enumClasses(assembly)
+    classTable[assemblyName]["class_set"] = classes
     for classIndex=1, #classes do
       local name = classes[classIndex].classname
       if name~=nil and name~='' and name~='<unnamed>' and not string.find(name, "<") then
@@ -45,8 +46,19 @@ function ScriptHubExport(fileLoc)
   if (monopipe==nil)  then
     LaunchMonoDataCollector()
   end
-  local image=getImage()
-  local classes=mono_image_enumClasses(image)
+  local assemblyNames = {}
+  assemblyNames[1] = "Assembly-CSharp"
+  assemblyNames[2] = "Assembly-CSharp.dll"
+  local classes = nil
+  for i = 1, #assemblyNames do
+    classes = classTable[assemblyNames[i]]["class_set"]
+    if classes and (classes~=0) then
+      break
+    end
+  end
+  if (classes == nil) or (classes==0) then
+    return
+  end
   local i,j
   local outputString = {}
   outputString[#outputString+1] = "{\"classes\" : {"
@@ -95,27 +107,6 @@ function ScriptHubExport(fileLoc)
     print("getClass failed to find classes")
   end
   return table.concat(outputString)
-end
-
-function getImage()
-  local smap = monoform_getStructMap()
-  local i, j
-  local fqclass, caddr
-  local assemblies=mono_enumAssemblies()
-  if assemblies then
-    for i=1, #assemblies do
-      local image=mono_getImageFromAssembly(assemblies[i])
-      local name=mono_image_get_name(image)
-      if name == "Assembly-CSharp" or name == "Assembly-CSharp.dll" then
-        if image and (image~=0) then
-          return image
-        end
-      end
-    end
-    print("getImage func: failed to find C Sharp in image")
-  else
-    print("getImage func: failed to define assemblies")
-  end
 end
 
 function mono_class_enumFields_ScriptHub(class, includeParents)
@@ -197,6 +188,9 @@ function monoform_miSaveClickTargeted(sender)
   if saveDialog.Execute() then
     local clockA = os.clock()
     local outputString = ScriptHubExport(saveDialog.Filename)
+    if (outputString == nil) or (outputString == '') then
+      return
+    end
     ScritpHubWriteToFile(saveDialog.Filename, outputString)
     print("Export to "..saveDialog.Filename.." complete.")
     print("Total Elapsed time: "..tostring(os.clock()-clockA))
