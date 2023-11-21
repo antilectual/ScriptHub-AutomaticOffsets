@@ -42,6 +42,7 @@ game.gameInstances.Controller.userData.ResetCurrencyHandler.isForceConverting
 
 #.  ---- Name is the index of the dictionary ---
 #.  game.gameInstances.Controller.userData.HeroHandler.heroes.effects.effectKeysByKeyName.Name
+game.gameInstances.HeroHandler.allowHeroPurchase
 game.gameInstances.Controller.userData.HeroHandler.heroes.def.name
 game.gameInstances.Controller.userData.HeroHandler.heroes.def.ID
 game.gameInstances.Controller.userData.HeroHandler.heroes.def.SeatID
@@ -102,6 +103,7 @@ game.gameInstances.Controller.userData.StatHandler.BlackViperTotalGems
 game.gameInstances.Controller.userData.StatHandler.BrivSteelbonesStacks
 game.gameInstances.Controller.userData.StatHandler.BrivSprintStacks
 game.gameInstances.Controller.userData.StatHandler.Resets
+game.gameInstances.StatHandler.DSpec1HeroId
 game.gameInstances.StatHandler.NordomAwardedEXP
 
 #. ---======================================================================================
@@ -158,7 +160,7 @@ game.gameInstances.OfflineHandler.<CurrentState>k__BackingField
 game.gameInstances.Screen.uiController.topBar.objectiveProgressBox.areaBar.autoProgressButton.toggled
 game.gameInstances.Screen.uiController.bottomBar.heroPanel.activeBoxes.nextUpgrade.IsPurchased
 game.gameInstances.Screen.uiController.ultimatesBar.ultimateItems.hero.def.ID
-game.gameInstances.Screen.uiController.ultimatesBar.ultimateItems.ultimateAttack.CooldownTimer
+game.gameInstances.Screen.uiController.ultimatesBar.ultimateItems.ultimateAttack.internalCooldownTimer
 game.gameInstances.Screen.uiController.notificationManager.notificationDisplay.welcomeBackNotification.Active
 #. ---=========================================
 #. ---Shandie's Dash

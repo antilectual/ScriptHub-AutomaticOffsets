@@ -3,4 +3,4 @@
 #!  CrusadersGame.Effects.HewMaanTeamworkHandler
 #.  Zrang's ult ID is 359
 hewmaan.ultimateAttack.ID
-hewmaan.ultimateAttack.CooldownTimer
+hewmaan.ultimateAttack.internalCooldownTimer

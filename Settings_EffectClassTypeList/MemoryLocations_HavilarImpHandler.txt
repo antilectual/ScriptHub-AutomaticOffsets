@@ -3,7 +3,7 @@
 #!  CrusadersGame.Effects.HavilarImpHandler
 activeImps
 currentOtherImpIndex
-summonImpUltimate.CooldownTimer
-sacrificeImpUltimate.CooldownTimer
+summonImpUltimate.internalCooldownTimer
+sacrificeImpUltimate.internalCooldownTimer
 effectKey.parentEffectKeyHandler.parent.def.ID
 effectKey.parentEffectKeyHandler.parent.source.ID
