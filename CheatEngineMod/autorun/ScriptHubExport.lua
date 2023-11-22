@@ -14,7 +14,7 @@ function PreComputeClasses()
     local classes = mono_image_enumClasses(assembly)
     classTable[assemblyName]["class_set"] = classes
     for classIndex=1, #classes do
-      local name = classes[classIndex].classname
+      local name = classes[classIndex].namespace.."."..classes[classIndex].classname
       if name~=nil and name~='' and name~='<unnamed>' and not string.find(name, "<") then
         classTable[assemblyName]["classes"][name] = classes[classIndex].class
       end
@@ -82,7 +82,7 @@ function ScriptHubExport()
     -- Only continue if the class has a valid name note: short circuit eval works in LUA
     if classes[i].fqname~=nil and classes[i].fqname~='' and classes[i].fqname~='<unnamed>' and not string.find(classes[i].fqname, "<") then
       local classData = mono_findClass_ScriptHub(classes[i].namespace, classes[i].classname, classTable) -- retrieve the class object reference (not a string)
-      local fields = mono_class_enumFields_ScriptHub(classData, false) -- 2nd parameter is whether to include offsets from parent classes
+      local fields = mono_class_enumFields_ScriptHub(classData) -- 2nd parameter is whether to include offsets from parent classes
       local parent = mono_class_getParent(classes[i].class)
       -- Build JSON string from fields
       local currentJSON = BuildJsonFromFields(classes[i], classData, fields, parent)
@@ -106,7 +106,7 @@ function ScriptHubExport()
   return table.concat(outputString)
 end
 
-function mono_class_enumFields_ScriptHub(class, includeParents)
+function mono_class_enumFields_ScriptHub(class)
   local classfield;
   local index=1;
   local fields={}
@@ -155,9 +155,10 @@ function mono_findClass_ScriptHub(namespace, classname, classTable)
       return result;
     end
   end 
+  local lookupName = namespace.."."..classname
   for k,v in pairs(classTable) do
-    if v["classes"] ~= nil and v["classes"][classname] ~= nil and v["classes"][classname] ~= 0 then
-      return v["classes"][classname]
+    if v["classes"] ~= nil and v["classes"][lookupName] ~= nil and v["classes"][lookupName] ~= 0 then
+      return v["classes"][lookupName]
     end
   end 
   return nil
