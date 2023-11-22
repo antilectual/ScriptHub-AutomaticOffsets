@@ -12,11 +12,18 @@ function PreComputeClasses()
     classTable[assemblyName]["image"] = assembly
     classTable[assemblyName]["classes"] = {}
     local classes = mono_image_enumClasses(assembly)
-    classTable[assemblyName]["class_set"] = classes
+    classTable[assemblyName]["class_count"] = #classes
     for classIndex=1, #classes do
-      local name = classes[classIndex].namespace.."."..classes[classIndex].classname
+      local name = mono_class_getFullName(classes[classIndex].class) -- classes[classIndex].namespace.."."..classes[classIndex].classname
+      if name==nil or name=='' then
+        name=classes[classIndex].classname
+        if name==nil or name=='' then
+          name='<unnamed>'
+        end
+      end
       if name~=nil and name~='' and name~='<unnamed>' and not string.find(name, "<") then
-        classTable[assemblyName]["classes"][name] = classes[classIndex].class
+        classTable[assemblyName]["classes"][name] = classes[classIndex]
+        classTable[assemblyName]["classes"][name].fqname = name
       end
     end
   end
@@ -50,47 +57,32 @@ function ScriptHubExport()
   assemblyNames[1] = "Assembly-CSharp"
   assemblyNames[2] = "Assembly-CSharp.dll"
   local classes = nil
+  local i, assemblyIndex
+  -- Find first working assembly
   for i = 1, #assemblyNames do
-    classes = classTable[assemblyNames[i]]["class_set"]
-    if (classes~=nil) and (classes~=0) then
+    classes = classTable[assemblyNames[i]]["classes"]
+    if (classes~=nil) and (classes~=0) and (classes~={}) then
+      assemblyIndex = i
       break
     end
   end
-  if (classes == nil) or (classes==0) then
-    print("mono_image_enumClasses failed to find classes")
-    return
-  end
-  local i,j
+  local stopValue = classTable[assemblyNames[assemblyIndex]]["class_count"]
   local outputString = {}
   outputString[#outputString+1] = "{\"classes\" : {"
-  local stopValue = #classes
-  local value = 1
-  -- Iterate from i to stopValue indexes of classses
+  local value = 0
   local builtJSON = {}
-  for i=1, stopValue do --#classes do
-    value = i
-    -- Ensure class has a name for comparisons
-    classes[i].fqname = mono_class_getFullName(classes[i].class)
-    --classes[i].name = classes[i].classname-- mono_class_getName(node.Data)
-    if classes[i].fqname==nil or classes[i].fqname=='' then
-      classes[i].fqname=classes[i].classname
-      if classes[i].fqname==nil or classes[i].fqname=='' then
-        classes[i].fqname='<unnamed>'
-      end
-    end
+  for k,v in pairs(classes) do
+    value = value + 1
     --print(classes[i].fqname)
     -- Only continue if the class has a valid name note: short circuit eval works in LUA
-    if classes[i].fqname~=nil and classes[i].fqname~='' and classes[i].fqname~='<unnamed>' and not string.find(classes[i].fqname, "<") then
-      local classData = mono_findClass_ScriptHub(classes[i].namespace, classes[i].classname, classTable) -- retrieve the class object reference (not a string)
-      local fields = mono_class_enumFields_ScriptHub(classData) -- 2nd parameter is whether to include offsets from parent classes
-      local parent = mono_class_getParent(classes[i].class)
-      -- Build JSON string from fields
-      local currentJSON = BuildJsonFromFields(classes[i], classData, fields, parent)
+    if k~=nil and k~='' and k~='<unnamed>' and not string.find(k, "<") then
+      local classData = mono_findClass_ScriptHub(classTable, k, assemblyNames[assemblyIndex]) -- retrieve the class object reference (not a string)
+      local fields = mono_class_enumFields_ScriptHub(classData.class) -- 2nd parameter is whether to include offsets from parent classes
+      local parent = mono_class_getParent(classData.class)
+      local currentJSON = BuildJsonFromFields(classData, fields, parent)
       if currentJSON~=nil then
         outputString[#outputString+1] = currentJSON
-        if i < stopValue then
-          outputString[#outputString+1] = ","
-        end
+        outputString[#outputString+1] = ","
       end
     end
   end
@@ -146,21 +138,24 @@ function mono_class_enumFields_ScriptHub(class)
 end
 
 --searches all images for a specific class
-function mono_findClass_ScriptHub(namespace, classname, classTable)
+function mono_findClass_ScriptHub(classTable, k, assemblyName)
+  local currentItem = classTable[assemblyName]["classes"][k]
+  local namespace = currentItem.namespace
+  local classname = currentItem.classname
   local result = 0
   if classTable==nil then return nil end
-  for k,v in pairs(classTable) do
-    result=mono_image_findClass(v["image"], namespace, classname)
-    if (result~=0) then
-      return result;
-    end
-  end 
-  local lookupName = namespace.."."..classname
-  for k,v in pairs(classTable) do
-    if v["classes"] ~= nil and v["classes"][lookupName] ~= nil and v["classes"][lookupName] ~= 0 then
-      return v["classes"][lookupName]
-    end
-  end 
+  --local lookupName = namespace.."."..classname
+  if currentItem ~= nil and currentItem ~= 0 then
+    return currentItem
+  end
+  --for k,v in pairs(classTable) do
+  result=mono_image_findClass(classTable[assemblyName]["image"], namespace, classname)
+  if (result~=0) then
+    local classData = {}
+    classData.class = result
+    classData.fqname = mono_class_getFullName(result)
+    return result
+  end
   return nil
 end
 
@@ -182,8 +177,8 @@ function monoform_miSaveClickTargeted(sender)
   end
 end
 
-function ScriptHubReadStaticValue(field, class)
-  local staticAddr = mono_class_getStaticFieldAddress(class, nil)
+function ScriptHubReadStaticValue(field, classData)
+  local staticAddr = mono_class_getStaticFieldAddress(classData.class, nil)
   if field.typename == 'System.Int32' then
     return readInteger(staticAddr + field.offset)
   elseif field.typename == 'System.String' then
@@ -205,12 +200,12 @@ function ScriptHubReadStaticValue(field, class)
 end
 
 -- Build JSON string from fields
-function BuildJsonFromFields(class, classData, fields, parent)
+function BuildJsonFromFields(classData, fields, parent)
   local variableValuesTable = {["CrusadersGame.GameSettings.MobileClientVersion"] = 1, ["CrusadersGame.GameSettings.VersionPostFix"] = 1}
   if fields ~= nil and #fields > 0 then
     local outputString = {}
-    class.fields = fields
-    local tempClass = class
+    local tempClass = classData
+    tempClass.fields = fields
     outputString[#outputString+1] = "\""..tempClass.fqname.."\" : {\"ShortName\": \""..tempClass.classname.."\","
     if parent ~= nil then
       local parentName = mono_class_getFullName(parent)
