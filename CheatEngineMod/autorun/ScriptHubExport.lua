@@ -69,10 +69,8 @@ function ScriptHubExport()
   local stopValue = classTable[assemblyNames[assemblyIndex]]["class_count"]
   local outputString = {}
   outputString[#outputString+1] = "{\"classes\" : {"
-  local value = 0
   local builtJSON = {}
   for k,v in pairs(classes) do
-    value = value + 1
     --print(classes[i].fqname)
     -- Only continue if the class has a valid name note: short circuit eval works in LUA
     if k~=nil and k~='' and k~='<unnamed>' and not string.find(k, "<") then
@@ -94,7 +92,7 @@ function ScriptHubExport()
   local fullJSONOutput = table.concat(outputString)
   -- local current_dir=io.popen"cd":read'*l'.."\\"
   -- print("Export to "..current_dir..filename.." complete. Last: "..tostring(value)..". Stop value: ".. tostring(stopValue))
-  print("[Class Details] - Last: "..tostring(value)..". Stop value: ".. tostring(stopValue))
+  print("[Class Details] - Stop value: ".. tostring(stopValue))
   return table.concat(outputString)
 end
 
