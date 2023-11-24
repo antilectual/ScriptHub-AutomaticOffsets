@@ -158,8 +158,12 @@ game.gameInstances.OfflineHandler.<CurrentState>k__BackingField
 #. ---Screen and UI
 #. ---=================
 game.gameInstances.Screen.uiController.topBar.objectiveProgressBox.areaBar.autoProgressButton.toggled
+game.gameInstances.Screen.uiController.bottomBar.levelUpAmount
 game.gameInstances.Screen.uiController.bottomBar.heroPanel.activeBoxes.nextUpgrade.IsPurchased
 game.gameInstances.Screen.uiController.bottomBar.heroPanel.heroBoxsBySeat.nextUpgrade.IsPurchased
+game.gameInstances.Screen.uiController.bottomBar.heroPanel.heroBoxsBySeat.maxLevelUpAllowed
+game.gameInstances.Screen.uiController.bottomBar.heroPanel.heroBoxsBySeat.levelUpButtonDisplay.lastCostText
+
 game.gameInstances.Screen.uiController.ultimatesBar.ultimateItems.hero.def.ID
 game.gameInstances.Screen.uiController.ultimatesBar.ultimateItems.ultimateAttack.internalCooldownTimer
 game.gameInstances.Screen.uiController.notificationManager.notificationDisplay.welcomeBackNotification.Active
