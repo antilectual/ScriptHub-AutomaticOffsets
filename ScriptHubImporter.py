@@ -233,6 +233,8 @@ def BuildMemoryString(classType, variablesStringArray, indexValue, isEffectHandl
     elif(varType == "Dict"):
         keyType = FindCollectionValueType(classType, key = True)
         valType = FindCollectionValueType(classType)
+    elif(varType == "HashSet"):
+        keyType = FindCollectionValueType(classType, key = True)
 
     indexValue += 1
     AppendToOutput(variablesStringArray, indexValue, classTypeOriginal, static, offset, varType, isEffectHandler, keyType, valType)
@@ -353,11 +355,14 @@ def AppendToOutput(variablesStringArray, indexValue, classTypeOriginal, static, 
                 parentValue = currentEffectClass
         if static == "false" or static == False:
             outputStringsDict[fullNameOfCurrentVariable] = "this." + fullNameOfCurrentVariable + " := New GameObjectStructure(this." + parentValue + ",\"" + varType + "\", [" + str(offset) + "])\n"
+            # if varType != "Int" and varType != "UTF-16" and varType != "Char" and varType != "Double" and varType != "Float" and varType != "Quad" :
             if varType == "Dict":
                 outputStringsDict[fullNameOfCurrentVariable + "_key"] = "this." + fullNameOfCurrentVariable + "._CollectionKeyType := \"" + keyType + "\"\n"
                 outputStringsDict[fullNameOfCurrentVariable + "_value"] = "this." + fullNameOfCurrentVariable + "._CollectionValType := \"" + valType + "\"\n"
             elif varType == "List" and valType is not None:
                 outputStringsDict[fullNameOfCurrentVariable + "_key"] = "this." + fullNameOfCurrentVariable + "._CollectionValType := \"" + valType + "\"\n"
+            elif varType == "HashSet":
+                outputStringsDict[fullNameOfCurrentVariable + "_key"] = "this." + fullNameOfCurrentVariable + "._CollectionKeyType := \"" + keyType + "\"\n"
         else:
             outputStringsDict[fullNameOfCurrentVariable] = "this." + fullNameOfCurrentVariable + " := New GameObjectStructure(this." + parentValue + ",\"" + varType + "\", [this.StaticOffset + " + str(offset) + "])\n"
 
