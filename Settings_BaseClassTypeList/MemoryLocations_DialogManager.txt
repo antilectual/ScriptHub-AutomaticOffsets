@@ -7,3 +7,6 @@ dialogs.sprite.gameObjectName
 dialogs.convertWindow.convertPanel.convertingFrom.ID
 dialogs.convertWindow.convertPanel.convertingTo.ID
 dialogs.Active
+dialogs.dt.<Active>k__BackingField
+dialogs.loader.scrollWindow
+dialogs.loader.activeItems.loadButton

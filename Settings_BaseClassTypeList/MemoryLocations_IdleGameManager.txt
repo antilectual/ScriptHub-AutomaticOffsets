@@ -40,6 +40,8 @@ game.gameInstances.Controller.userData.ModronHandler.modronSaves.InstanceID
 
 game.gameInstances.Controller.userData.ResetCurrencyHandler.isForceConverting
 
+game.gameInstances.Controller.userData.FeatHandler.heroFeatSlots.ID
+
 #.  ---- Name is the index of the dictionary ---
 #.  game.gameInstances.Controller.userData.HeroHandler.heroes.effects.effectKeysByKeyName.Name
 game.gameInstances.HeroHandler.allowHeroPurchase
@@ -84,6 +86,7 @@ TimeScale
 game.gameInstances.Controller.areaTransitioner.<IsTransitioning>k__BackingField
 game.gameInstances.Controller.areaTransitioner.screenWipeEffect.delayTimer.t
 game.gameInstances.Controller.areaTransitioner.transitionDirection
+game.gameInstances.Controller.areaSkipHandler.skipStacks
 
 game.gameInstances.PatronHandler.<ActivePatron>k__BackingField.ID
 game.gameInstances.PatronHandler.<ActivePatron>k__BackingField.Tier
@@ -125,6 +128,7 @@ game.gameInstances.FormationSaveHandler.formationSavesV2.Name
 game.gameInstances.FormationSaveHandler.formationSavesV2.Formation
 game.gameInstances.FormationSaveHandler.formationSavesV2.Specializations
 game.gameInstances.FormationSaveHandler.formationSavesV2.Familiars
+game.gameInstances.FormationSaveHandler.formationSavesV2.Feats.ID
 #. ---=========================================================================
 #. ---Formation related memory reads (not save, but the in adventure formation)
 #. ---=========================================================================
@@ -164,9 +168,13 @@ game.gameInstances.Screen.uiController.bottomBar.heroPanel.activeBoxes.hero.def.
 game.gameInstances.Screen.uiController.bottomBar.heroPanel.heroBoxsBySeat.nextUpgrade.IsPurchased
 game.gameInstances.Screen.uiController.bottomBar.heroPanel.heroBoxsBySeat.maxLevelUpAllowed
 game.gameInstances.Screen.uiController.bottomBar.heroPanel.heroBoxsBySeat.levelUpButtonDisplay.lastCostText
+game.gameInstances.Screen.uiController.bottomBar.formationSaveMenu.formationButtons
+game.gameInstances.Screen.uiController.bottomBar.formationSaveMenu.clearButton._x
+game.gameInstances.Screen.uiController.bottomBar.formationSaveMenu.clearButton._y
 
 game.gameInstances.Screen.uiController.ultimatesBar.ultimateItems.hero.def.ID
 game.gameInstances.Screen.uiController.ultimatesBar.ultimateItems.ultimateAttack.internalCooldownTimer
+game.gameInstances.Screen.uiController.bossPowerupPopup.highestPowerup
 game.gameInstances.Screen.uiController.notificationManager.notificationDisplay.welcomeBackNotification.Active
 #. ---=========================================
 #. ---Shandie's Dash
