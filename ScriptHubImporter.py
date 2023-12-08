@@ -245,8 +245,12 @@ def BuildMemoryString(classType, variablesStringArray, indexValue, isEffectHandl
 # If the object is not found in the base class, check the derived class, but not its parents.
 def SpecialSubClassCaseCheck(classType, variablesStringArray, indexValue, isEffectHandler):
     isFound = False
-    if classType == "UnityGameEngine.Dialogs.Dialog":
-        isFound = BuildMemoryString( "CrusadersGame.Dialogs.BlessingsStore.BlessingsStoreDialog", variablesStringArray, indexValue, isEffectHandler, False) or BuildMemoryString(exportedJson[classType]['Parent'], variablesStringArray, indexValue, isEffectHandler)
+    # TODO: If multiple sub classes have the same field, the wrong one could be selected. Find a method to verify correct sub class is found.
+    for subClass in exportedJson:
+        if exportedJson[subClass]['Parent'] == classType:
+            isFound = BuildMemoryString( subClass, variablesStringArray, indexValue, isEffectHandler, False)
+        if isFound:
+            return isFound
     return isFound
 
 # For cases where a field name uses reserved characters in AHK code
