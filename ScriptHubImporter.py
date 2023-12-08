@@ -178,9 +178,6 @@ def BuildMemoryString(classType, variablesStringArray, indexValue, isEffectHandl
     offset = hex(int(exportedJson[classType]['fields'][variablesStringArray[indexValue]]['offset']))
     static = exportedJson[classType]['fields'][variablesStringArray[indexValue]]['static']
     classType = exportedJson[classType]['fields'][variablesStringArray[indexValue]]['type']
-    
-    # TODO: Handle Dictionary<List<Action<>>> types (TransitionOverride)
-    # TODO: Use correct offsets for collections of collections
 
     currClassType = classType
     preMatch = None
@@ -228,7 +225,7 @@ def BuildMemoryString(classType, variablesStringArray, indexValue, isEffectHandl
     if currClassType == "UnityGameEngine.Utilities.ProtectedInt":
         offset = hex(int(offset, 16) + int('0x8', 16))
 
-    if(varType == "List"):
+    if(varType == "List" or varType == "Queue" or varType == "Stack"):
         valType = currClassType
     elif(varType == "Dict"):
         keyType = FindCollectionValueType(classType, key = True)
@@ -337,6 +334,10 @@ def GetMemoryTypeFromClassType(classType):
         varType = "Dict"
     elif classType == "System.Collections.Generic.HashSet":
         varType = "HashSet"
+    elif classType == "System.Collections.Generic.Queue":
+        varType = "Queue"
+    elif classType == "System.Collections.Generic.Stack":
+        varType = "Stack"
     else:
         varType = "Int"
     return varType
@@ -363,7 +364,7 @@ def AppendToOutput(variablesStringArray, indexValue, classTypeOriginal, static, 
             if varType == "Dict":
                 outputStringsDict[fullNameOfCurrentVariable + "_key"] = "this." + fullNameOfCurrentVariable + "._CollectionKeyType := \"" + keyType + "\"\n"
                 outputStringsDict[fullNameOfCurrentVariable + "_value"] = "this." + fullNameOfCurrentVariable + "._CollectionValType := \"" + valType + "\"\n"
-            elif varType == "List" and valType is not None:
+            elif ((varType == "List" or varType == "Queue" or varType == "Stack")  and valType is not None):
                 outputStringsDict[fullNameOfCurrentVariable + "_key"] = "this." + fullNameOfCurrentVariable + "._CollectionValType := \"" + valType + "\"\n"
             elif varType == "HashSet":
                 outputStringsDict[fullNameOfCurrentVariable + "_key"] = "this." + fullNameOfCurrentVariable + "._CollectionKeyType := \"" + keyType + "\"\n"
