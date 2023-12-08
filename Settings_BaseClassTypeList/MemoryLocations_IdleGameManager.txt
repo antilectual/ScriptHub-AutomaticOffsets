@@ -128,7 +128,7 @@ game.gameInstances.FormationSaveHandler.formationSavesV2.Name
 game.gameInstances.FormationSaveHandler.formationSavesV2.Formation
 game.gameInstances.FormationSaveHandler.formationSavesV2.Specializations
 game.gameInstances.FormationSaveHandler.formationSavesV2.Familiars
-game.gameInstances.FormationSaveHandler.formationSavesV2.Feats.ID
+game.gameInstances.FormationSaveHandler.formationSavesV2.Feats
 #. ---=========================================================================
 #. ---Formation related memory reads (not save, but the in adventure formation)
 #. ---=========================================================================
