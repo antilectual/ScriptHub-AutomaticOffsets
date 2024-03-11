@@ -8,3 +8,4 @@ AdventureDefines
 ChestTypeDefines.ID
 ChestTypeDefines.NamePlural
 ChestTypeDefines.Name
+ChestTypeDefines.Cost.Type
