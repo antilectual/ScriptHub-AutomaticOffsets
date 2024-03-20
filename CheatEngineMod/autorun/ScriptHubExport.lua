@@ -199,7 +199,7 @@ end
 
 -- Build JSON string from fields
 function BuildJsonFromFields(classData, fields, parent)
-  local variableValuesTable = {["CrusadersGame.GameSettings.MobileClientVersion"] = 1, ["CrusadersGame.GameSettings.VersionPostFix"] = 1}
+  local variableValuesTable = {["CrusadersGame.GameSettings.MobileClientVersion"] = 1, ["CrusadersGame.GameSettings.VersionPostFix"] = 1, ["CrusadersGame.GameSettings.Platform"] = 1}
   if fields ~= nil and #fields > 0 then
     local outputString = {}
     local tempClass = classData
