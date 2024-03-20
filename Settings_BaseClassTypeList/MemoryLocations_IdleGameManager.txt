@@ -13,8 +13,6 @@ game.gameInstances.Controller.userData.ActiveUserGameInstance
 game.gameInstances.Controller.userData.BuffHandler.inventoryBuffs.inventoryAmount
 game.gameInstances.Controller.userData.BuffHandler.inventoryBuffs.ID
 game.gameInstances.Controller.userData.BuffHandler.inventoryBuffs.Name
-game.gameInstances.Controller.userData.BuffHandler.inventoryBuffs.ID
-game.gameInstances.Controller.userData.BuffHandler.inventoryBuffs.Name
 game.gameInstances.Controller.userData.BuffHandler.inventoryBuffs.NamePlural
 
 game.gameInstances.Controller.userData.LootHandler.inventoryLoot.count
@@ -37,6 +35,14 @@ game.gameInstances.Controller.userData.ModronHandler.modronSaves.targetArea
 game.gameInstances.Controller.userData.ModronHandler.modronSaves.ExpTotal
 game.gameInstances.Controller.userData.ModronHandler.modronSaves.CoreID
 game.gameInstances.Controller.userData.ModronHandler.modronSaves.InstanceID
+game.gameInstances.Controller.userData.ModronHandler.modronSaves.GridSave
+game.gameInstances.Controller.userData.ModronHandler.modronSaves.Buffs
+
+game.gameInstances.BuffHandler.activeBuffs.Name
+game.gameInstances.BuffHandler.activeBuffs.BaseEffectString
+game.gameInstances.BuffHandler.activeBuffs.RemainingTime
+game.gameInstances.BuffHandler.activeBuffs.Duration
+game.gameInstances.BuffHandler.activeBuffs.TotalDuration
 
 game.gameInstances.Controller.userData.ResetCurrencyHandler.isForceConverting
 
