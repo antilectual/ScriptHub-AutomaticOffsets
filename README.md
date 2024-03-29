@@ -21,10 +21,10 @@
 * Copy the exported json to the same folder as ``ScriptHubImporter.py`` replacing ScriptHubExport``32``.json or ScriptHubExport``64``.json depending on if you are exporting from steam (~~``32``~~) (``64``) or EGS (``64``)
   > Note: In late 2022 all PC platforms have switched to using the ``64`` bit versions of the game.   
 * Run ``ScriptHubImporter.py``
-* Copy the resulting ``Imports`` folder and files to Script Hub's ``.\SharedFunctions\MemoryRead\`` directory. *
+* Copy the resulting ``Imports`` folder and files to Script Hub's ``[Script Hub Folder]\AddOns\IC_Core\MemoryRead\`` directory. *
 * Start Script Hub.
 
-> * Note: Alternatively ``ScriptHubImporter.py`` along with the ``MemoryLocations`` txt files and the ``ScriptHubExport`` json files may be placed in the ``.\SharedFunctions\MemoryRead\`` directory of Script Hub and run from there.
+> * Note: Alternatively ``ScriptHubImporter.py`` along with the ``MemoryLocations`` txt files and the ``ScriptHubExport`` json files may be placed in the ``[Script Hub Folder]\AddOns\IC_Core\MemoryRead\`` directory of Script Hub and run from there.
 
 ## Troubleshooting:
  ``game.gameInstances.Controller.userData.HeroHandler.heroes.[_level]`` or ``game.gameInstances.Controller.userData.HeroHandler.heroes.[<Level>k__BackingField]`` are not being found.  
@@ -61,7 +61,7 @@ If **UserID**, **Hash**, or **Game version** are not working there is an issue w
 \
 Most other problems will be in ``IdleGameManager``\
 \
-The relevent files will be found in ``.\SharedFunctions\MemoryRead\`` using a format of ``IC_[NAME]_Class.ahk`` where ``[NAME]`` is one of the above. E.G. ``IC_DialogManager_Class.ahk``
+The relevent files will be found in ``[Script Hub Folder]\AddOns\IC_Core\MemoryRead\`` using a format of ``IC_[NAME]_Class.ahk`` where ``[NAME]`` is one of the above. E.G. ``IC_DialogManager_Class.ahk``
 
 Script Hub is almost all ``-- ERROR --`` in FullMemoryFunctions after importing.
 
