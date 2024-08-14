@@ -1,0 +1,10 @@
+#.  Lines starting with '#.' are ignored and are used as comments in this file. (But whitespace matters)
+#.  Lines starting with '#!' are for the full class location
+#!  CrusadersGame.Effects.EllywickCallOfTheFeywildHandler
+IsUltimateActive
+CurrentCards
+deckOfManyThingsHandler.tempProbabilityMap
+deckOfManyThingsHandler.cardsInHand.CardType
+deckOfManyThingsHandler.currentMonsterKills
+deckOfManyThingsHandler.Deck
+deckOfManyThingsHandler.controller.<GameInstance>k__BackingField.StatHandler.EllywickGemMult
