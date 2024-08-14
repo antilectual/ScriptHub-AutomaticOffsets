@@ -264,6 +264,7 @@ def SpecialInvalidCharacterInFieldCheck(variablesStringArray, indexValue):
 
 # Get the type from inside the collection params (inside <>)
 def FindCollectionValueType(classType, key = False):
+    global exportedJson
     if classType is None:
         return None
     match = re.search("<.*>", classType)
@@ -271,9 +272,16 @@ def FindCollectionValueType(classType, key = False):
         currClassType = match.group(0)
         currClassType = currClassType[1:-1] # trim <> from match edges 
         if key:
-            return currClassType.split(",",1)[0]    
+            dicClassType = currClassType.split(",",1)[0]   
         else:
-            return currClassType.rsplit(",",1)[-1:][0]      
+            dicClassType = currClassType.rsplit(",",1)[-1:][0]      
+        # Special test to check if a value is an enum.
+        parentTest = dicClassType.split(".")
+        parentTest = ".".join(parentTest[:-1]) + "+" + parentTest[-1]
+        if parentTest in exportedJson and 'Parent' in exportedJson[parentTest] and exportedJson[parentTest]['Parent'] == "System.Enum":
+            return "System.Enum"
+        return dicClassType
+        return dicClassType
     else:
         return None
 
