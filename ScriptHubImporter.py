@@ -274,13 +274,12 @@ def FindCollectionValueType(classType, key = False):
         if key:
             dicClassType = currClassType.split(",",1)[0]   
         else:
-            dicClassType = currClassType.rsplit(",",1)[-1:][0]      
+            dicClassType = currClassType.split(",",1)[-1:][0]      
         # Special test to check if a value is an enum.
         parentTest = dicClassType.split(".")
         parentTest = ".".join(parentTest[:-1]) + "+" + parentTest[-1]
         if parentTest in exportedJson and 'Parent' in exportedJson[parentTest] and exportedJson[parentTest]['Parent'] == "System.Enum":
             return "System.Enum"
-        return dicClassType
         return dicClassType
     else:
         return None
