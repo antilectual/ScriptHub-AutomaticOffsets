@@ -38,6 +38,8 @@ game.gameInstances.Controller.userData.ModronHandler.modronSaves.InstanceID
 game.gameInstances.Controller.userData.ModronHandler.modronSaves.GridSave
 game.gameInstances.Controller.userData.ModronHandler.modronSaves.Buffs
 
+game.gameInstances.Controller.userData.ResetUpgradeHandler.activeEffectsByInstance.def.<BaseEffectKeyParams>k__BackingField.OriginalEffectKey
+
 game.gameInstances.BuffHandler.activeBuffs.Name
 game.gameInstances.BuffHandler.activeBuffs.BaseEffectString
 game.gameInstances.BuffHandler.activeBuffs.RemainingTime
