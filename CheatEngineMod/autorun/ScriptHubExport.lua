@@ -48,6 +48,14 @@ function ScriptHubAddMenuItem()
   miSHTopMenuItem.Caption=translate("Script Hub")
 end
 
+local function indent(level)
+  return string.rep("  ", level)
+end
+
+local function appendLine(t, str, indentLevel)
+  t[#t+1] = indent(indentLevel) .. str .. "\n"
+end
+
 function ScriptHubExport()
   local classTable = PreComputeClasses()
   if (monopipe==nil)  then
@@ -68,8 +76,9 @@ function ScriptHubExport()
   end
   local stopValue = classTable[assemblyNames[assemblyIndex]]["class_count"]
   local outputString = {}
-  outputString[#outputString+1] = "{\"classes\" : {"
-  local builtJSON = {}
+  appendLine(outputString, "{", 0)
+  appendLine(outputString, '"classes": {', 1)
+  local isFirst = true
   for k,v in pairs(classes) do
     --print(classes[i].fqname)
     -- Only continue if the class has a valid name note: short circuit eval works in LUA
@@ -79,21 +88,23 @@ function ScriptHubExport()
       local parent = mono_class_getParent(classData.class)
       local currentJSON = BuildJsonFromFields(classData, fields, parent)
       if currentJSON~=nil then
+        if not isFirst then
+          appendLine(outputString, ",", 1)
+        end
         outputString[#outputString+1] = currentJSON
-        outputString[#outputString+1] = ","
+        isFirst = false
       end
     end
   end
   -- test in case the last classes read was nil/empty/unamed or <> and didn't add a new object as expected
-  if(outputString[#outputString] == ',') then
-    table.remove(outputString, #outputString)
-  end
-  outputString[#outputString+1] = "}}"
+  appendLine(outputString, "", 0)  -- Add a newline
+  appendLine(outputString, "  }", 1)
+  appendLine(outputString, "}", 0)
   local fullJSONOutput = table.concat(outputString)
   -- local current_dir=io.popen"cd":read'*l'.."\\"
   -- print("Export to "..current_dir..filename.." complete. Last: "..tostring(value)..". Stop value: ".. tostring(stopValue))
   print("[Class Details] - Stop value: ".. tostring(stopValue))
-  return table.concat(outputString)
+  return fullJSONOutput
 end
 
 function mono_class_enumFields_ScriptHub(class)
@@ -204,31 +215,33 @@ function BuildJsonFromFields(classData, fields, parent)
     local outputString = {}
     local tempClass = classData
     tempClass.fields = fields
-    outputString[#outputString+1] = "\""..tempClass.fqname.."\" : {\"ShortName\": \""..tempClass.classname.."\","
+    appendLine(outputString, string.format('"%s": {', tempClass.fqname), 2)
+    appendLine(outputString, string.format('"ShortName": "%s",', tempClass.classname), 3)
     if parent ~= nil then
       local parentName = mono_class_getFullName(parent)
-      outputString[#outputString+1] = "\"Parent\": \""..parentName.."\","
+      appendLine(outputString, string.format('"Parent": "%s",', parentName), 3)
     end
-    outputString[#outputString+1] = " \"fields\" : {"
+    appendLine(outputString, '"fields": {', 3)
     for j=1, #tempClass.fields do
-      outputString[#outputString+1] = "\""..tempClass.fields[j].name.."\":{".."\"offset\":\""..tempClass.fields[j].offset.."\",\"type\":\""..tempClass.fields[j].typename.."\",\"static\":"..tostring(tempClass.fields[j].isStatic)
+      if j > 1 then
+        appendLine(outputString, ",", 3)
+      end
+      appendLine(outputString, string.format('"%s": {', tempClass.fields[j].name), 4)
+      appendLine(outputString, string.format('"offset": "%s",', tempClass.fields[j].offset), 5)
+      appendLine(outputString, string.format('"type": "%s",', tempClass.fields[j].typename), 5)
+      appendLine(outputString, string.format('"static": %s', tostring(tempClass.fields[j].isStatic)), 5)
       if variableValuesTable[tempClass.fqname .. "." .. tempClass.fields[j].name] == 1 then
         local fieldValue = ScriptHubReadStaticValue(tempClass.fields[j], classData)
         if tempClass.fields[j].typename == "System.Boolean" then
-          outputString[#outputString+1] = ",\"value\":"..tostring(fieldValue).."}"
+          appendLine(outputString, string.format(',"value": %s', tostring(fieldValue)), 5)
         else
-          outputString[#outputString+1] = ",\"value\":\""..tostring(fieldValue).."\"}"
+          appendLine(outputString, string.format(',"value": "%s"', tostring(fieldValue)), 5)
         end
-      else
-        outputString[#outputString+1] = "}"
       end
-      if j < #tempClass.fields then
-        outputString[#outputString+1] = ","
-      else
-        outputString[#outputString+1] = "}"
-      end
+      appendLine(outputString, "}", 4)
     end
-    outputString[#outputString+1] = "}"
+    appendLine(outputString, "}", 3)
+    appendLine(outputString, "}", 2)
     return table.concat(outputString)
   end
 end
