@@ -132,6 +132,7 @@ this.game.gameInstances.Controller.userData.HeroHandler.heroes.allUpgradesOrdere
 this.game.gameInstances.Controller.userData.HeroHandler.heroes.allUpgradesOrdered.List.defaultSpecGraphic := New GameObjectStructure(this.game.gameInstances.Controller.userData.HeroHandler.heroes.allUpgradesOrdered.List,"Int", [0x90])
 this.game.gameInstances.Controller.userData.HeroHandler.heroes.allUpgradesOrdered.List.IsPurchased := New GameObjectStructure(this.game.gameInstances.Controller.userData.HeroHandler.heroes.allUpgradesOrdered.List,"Char", [0xa8])
 this.game.gameInstances.Controller.userData.HeroHandler.heroes.health := New GameObjectStructure(this.game.gameInstances.Controller.userData.HeroHandler.heroes,"Double", [0x3b8])
+this.game.gameInstances.Controller.userData.HeroHandler.heroes.lastHealthPercent := New GameObjectStructure(this.game.gameInstances.Controller.userData.HeroHandler.heroes,"Double", [0x3c0])
 this.game.gameInstances.Controller.userData.HeroHandler.heroes.slotId := New GameObjectStructure(this.game.gameInstances.Controller.userData.HeroHandler.heroes,"Int", [0x368])
 this.game.gameInstances.Controller.userData.HeroHandler.heroes.Owned := New GameObjectStructure(this.game.gameInstances.Controller.userData.HeroHandler.heroes,"Char", [0x364])
 this.game.gameInstances.Controller.userData.HeroHandler.heroes.Benched := New GameObjectStructure(this.game.gameInstances.Controller.userData.HeroHandler.heroes,"Char", [0x374])
