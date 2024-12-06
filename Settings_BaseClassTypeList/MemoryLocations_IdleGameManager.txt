@@ -50,6 +50,10 @@ game.gameInstances.Controller.userData.ResetCurrencyHandler.isForceConverting
 
 game.gameInstances.Controller.userData.FeatHandler.heroFeatSlots.ID
 
+game.gameInstances.Controller.userData.SaveHandler.currentSaveCallId
+game.gameInstances.Controller.userData.SaveHandler.currentSave.Instances
+game.gameInstances.Controller.userData.SaveHandler.lastUserDataSaveTime
+
 #.  ---- Name is the index of the dictionary ---
 #.  game.gameInstances.Controller.userData.HeroHandler.heroes.effects.effectKeysByKeyName.Name
 game.gameInstances.HeroHandler.allowHeroPurchase

@@ -80,6 +80,13 @@ this.game.gameInstances.Controller.userData.FeatHandler.heroFeatSlots._Collectio
 this.game.gameInstances.Controller.userData.FeatHandler.heroFeatSlots.List := New GameObjectStructure(this.game.gameInstances.Controller.userData.FeatHandler.heroFeatSlots,"List", [])
 this.game.gameInstances.Controller.userData.FeatHandler.heroFeatSlots.List._CollectionValType := "CrusadersGame.Defs.HeroFeatDef"
 this.game.gameInstances.Controller.userData.FeatHandler.heroFeatSlots.List.ID := New GameObjectStructure(this.game.gameInstances.Controller.userData.FeatHandler.heroFeatSlots.List,"Int", [0x10])
+this.game.gameInstances.Controller.userData.SaveHandler := New GameObjectStructure(this.game.gameInstances.Controller.userData,"Int", [0x128])
+this.game.gameInstances.Controller.userData.SaveHandler.currentSaveCallId := New GameObjectStructure(this.game.gameInstances.Controller.userData.SaveHandler,"Int", [0xb0])
+this.game.gameInstances.Controller.userData.SaveHandler.currentSave := New GameObjectStructure(this.game.gameInstances.Controller.userData.SaveHandler,"Int", [0x18])
+this.game.gameInstances.Controller.userData.SaveHandler.currentSave.Instances := New GameObjectStructure(this.game.gameInstances.Controller.userData.SaveHandler.currentSave,"Dict", [0x28])
+this.game.gameInstances.Controller.userData.SaveHandler.currentSave.Instances._CollectionKeyType := "System.Int32"
+this.game.gameInstances.Controller.userData.SaveHandler.currentSave.Instances._CollectionValType := "CrusadersGame.User.UserSaveHandler.InstanceDetails"
+this.game.gameInstances.Controller.userData.SaveHandler.lastUserDataSaveTime := New GameObjectStructure(this.game.gameInstances.Controller.userData.SaveHandler,"Int", [0x98])
 this.game.gameInstances.HeroHandler := New GameObjectStructure(this.game.gameInstances,"Int", [0x38])
 this.game.gameInstances.HeroHandler.allowHeroPurchase := New GameObjectStructure(this.game.gameInstances.HeroHandler,"Dict", [0x38])
 this.game.gameInstances.HeroHandler.allowHeroPurchase._CollectionKeyType := "System.Int32"
