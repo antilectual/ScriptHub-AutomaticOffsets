@@ -119,6 +119,9 @@ game.gameInstances.Controller.userData.StatHandler.BrivSprintStacks
 game.gameInstances.Controller.userData.StatHandler.Resets
 game.gameInstances.StatHandler.DSpec1HeroId
 game.gameInstances.StatHandler.NordomAwardedEXP
+game.gameInstances.StatHandler.EllywickCardsDrawnThisAdventure
+game.gameInstances.StatHandler.EllywickGemMult
+game.gameInstances.StatHandler.EllywickHandOfCards
 
 #. ---======================================================================================
 #. ---ActiveCampaignData related fields - current zone, highest zone, monsters spawned, etc.
