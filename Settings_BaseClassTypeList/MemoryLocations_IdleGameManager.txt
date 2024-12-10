@@ -50,6 +50,10 @@ game.gameInstances.Controller.userData.ResetCurrencyHandler.isForceConverting
 
 game.gameInstances.Controller.userData.FeatHandler.heroFeatSlots.ID
 
+game.gameInstances.Controller.userData.SaveHandler.currentSaveCallId
+game.gameInstances.Controller.userData.SaveHandler.currentSave.Instances
+game.gameInstances.Controller.userData.SaveHandler.lastUserDataSaveTime
+
 #.  ---- Name is the index of the dictionary ---
 #.  game.gameInstances.Controller.userData.HeroHandler.heroes.effects.effectKeysByKeyName.Name
 game.gameInstances.HeroHandler.allowHeroPurchase
@@ -73,6 +77,7 @@ game.gameInstances.Controller.userData.HeroHandler.heroes.allUpgradesOrdered.Req
 game.gameInstances.Controller.userData.HeroHandler.heroes.allUpgradesOrdered.defaultSpecGraphic
 game.gameInstances.Controller.userData.HeroHandler.heroes.allUpgradesOrdered.IsPurchased
 game.gameInstances.Controller.userData.HeroHandler.heroes.health
+game.gameInstances.Controller.userData.HeroHandler.heroes.lastHealthPercent
 game.gameInstances.Controller.userData.HeroHandler.heroes.slotId
 game.gameInstances.Controller.userData.HeroHandler.heroes.Owned
 game.gameInstances.Controller.userData.HeroHandler.heroes.Benched
@@ -119,6 +124,9 @@ game.gameInstances.Controller.userData.StatHandler.BrivSprintStacks
 game.gameInstances.Controller.userData.StatHandler.Resets
 game.gameInstances.StatHandler.DSpec1HeroId
 game.gameInstances.StatHandler.NordomAwardedEXP
+game.gameInstances.StatHandler.EllywickCardsDrawnThisAdventure
+game.gameInstances.StatHandler.EllywickGemMult
+game.gameInstances.StatHandler.EllywickHandOfCards
 
 #. ---======================================================================================
 #. ---ActiveCampaignData related fields - current zone, highest zone, monsters spawned, etc.
