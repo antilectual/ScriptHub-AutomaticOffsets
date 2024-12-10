@@ -11,6 +11,9 @@ exportedJson = ""
 effectClassTypeList = []
 currentEffectClass = ""
 
+# Save over JSON export with pretty formatting?
+prettyFormat = False
+
 
 # Main
 def main():
@@ -36,6 +39,9 @@ def StartImport(memFileLoc, is64Bit):
     Path(".", "Imports", "ActiveEffectHandlers").mkdir(parents=True, exist_ok=True)
     with memFileLoc.open('r') as jsonFile:
         exportedJson = json.load(jsonFile)
+    if prettyFormat:
+        with memFileLoc.open('w') as jsonFile:
+            json.dump(exportedJson, jsonFile, sort_keys=True, indent=4)
     # get classes object
     exportedJson = exportedJson['classes']
     # set the base class starting point (object the base pointer points to)
