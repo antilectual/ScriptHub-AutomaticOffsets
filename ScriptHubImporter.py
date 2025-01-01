@@ -327,6 +327,8 @@ def GetMemoryTypeFromClassType(classType):
         varType = "Double"
     elif classType == "System.Single":
         varType = "Float"
+    elif classType == "System.Int64":
+        varType = "Int64"
 
             # _classMemory - aTypeSize := {    
             #         "UChar":    1, 
