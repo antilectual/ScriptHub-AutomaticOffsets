@@ -19,4 +19,4 @@ this.dialogs.loader := New GameObjectStructure(this.dialogs,"Int", [0x3e0])
 this.dialogs.loader.scrollWindow := New GameObjectStructure(this.dialogs.loader,"Int", [0x368])
 this.dialogs.loader.activeItems := New GameObjectStructure(this.dialogs.loader,"List", [0x388])
 this.dialogs.loader.activeItems._CollectionValType := "CrusadersGame.Dialogs.FormationSave.FormationSaveDialogItem"
-this.dialogs.loader.activeItems.loadButton := New GameObjectStructure(this.dialogs.loader.activeItems,"Int", [0x3d0])
+this.dialogs.loader.activeItems.loadButton := New GameObjectStructure(this.dialogs.loader.activeItems,"Int", [0x3d8])
