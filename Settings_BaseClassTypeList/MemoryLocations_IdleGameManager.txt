@@ -64,18 +64,13 @@ game.gameInstances.Controller.userData.HeroHandler.heroes.effects.effectKeysByHa
 game.gameInstances.Controller.userData.HeroHandler.heroes.effects.effectKeysByHashedKeyName.parentEffectKeyHandler.def.Key
 game.gameInstances.Controller.userData.HeroHandler.heroes.effects.effectKeysByHashedKeyName.parentEffectKeyHandler.def.KeyHash
 game.gameInstances.Controller.userData.HeroHandler.heroes.effects.effectKeysByHashedKeyName.parentEffectKeyHandler.def.Name
-game.gameInstances.Controller.userData.HeroHandler.heroes.allUpgrades.ID
-game.gameInstances.Controller.userData.HeroHandler.heroes.allUpgrades.specializationName
-game.gameInstances.Controller.userData.HeroHandler.heroes.allUpgrades.RequiredLevel
-game.gameInstances.Controller.userData.HeroHandler.heroes.allUpgrades.RequiredUpgradeID
-game.gameInstances.Controller.userData.HeroHandler.heroes.allUpgrades.defaultSpecGraphic
-game.gameInstances.Controller.userData.HeroHandler.heroes.allUpgrades.IsPurchased
-game.gameInstances.Controller.userData.HeroHandler.heroes.allUpgradesOrdered.ID
-game.gameInstances.Controller.userData.HeroHandler.heroes.allUpgradesOrdered.specializationName
-game.gameInstances.Controller.userData.HeroHandler.heroes.allUpgradesOrdered.RequiredLevel
-game.gameInstances.Controller.userData.HeroHandler.heroes.allUpgradesOrdered.RequiredUpgradeID
-game.gameInstances.Controller.userData.HeroHandler.heroes.allUpgradesOrdered.defaultSpecGraphic
-game.gameInstances.Controller.userData.HeroHandler.heroes.allUpgradesOrdered.IsPurchased
+game.gameInstances.Controller.userData.HeroHandler.heroes.upgradeHandler.upgradesByUpgradeId.Id
+game.gameInstances.Controller.userData.HeroHandler.heroes.upgradeHandler.upgradesByUpgradeId.RequiredLevel
+game.gameInstances.Controller.userData.HeroHandler.heroes.upgradeHandler.upgradesByUpgradeId.IsSpecialization
+game.gameInstances.Controller.userData.HeroHandler.heroes.upgradeHandler.upgradesByUpgradeId.Def.specializationName
+game.gameInstances.Controller.userData.HeroHandler.heroes.upgradeHandler.upgradesByUpgradeId.Def.RequiredUpgradeID
+game.gameInstances.Controller.userData.HeroHandler.heroes.upgradeHandler.upgradesByUpgradeId.Def.defaultSpecGraphic
+game.gameInstances.Controller.userData.HeroHandler.heroes.upgradeHandler.PurchasedUpgrades
 game.gameInstances.Controller.userData.HeroHandler.heroes.health
 game.gameInstances.Controller.userData.HeroHandler.heroes.lastHealthPercent
 game.gameInstances.Controller.userData.HeroHandler.heroes.slotId
@@ -84,7 +79,6 @@ game.gameInstances.Controller.userData.HeroHandler.heroes.Benched
 #game.gameInstances.Controller.userData.HeroHandler.heroes.<Level>k__BackingField
 #game.gameInstances.Controller.userData.HeroHandler.heroes._level
 game.gameInstances.Controller.userData.HeroHandler.heroes.level
-game.gameInstances.Controller.userData.HeroHandler.heroes.purchasedUpgradeIDs
 
 #. ---======================================================================================
 #. ---Uncategorized
