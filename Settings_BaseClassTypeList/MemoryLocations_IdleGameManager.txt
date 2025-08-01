@@ -60,7 +60,6 @@ game.gameInstances.HeroHandler.allowHeroPurchase
 game.gameInstances.Controller.userData.HeroHandler.heroes.def.name
 game.gameInstances.Controller.userData.HeroHandler.heroes.def.ID
 game.gameInstances.Controller.userData.HeroHandler.heroes.def.SeatID
-game.gameInstances.Controller.userData.HeroHandler.heroes.effects.effectKeysByHashedKeyName.parentEffectKeyHandler.activeEffectHandlers
 game.gameInstances.Controller.userData.HeroHandler.heroes.effects.effectKeysByHashedKeyName.parentEffectKeyHandler.def.Key
 game.gameInstances.Controller.userData.HeroHandler.heroes.effects.effectKeysByHashedKeyName.parentEffectKeyHandler.def.KeyHash
 game.gameInstances.Controller.userData.HeroHandler.heroes.effects.effectKeysByHashedKeyName.parentEffectKeyHandler.def.Name

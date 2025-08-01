@@ -5,3 +5,5 @@ maxAttacks
 attacksCounter
 overlay.lastSetFilledPercent
 overlay.lastSetTargetArcPercent
+keysByTypeCache
+#. incomingFormationAbilitiesNotUpgradeSourceEffectIds 
