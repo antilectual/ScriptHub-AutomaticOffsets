@@ -37,6 +37,7 @@ game.gameInstances.Controller.userData.ModronHandler.modronSaves.CoreID
 game.gameInstances.Controller.userData.ModronHandler.modronSaves.InstanceID
 game.gameInstances.Controller.userData.ModronHandler.modronSaves.GridSave
 game.gameInstances.Controller.userData.ModronHandler.modronSaves.Buffs
+game.gameInstances.Controller.userData.ModronHandler.modronSaves.TogglePreferences
 
 game.gameInstances.Controller.userData.ResetUpgradeHandler.activeEffectsByInstance.def.<BaseEffectKeyParams>k__BackingField.OriginalEffectKey
 
@@ -60,6 +61,7 @@ game.gameInstances.HeroHandler.allowHeroPurchase
 game.gameInstances.Controller.userData.HeroHandler.heroes.def.name
 game.gameInstances.Controller.userData.HeroHandler.heroes.def.ID
 game.gameInstances.Controller.userData.HeroHandler.heroes.def.SeatID
+game.gameInstances.Controller.userData.HeroHandler.heroes.effects.effectKeysByHashedKeyName.parentEffectKeyHandler.activeEffectHandlers
 game.gameInstances.Controller.userData.HeroHandler.heroes.effects.effectKeysByHashedKeyName.parentEffectKeyHandler.def.Key
 game.gameInstances.Controller.userData.HeroHandler.heroes.effects.effectKeysByHashedKeyName.parentEffectKeyHandler.def.KeyHash
 game.gameInstances.Controller.userData.HeroHandler.heroes.effects.effectKeysByHashedKeyName.parentEffectKeyHandler.def.Name
@@ -196,3 +198,22 @@ game.gameInstances.timeScales.Multipliers
 #. --- Dictionary value locations --- unused
 #. game.gameInstances.TimeScales.Multipliers.Count
 #. game.gameInstances.TimeScales.Multipliers.Entries
+
+#. Irisiri
+game.gameInstances.isDirty
+game.gameUser.Loaded
+game.gameInstances.Screen.uiController.bottomBar.heroPanel.activeBoxes.upgradeButton.enabled
+game.gameInstances.Screen.uiController.bottomBar.heroPanel.activeBoxes.levelUpInfoHandler
+game.gameInstances.Screen.uiController.bottomBar.heroPanel.activeBoxes.levelUpInfoHandler.OverrideLevelUpAmount
+#. Irisiri for stuck upgrades mitigations
+#. game.gameInstances.Screen.uiController.bottomBar.heroPanel.activeBoxes.upgradeButton._x
+#. game.gameInstances.Screen.uiController.bottomBar.heroPanel.activeBoxes.upgradeButton._y
+#. game.gameInstances.Screen.uiController.bottomBar.heroPanel.activeBoxes._x
+#. game.gameInstances.Screen.uiController.bottomBar.heroPanel.activeBoxes._y
+#. game.gameInstances.Screen.uiController.bottomBar.heroPanel._x
+#. game.gameInstances.Screen.uiController.bottomBar.heroPanel._y
+#. game.gameInstances.Screen.uiController.bottomBar._x
+#. game.gameInstances.Screen.uiController.bottomBar._y
+#. game.gameInstances.Screen.uiController.bottomBar.heroPanel.heroScrollPane
+#. game.gameInstances.Screen.uiController.bottomBar.heroPanel.heroScrollPane._x
+#. game.gameInstances.Screen.uiController.bottomBar.heroPanel.heroScrollPane._y
