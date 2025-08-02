@@ -205,6 +205,25 @@ game.gameUser.Loaded
 game.gameInstances.Screen.uiController.bottomBar.heroPanel.activeBoxes.upgradeButton.enabled
 game.gameInstances.Screen.uiController.bottomBar.heroPanel.activeBoxes.levelUpInfoHandler
 game.gameInstances.Screen.uiController.bottomBar.heroPanel.activeBoxes.levelUpInfoHandler.OverrideLevelUpAmount
+game.gameInstances.Screen.uiController.bottomBar.heroPanel.activeBoxes.lastGold
+game.gameInstances.Controller.formation.slots.slotDef
+game.gameInstances.Controller.formation.slots.slotDef.Column
+game.gameInstances.Controller.formation.slots.slotDef.Row
+#. Irisiri - for checking the opening videos
+game.loadingScreen
+game.loadingScreen.splashScreen
+game.loadingScreen.splashScreen.<IsActive>k__BackingField
+#. Irisiri - champion status
+game.gameInstances.Controller.userData.HeroHandler.heroes.lastMaxHealth
+game.gameInstances.Controller.userData.HeroHandler.heroes.overwhelm
+#. Irisiri - Area and monster details for Briv Boost
+game.gameInstances.ActiveCampaignData.currentArea.areaDef
+game.gameInstances.ActiveCampaignData.currentArea.areaDef.MonsterDamageMultiplier
+game.gameInstances.ActiveCampaignData.currentRules
+game.gameInstances.ActiveCampaignData.currentRules.MonsterDamageModifier
+game.gameInstances.ActiveCampaignData.currentRules.monsterbaseStats
+game.gameInstances.ActiveCampaignData.currentRules.monsterbaseStats.BaseDPS
+game.gameInstances.ActiveCampaignData.currentRules.monsterbaseStats.DPSGrowthRateCurve
 #. Irisiri for stuck upgrades mitigations
 #. game.gameInstances.Screen.uiController.bottomBar.heroPanel.activeBoxes.upgradeButton._x
 #. game.gameInstances.Screen.uiController.bottomBar.heroPanel.activeBoxes.upgradeButton._y
