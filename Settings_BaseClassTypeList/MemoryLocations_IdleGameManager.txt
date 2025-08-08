@@ -178,6 +178,9 @@ game.gameInstances.OfflineHandler.<CurrentState>k__BackingField
 game.gameInstances.Screen.uiController.topBar.objectiveProgressBox.areaBar.autoProgressButton.toggled
 game.gameInstances.Screen.uiController.bottomBar.levelUpAmount
 game.gameInstances.Screen.uiController.bottomBar.heroPanel.activeBoxes.hero.def.ID
+game.gameInstances.Screen.uiController.bottomBar.heroPanel.activeBoxes.hero.upgradeHandler.PurchasedUpgrades
+game.gameInstances.Screen.uiController.bottomBar.heroPanel.activeBoxes.hero.upgradeHandler.upgradesByUpgradeId
+game.gameInstances.Screen.uiController.bottomBar.heroPanel.activeBoxes.hero.upgradeHandler.UnlockedUpgrades
 game.gameInstances.Screen.uiController.bottomBar.heroPanel.heroBoxsBySeat.levelUpButtonDisplay.lastCostText
 game.gameInstances.Screen.uiController.bottomBar.formationSaveMenu.formationButtons
 game.gameInstances.Screen.uiController.bottomBar.formationSaveMenu.clearButton._x
