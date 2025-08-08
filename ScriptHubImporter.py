@@ -215,6 +215,7 @@ def BuildMemoryString(classType, variablesStringArray, indexValue, isEffectHandl
     specialType = None
     keyType = None
     valType = None
+    abstractMatch = None
     # Collection test:
     match = re.search("[^<]*<", currClassType)
     if match is not None:
@@ -242,6 +243,11 @@ def BuildMemoryString(classType, variablesStringArray, indexValue, isEffectHandl
             BuildMemoryString(currClassType, variablesStringArray, indexValue + 1, isEffectHandler) 
             return isFound
 
+    elif currClassType in exportedJson:   
+        abstractMatch = IsAbstractClass(classToTest = exportedJson[classType]['Parent'])
+    if abstractMatch is not None:
+        currClassType = abstractMatch[0][:-1]
+        innerClassType = exportedJson[classType]['Parent'][len(currClassType)+3:-1] # previous + '`1['
     if preMatch is not None:
         if currClassType is None:
             currClassType = FindCollectionValueType(classType)
@@ -262,12 +268,30 @@ def BuildMemoryString(classType, variablesStringArray, indexValue, isEffectHandl
         keyType = FindCollectionValueType(classType, key = True)
         valType = FindCollectionValueType(classType)
     elif(varType == "HashSet"):
-        keyType = FindCollectionValueType(classType, key = True)
+        keyType = innerClassType if abstractMatch else FindCollectionValueType(classType, key = True)
 
     indexValue += 1
     AppendToOutput(variablesStringArray, indexValue, classTypeOriginal, static, offset, varType, isEffectHandler, keyType, valType)
+    currClassType = classType if abstractMatch else currClassType # reset current class before checking next item in chain.
     BuildMemoryString(currClassType, variablesStringArray, indexValue, isEffectHandler) 
     return isFound
+
+# returns the match if an abstract class is detected, otherwise returns None
+def IsAbstractClass(classToTest):  #e.g. CrusadersGame.Effects.BaseActiveEffectKeyHandler`1[T] parent is ActiveEffectKeyHandler 
+    match = re.match("[^`1\[]*`", classToTest) # match[0] everything until '`1[', match[1] is next set up to next '`1[' or all chars if none.
+    return match
+
+def Iri_HandleAbstractClass(subClassParent, baseClass, subClass): #Iri - Handle abstract classes 
+    if baseClass.endswith("`1[T]"):
+        cName = baseClass.replace("`1[T]","`1[" + subClass + "]") #CrusadersGame.Effects.BaseActiveEffectKeyHandler`1[T] becomes CrusadersGame.Effects.BaseActiveEffectKeyHandler`1[CrusadersGame.Effects.EllywickDeckOfManyThingsHandler]
+        return cName==subClassParent
+    return baseClass==subClassParent
+
+def GetInnerCollectionType(currClassType):
+    # find inner collection type if exists
+    currClassType = FindCollectionValueType(currClassType) # strip <> from type (normal)
+    currClassType = FindCollectionValueType(currClassType) # strip <> from type again (collection) OR if not found - not a collection.
+    return currClassType
 
 # For cases where there is a collection of a base class that can contain objects that may be sub classes of the base class.
 # If the object is not found in the base class, check the derived class, but not its parents.
