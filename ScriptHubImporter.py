@@ -158,7 +158,12 @@ def OutputHandlerIncludeFile(count, is64Bit):
 
 # recursive function that will search for the current indexValue of variablesStringArray and call itself for the rest of the variables in variablesStringArray
 # appending strings for final output as it goes
-def BuildMemoryString(classType, variablesStringArray, indexValue, isEffectHandler, checkParent = True):
+def BuildMemoryString(classType, variablesStringArray, indexValue, isEffectHandler, checkParent = True, checkSubClass = True): #Iri- need to handle parents and subclasses separately. 
+    #Iri notes:
+    #Parent - don't check subclasses (different chain of extends)
+    #Parent - check parent (chain of extends)
+    #Subclass - don't check parent (that's the one we're checking FROM!)
+    #Subclass - don't check extends or we could recurse for days; function has the 2 levels we want
     global exportedJson
     isFound = False
     if indexValue >= len(variablesStringArray):
@@ -189,10 +194,11 @@ def BuildMemoryString(classType, variablesStringArray, indexValue, isEffectHandl
     # could not find the variable in the class (Check parent classes?)
     if variablesStringArray[indexValue] not in exportedJson[classType]['fields']:
         # Check special cases of collections that include derived objects
-        isFound = SpecialSubClassCaseCheck(classType, variablesStringArray, indexValue, isEffectHandler)
+        if checkSubClass:
+            isFound = SpecialSubClassCaseCheck(classType, variablesStringArray, indexValue, isEffectHandler)
         # otherwise, check the parent class
         if checkParent:
-            if isFound or BuildMemoryString(exportedJson[classType]['Parent'], variablesStringArray, indexValue, isEffectHandler):
+            if isFound or BuildMemoryString(exportedJson[classType]['Parent'], variablesStringArray, indexValue, isEffectHandler, checkParent, checkSubClass= False):
                 return True
             else:
                 NotificationForMissingFields(classType, variablesStringArray, indexValue)
@@ -325,7 +331,7 @@ def NotificationForMissingFields(classType, variablesStringArray, indexValue):
             print("Did you mean \'" + fieldName + "'?")
             break
     # show diagnostic info for failure to find variable
-    print("Variable " + variablesStringArray[indexValue] + " not found in class " + classType + ". Checking Parent (" + exportedJson[classType]['Parent'] + ")...")
+    print("Variable '" + variablesStringArray[indexValue] + "' not found in class " + classType + ". Checking Parent (" + exportedJson[classType]['Parent'] + ")...")
     appended = ""
     if indexValue+1 < (len(variablesStringArray)):
         appended = "." + '.'.join(variablesStringArray[indexValue+1:])
