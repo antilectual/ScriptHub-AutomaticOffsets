@@ -278,7 +278,7 @@ def BuildMemoryString(classType, variablesStringArray, indexValue, isEffectHandl
 
 # returns the match if an abstract class is detected, otherwise returns None
 def IsAbstractClass(classToTest):  #e.g. CrusadersGame.Effects.BaseActiveEffectKeyHandler`1[T] parent is ActiveEffectKeyHandler 
-    match = re.match("[^`1\[]*`", classToTest) # match[0] everything until '`1[', match[1] is next set up to next '`1[' or all chars if none.
+    match = re.match("[^`1[]*`", classToTest) # match[0] everything until '`1[', match[1] is next set up to next '`1[' or all chars if none.
     return match
 
 def Iri_HandleAbstractClass(subClassParent, baseClass, subClass): #Iri - Handle abstract classes 
