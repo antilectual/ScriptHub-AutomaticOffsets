@@ -72,6 +72,7 @@ game.gameInstances.Controller.userData.HeroHandler.heroes.upgradeHandler.upgrade
 game.gameInstances.Controller.userData.HeroHandler.heroes.upgradeHandler.upgradesByUpgradeId.Def.RequiredUpgradeID
 game.gameInstances.Controller.userData.HeroHandler.heroes.upgradeHandler.upgradesByUpgradeId.Def.defaultSpecGraphic
 game.gameInstances.Controller.userData.HeroHandler.heroes.upgradeHandler.PurchasedUpgrades
+game.gameInstances.Controller.userData.HeroHandler.heroes.upgradeHandler.upgradeGroupsByLevel
 game.gameInstances.Controller.userData.HeroHandler.heroes.health
 game.gameInstances.Controller.userData.HeroHandler.heroes.lastHealthPercent
 game.gameInstances.Controller.userData.HeroHandler.heroes.slotId
@@ -180,7 +181,7 @@ game.gameInstances.Screen.uiController.bottomBar.levelUpAmount
 game.gameInstances.Screen.uiController.bottomBar.heroPanel.activeBoxes.hero.def.ID
 game.gameInstances.Screen.uiController.bottomBar.heroPanel.activeBoxes.hero.upgradeHandler.PurchasedUpgrades
 game.gameInstances.Screen.uiController.bottomBar.heroPanel.activeBoxes.hero.upgradeHandler.upgradesByUpgradeId
-game.gameInstances.Screen.uiController.bottomBar.heroPanel.activeBoxes.hero.upgradeHandler.UnlockedUpgrades
+game.gameInstances.Screen.uiController.bottomBar.heroPanel.activeBoxes.hero.upgradeHandler.upgradeGroupsByLevel
 game.gameInstances.Screen.uiController.bottomBar.heroPanel.heroBoxsBySeat.levelUpButtonDisplay.lastCostText
 game.gameInstances.Screen.uiController.bottomBar.formationSaveMenu.formationButtons
 game.gameInstances.Screen.uiController.bottomBar.formationSaveMenu.clearButton._x
