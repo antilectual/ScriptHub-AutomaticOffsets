@@ -2,8 +2,6 @@
 #.  Lines starting with '#!' are for the full class location
 #!  IdleGameManager
 
-
-game.gameInstances.timeScales
 game.gameInstances.ResetHandler.resetting
 game.gameInstances.Controller.userData.ActiveUserGameInstance
 
@@ -14,50 +12,7 @@ game.gameInstances.Controller.userData.BuffHandler.inventoryBuffs.inventoryAmoun
 game.gameInstances.Controller.userData.BuffHandler.inventoryBuffs.ID
 game.gameInstances.Controller.userData.BuffHandler.inventoryBuffs.Name
 game.gameInstances.Controller.userData.BuffHandler.inventoryBuffs.NamePlural
-
-game.gameInstances.Controller.userData.LootHandler.inventoryLoot.count
-game.gameInstances.Controller.userData.LootHandler.inventoryLoot.SlotID
-game.gameInstances.Controller.userData.LootHandler.inventoryLoot.HeroID
-game.gameInstances.Controller.userData.LootHandler.inventoryLoot.rarityValue
-game.gameInstances.Controller.userData.LootHandler.inventoryLoot.count
-game.gameInstances.Controller.userData.LootHandler.inventoryLoot.gild
-game.gameInstances.Controller.userData.LootHandler.LootByHeroID.ID
-game.gameInstances.Controller.userData.LootHandler.LootByHeroID.Name
-game.gameInstances.Controller.userData.LootHandler.LootByHeroID.HeroID
-game.gameInstances.Controller.userData.LootHandler.LootByHeroID.enchant
-game.gameInstances.Controller.userData.LootHandler.LootByHeroID.gild
-game.gameInstances.Controller.userData.LootHandler.LootByHeroID.rarityValue
-
 game.gameInstances.Controller.userData.ChestHandler.chestCounts
-
-game.gameInstances.Controller.userData.ModronHandler.modronSaves.FormationSaves
-game.gameInstances.Controller.userData.ModronHandler.modronSaves.targetArea
-game.gameInstances.Controller.userData.ModronHandler.modronSaves.ExpTotal
-game.gameInstances.Controller.userData.ModronHandler.modronSaves.CoreID
-game.gameInstances.Controller.userData.ModronHandler.modronSaves.InstanceID
-game.gameInstances.Controller.userData.ModronHandler.modronSaves.GridSave
-game.gameInstances.Controller.userData.ModronHandler.modronSaves.Buffs
-game.gameInstances.Controller.userData.ModronHandler.modronSaves.TogglePreferences
-
-game.gameInstances.Controller.userData.ResetUpgradeHandler.activeEffectsByInstance.def.<BaseEffectKeyParams>k__BackingField.OriginalEffectKey
-
-game.gameInstances.BuffHandler.activeBuffs.Name
-game.gameInstances.BuffHandler.activeBuffs.BaseEffectString
-game.gameInstances.BuffHandler.activeBuffs.RemainingTime
-game.gameInstances.BuffHandler.activeBuffs.Duration
-game.gameInstances.BuffHandler.activeBuffs.TotalDuration
-
-game.gameInstances.Controller.userData.ResetCurrencyHandler.isForceConverting
-
-game.gameInstances.Controller.userData.FeatHandler.heroFeatSlots.ID
-
-game.gameInstances.Controller.userData.SaveHandler.currentSaveCallId
-game.gameInstances.Controller.userData.SaveHandler.currentSave.Instances
-game.gameInstances.Controller.userData.SaveHandler.lastUserDataSaveTime
-
-#.  ---- Name is the index of the dictionary ---
-#.  game.gameInstances.Controller.userData.HeroHandler.heroes.effects.effectKeysByKeyName.Name
-game.gameInstances.HeroHandler.allowHeroPurchase
 game.gameInstances.Controller.userData.HeroHandler.heroes.def.name
 game.gameInstances.Controller.userData.HeroHandler.heroes.def.ID
 game.gameInstances.Controller.userData.HeroHandler.heroes.def.SeatID
@@ -78,15 +33,56 @@ game.gameInstances.Controller.userData.HeroHandler.heroes.lastHealthPercent
 game.gameInstances.Controller.userData.HeroHandler.heroes.slotId
 game.gameInstances.Controller.userData.HeroHandler.heroes.Owned
 game.gameInstances.Controller.userData.HeroHandler.heroes.Benched
-#game.gameInstances.Controller.userData.HeroHandler.heroes.<Level>k__BackingField
-#game.gameInstances.Controller.userData.HeroHandler.heroes._level
 game.gameInstances.Controller.userData.HeroHandler.heroes.level
+game.gameInstances.Controller.userData.LootHandler.inventoryLoot.count
+game.gameInstances.Controller.userData.LootHandler.inventoryLoot.SlotID
+game.gameInstances.Controller.userData.LootHandler.inventoryLoot.HeroID
+game.gameInstances.Controller.userData.LootHandler.inventoryLoot.rarityValue
+game.gameInstances.Controller.userData.LootHandler.inventoryLoot.count
+game.gameInstances.Controller.userData.LootHandler.inventoryLoot.gild
+game.gameInstances.Controller.userData.LootHandler.LootByHeroID.ID
+game.gameInstances.Controller.userData.LootHandler.LootByHeroID.Name
+game.gameInstances.Controller.userData.LootHandler.LootByHeroID.HeroID
+game.gameInstances.Controller.userData.LootHandler.LootByHeroID.enchant
+game.gameInstances.Controller.userData.LootHandler.LootByHeroID.gild
+game.gameInstances.Controller.userData.LootHandler.LootByHeroID.rarityValue
+game.gameInstances.Controller.userData.ModronHandler.modronSaves.FormationSaves
+game.gameInstances.Controller.userData.ModronHandler.modronSaves.targetArea
+game.gameInstances.Controller.userData.ModronHandler.modronSaves.ExpTotal
+game.gameInstances.Controller.userData.ModronHandler.modronSaves.CoreID
+game.gameInstances.Controller.userData.ModronHandler.modronSaves.InstanceID
+game.gameInstances.Controller.userData.ModronHandler.modronSaves.GridSave
+game.gameInstances.Controller.userData.ModronHandler.modronSaves.Buffs
+game.gameInstances.Controller.userData.ModronHandler.modronSaves.TogglePreferences
+game.gameInstances.Controller.userData.ResetCurrencyHandler.isForceConverting
+game.gameInstances.Controller.userData.ResetUpgradeHandler.activeEffectsByInstance.def.<BaseEffectKeyParams>k__BackingField.OriginalEffectKey
+game.gameInstances.Controller.userData.FeatHandler.heroFeatSlots.ID
+game.gameInstances.Controller.userData.SaveHandler.currentSaveCallId
+game.gameInstances.Controller.userData.SaveHandler.currentSave.Instances
+game.gameInstances.Controller.userData.SaveHandler.lastUserDataSaveTime
+game.gameInstances.Controller.userData.StatHandler.BlackViperTotalGems
+game.gameInstances.Controller.userData.StatHandler.BrivSteelbonesStacks
+game.gameInstances.Controller.userData.StatHandler.BrivSprintStacks
+game.gameInstances.Controller.userData.StatHandler.Resets
+
+game.gameInstances.BuffHandler.activeBuffs.Name
+game.gameInstances.BuffHandler.activeBuffs.BaseEffectString
+game.gameInstances.BuffHandler.activeBuffs.RemainingTime
+game.gameInstances.BuffHandler.activeBuffs.Duration
+game.gameInstances.BuffHandler.activeBuffs.TotalDuration
+game.gameInstances.HeroHandler.allowHeroPurchase
+game.gameInstances.StatHandler.DSpec1HeroId
+game.gameInstances.StatHandler.NordomAwardedEXP
+game.gameInstances.StatHandler.EllywickCardsDrawnThisAdventure
+game.gameInstances.StatHandler.EllywickGemMult
+game.gameInstances.StatHandler.EllywickHandOfCards
 
 #. ---======================================================================================
 #. ---Uncategorized
 #. ---======================================================================================
-game.gameInstances.ClickLevel
+TimeScale
 game.gameStarted
+game.gameInstances.ClickLevel
 game.gameInstances.ResetsSinceLastManual
 game.gameInstances.instanceLoadTimeSinceLastSave
 game.gameInstances.Controller.area.Active
@@ -94,35 +90,22 @@ game.gameInstances.Controller.area.basicMonstersSpawnedThisArea
 game.gameInstances.Controller.area.activeMonsters
 game.gameInstances.Controller.area.secondsSinceStarted
 game.gameInstances.ResetHandler.resetting
-TimeScale
+game.gameInstances.Controller.userData.inited
 game.gameInstances.Controller.areaTransitioner.<IsTransitioning>k__BackingField
 game.gameInstances.Controller.areaTransitioner.screenWipeEffect.delayTimer.t
 game.gameInstances.Controller.areaTransitioner.transitionDirection
 game.gameInstances.Controller.areaSkipHandler.skipStacks
-
 game.gameInstances.PatronHandler.<ActivePatron>k__BackingField.ID
 game.gameInstances.PatronHandler.<ActivePatron>k__BackingField.Tier
-
 game.screenController.activeScreen.currentScreenWidth
 game.screenController.activeScreen.currentScreenHeight
-
-game.gameUser.Hash
-game.gameUser.ID
-
-game.gameInstances.Controller.userData.inited
 #. --- Gems
 game.gameInstances.Controller.userData.redRubies
 #. --- Gems spent
 game.gameInstances.Controller.userData.redRubiesSpent
-game.gameInstances.Controller.userData.StatHandler.BlackViperTotalGems
-game.gameInstances.Controller.userData.StatHandler.BrivSteelbonesStacks
-game.gameInstances.Controller.userData.StatHandler.BrivSprintStacks
-game.gameInstances.Controller.userData.StatHandler.Resets
-game.gameInstances.StatHandler.DSpec1HeroId
-game.gameInstances.StatHandler.NordomAwardedEXP
-game.gameInstances.StatHandler.EllywickCardsDrawnThisAdventure
-game.gameInstances.StatHandler.EllywickGemMult
-game.gameInstances.StatHandler.EllywickHandOfCards
+#. --- Login Credentials
+game.gameUser.Hash
+game.gameUser.ID
 
 #. ---======================================================================================
 #. ---ActiveCampaignData related fields - current zone, highest zone, monsters spawned, etc.
@@ -133,6 +116,7 @@ game.gameInstances.ActiveCampaignData.currentArea.level
 game.gameInstances.ActiveCampaignData.currentAreaID
 game.gameInstances.ActiveCampaignData.highestAvailableAreaID
 game.gameInstances.ActiveCampaignData.gold
+
 #. ---===================================
 #. ---Formation save related memory reads
 #. ---===================================
@@ -144,6 +128,7 @@ game.gameInstances.FormationSaveHandler.formationSavesV2.Formation
 game.gameInstances.FormationSaveHandler.formationSavesV2.Specializations
 game.gameInstances.FormationSaveHandler.formationSavesV2.Familiars
 game.gameInstances.FormationSaveHandler.formationSavesV2.Feats
+
 #. ---=========================================================================
 #. ---Formation related memory reads (not save, but the in adventure formation)
 #. ---=========================================================================
@@ -158,6 +143,7 @@ game.gameInstances.Controller.formation.transitionDir
 game.gameInstances.Controller.formation.inAreaTransition
 game.gameInstances.Controller.formation.numAttackingMonstersReached
 game.gameInstances.Controller.formation.numRangedAttackingMonsters
+
 #. ---==============================
 #. ---offlineprogress and modronsave
 #. ---==============================
@@ -166,13 +152,13 @@ game.gameInstances.Controller.formation.numRangedAttackingMonsters
 #. game.gameInstances.offlineProgressHandler.modronSave.ExpTotal
 #. game.gameInstances.offlineProgressHandler.modronSave.targetArea
 #. game.gameInstances.offlineProgressHandler.finishedOfflineProgressType
-#.
 #. game.gameInstances.OfflineHandler.currentModronCore.ExpTotal
 #. game.gameInstances.OfflineHandler.currentModronCore.targetArea
 game.gameInstances.OfflineHandler.<OfflineTimeRequested>k__BackingField
 game.gameInstances.OfflineHandler.<OfflineTimeSimulated>k__BackingField
 game.gameInstances.OfflineHandler.<CurrentStopReason>k__BackingField
 game.gameInstances.OfflineHandler.<CurrentState>k__BackingField
+
 #. ---=================
 #. ---Screen and UI
 #. ---=================
@@ -192,6 +178,7 @@ game.gameInstances.Screen.uiController.ultimatesBar.ultimateItems.hero.def.ID
 game.gameInstances.Screen.uiController.ultimatesBar.ultimateItems.ultimateAttack.internalCooldownTimer
 game.gameInstances.Screen.uiController.bossPowerupPopup.highestPowerup
 game.gameInstances.Screen.uiController.notificationManager.notificationDisplay.welcomeBackNotification.Active
+
 #. ---=========================================
 #. ---Shandie's Dash
 #. ---=========================================
@@ -200,9 +187,11 @@ game.gameInstances.timeScales.Multipliers
 #. game.gameInstances.TimeScales.Multipliers.Count
 #. game.gameInstances.TimeScales.Multipliers.Entries
 
-#. Irisiri
-game.gameInstances.isDirty
+#. ---======================================================================================
+#. ---Irisiri requests
+#. ---======================================================================================
 game.gameUser.Loaded
+game.gameInstances.isDirty
 game.gameInstances.Screen.uiController.bottomBar.heroPanel.activeBoxes.upgradeButton.enabled
 game.gameInstances.Screen.uiController.bottomBar.heroPanel.activeBoxes.levelUpInfoHandler
 game.gameInstances.Screen.uiController.bottomBar.heroPanel.activeBoxes.levelUpInfoHandler.OverrideLevelUpAmount
@@ -210,14 +199,14 @@ game.gameInstances.Screen.uiController.bottomBar.heroPanel.activeBoxes.lastGold
 game.gameInstances.Controller.formation.slots.slotDef
 game.gameInstances.Controller.formation.slots.slotDef.Column
 game.gameInstances.Controller.formation.slots.slotDef.Row
-#. Irisiri - for checking the opening videos
+#. For checking the opening videos
 game.loadingScreen
 game.loadingScreen.splashScreen
 game.loadingScreen.splashScreen.<IsActive>k__BackingField
-#. Irisiri - champion status
+#. Champion status
 game.gameInstances.Controller.userData.HeroHandler.heroes.lastMaxHealth
 game.gameInstances.Controller.userData.HeroHandler.heroes.overwhelm
-#. Irisiri - Area and monster details for Briv Boost
+#. Area and monster details for Briv Boost
 game.gameInstances.ActiveCampaignData.currentArea.areaDef
 game.gameInstances.ActiveCampaignData.currentArea.areaDef.MonsterDamageMultiplier
 game.gameInstances.ActiveCampaignData.currentRules
@@ -225,15 +214,3 @@ game.gameInstances.ActiveCampaignData.currentRules.MonsterDamageModifier
 game.gameInstances.ActiveCampaignData.currentRules.monsterbaseStats
 game.gameInstances.ActiveCampaignData.currentRules.monsterbaseStats.BaseDPS
 game.gameInstances.ActiveCampaignData.currentRules.monsterbaseStats.DPSGrowthRateCurve
-#. Irisiri for stuck upgrades mitigations
-#. game.gameInstances.Screen.uiController.bottomBar.heroPanel.activeBoxes.upgradeButton._x
-#. game.gameInstances.Screen.uiController.bottomBar.heroPanel.activeBoxes.upgradeButton._y
-#. game.gameInstances.Screen.uiController.bottomBar.heroPanel.activeBoxes._x
-#. game.gameInstances.Screen.uiController.bottomBar.heroPanel.activeBoxes._y
-#. game.gameInstances.Screen.uiController.bottomBar.heroPanel._x
-#. game.gameInstances.Screen.uiController.bottomBar.heroPanel._y
-#. game.gameInstances.Screen.uiController.bottomBar._x
-#. game.gameInstances.Screen.uiController.bottomBar._y
-#. game.gameInstances.Screen.uiController.bottomBar.heroPanel.heroScrollPane
-#. game.gameInstances.Screen.uiController.bottomBar.heroPanel.heroScrollPane._x
-#. game.gameInstances.Screen.uiController.bottomBar.heroPanel.heroScrollPane._y
