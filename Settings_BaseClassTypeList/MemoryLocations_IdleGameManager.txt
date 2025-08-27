@@ -214,3 +214,4 @@ game.gameInstances.ActiveCampaignData.currentRules.MonsterDamageModifier
 game.gameInstances.ActiveCampaignData.currentRules.monsterbaseStats
 game.gameInstances.ActiveCampaignData.currentRules.monsterbaseStats.BaseDPS
 game.gameInstances.ActiveCampaignData.currentRules.monsterbaseStats.DPSGrowthRateCurve
+game.gameInstances.Screen.uiController.topBar.dpsMenuBox.menuBox.numberOfUnclaimedQuests

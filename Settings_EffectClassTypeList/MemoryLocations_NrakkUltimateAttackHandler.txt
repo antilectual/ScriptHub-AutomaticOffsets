@@ -6,4 +6,7 @@ attacksCounter
 overlay.lastSetFilledPercent
 overlay.lastSetTargetArcPercent
 keysByTypeCache
+fillTween
+fillTween.d
+fillTween.t
 #. incomingFormationAbilitiesNotUpgradeSourceEffectIds 
