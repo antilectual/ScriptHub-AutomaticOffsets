@@ -4,5 +4,3 @@
 nerd0.type
 nerd1.type
 nerd2.type
-<effectKey>k__BackingField.parentEffectKeyHandler.parent.def.ID
-<effectKey>k__BackingField.parentEffectKeyHandler.parent.source.ID

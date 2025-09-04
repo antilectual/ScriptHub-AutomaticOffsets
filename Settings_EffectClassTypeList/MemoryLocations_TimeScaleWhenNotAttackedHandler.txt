@@ -3,5 +3,3 @@
 #!  TimeScaleWhenNotAttackedHandler
 scaleActive
 effectTime
-effectKey.parentEffectKeyHandler.parent.def.ID
-effectKey.parentEffectKeyHandler.parent.source.ID

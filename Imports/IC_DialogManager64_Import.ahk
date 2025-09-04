@@ -84,3 +84,4 @@ this.dialogs.activeItems._y := New GameObjectStructure(this.dialogs.activeItems,
 this.dialogs.activeItems.hero := New GameObjectStructure(this.dialogs.activeItems,"Int", [0x3c0])
 this.dialogs.activeItems.hero.def := New GameObjectStructure(this.dialogs.activeItems.hero,"Int", [0x18])
 this.dialogs.activeItems.hero.def.name := New GameObjectStructure(this.dialogs.activeItems.hero.def,"UTF-16", [0x38])
+this.dialogs.activeItems.hero.def.ID := New GameObjectStructure(this.dialogs.activeItems.hero.def,"Int", [0x10])

@@ -6,5 +6,3 @@
 #. effectKey.parentEffectKeyHandler.parent.def.ID
 #. effectKey.parentEffectKeyHandler.parent.source.ID
 obligationsFufilled
-<effectKey>k__BackingField.parentEffectKeyHandler.parent.def.ID
-<effectKey>k__BackingField.parentEffectKeyHandler.parent.source.ID
