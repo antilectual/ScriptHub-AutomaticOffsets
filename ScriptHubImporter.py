@@ -172,6 +172,7 @@ def BuildMemoryString(classType, variablesStringArray, indexValue, isEffectHandl
         return isFound
     if classType == "CrusadersGame.Effects.IEffectSource":
         return isFound
+
     classTypeOriginal = classType
     #fix for timescale using GameManager (IdleGameManager extends GameManager) instead of its starting top level of IdleGameManager
     if classType == "GameManager":
@@ -300,7 +301,8 @@ def SpecialSubClassCaseCheck(classType, variablesStringArray, indexValue, isEffe
     # TODO: If multiple sub classes have the same field, the wrong one could be selected. Find a method to verify correct sub class is found.
     for subClass in exportedJson:
         if exportedJson[subClass]['Parent'] == classType:
-            isFound = BuildMemoryString( subClass, variablesStringArray, indexValue, isEffectHandler, False)
+            if variablesStringArray[indexValue] in exportedJson[subClass]['fields']:
+                isFound = BuildMemoryString( subClass, variablesStringArray, indexValue, isEffectHandler, False)
         if isFound:
             return isFound
     return isFound
