@@ -18,6 +18,8 @@ prettyFormat = False
 isLegacy = False
 isWarningWritten = False
 
+depthSearched = 0
+
 
 # Main
 def main():
@@ -158,19 +160,20 @@ def OutputHandlerIncludeFile(count, is64Bit):
 
 # recursive function that will search for the current indexValue of variablesStringArray and call itself for the rest of the variables in variablesStringArray
 # appending strings for final output as it goes
-def BuildMemoryString(classType, variablesStringArray, indexValue, isEffectHandler, checkParent = True, checkSubClass = True): #Iri- need to handle parents and subclasses separately. 
+def BuildMemoryString(classType, variablesStringArray, indexValue, isEffectHandler, checkParent = True, checkSubClass = True, retryAttempt = 0): #Iri- need to handle parents and subclasses separately. 
     #Iri notes:
     #Parent - don't check subclasses (different chain of extends)
     #Parent - check parent (chain of extends)
     #Subclass - don't check parent (that's the one we're checking FROM!)
     #Subclass - don't check extends or we could recurse for days; function has the 2 levels we want
-    global exportedJson
+    global exportedJson, depthSearched
+    if indexValue >= len(variablesStringArray): # search complete
+        return True
+    isFullyFound = False
     isFound = False
-    if indexValue >= len(variablesStringArray):
+    if classType == "System.Object": # nothing further to check - not found
         return isFound
-    if classType == "System.Object":
-        return isFound
-    if classType == "CrusadersGame.Effects.IEffectSource":
+    if classType == "CrusadersGame.Effects.IEffectSource": # nothing further to check for effects - not found
         return isFound
 
     classTypeOriginal = classType
@@ -195,14 +198,15 @@ def BuildMemoryString(classType, variablesStringArray, indexValue, isEffectHandl
     # could not find the variable in the class (Check parent classes?)
     if variablesStringArray[indexValue] not in exportedJson[classType]['fields']:
         # Check special cases of collections that include derived objects
-        if checkSubClass:
-            isFound = SpecialSubClassCaseCheck(classType, variablesStringArray, indexValue, isEffectHandler)
+        if checkSubClass and SpecialSubClassCaseCheck(classType, variablesStringArray, indexValue, isEffectHandler):
+            return True
         # otherwise, check the parent class
-        if checkParent:
-            if isFound or BuildMemoryString(exportedJson[classType]['Parent'], variablesStringArray, indexValue, isEffectHandler, checkParent, checkSubClass= False):
-                return True
-            else:
-                NotificationForMissingFields(classType, variablesStringArray, indexValue)
+        if checkParent and BuildMemoryString(exportedJson[classType]['Parent'], variablesStringArray, indexValue, isEffectHandler, checkParent, checkSubClass= False):
+            return True
+        IncrementDepthAndNotify(variablesStringArray, indexValue, isFullyFound = False, classType = classType)    
+        if indexValue == 0: # only notify if fully exhausted search
+            NotificationForMissingFields(classType, variablesStringArray, depthSearched)
+            depthSearched = 0
         return isFound
 
     # passed existence checks, set variables
@@ -241,8 +245,9 @@ def BuildMemoryString(classType, variablesStringArray, indexValue, isEffectHandl
             # output subcollection
             AppendToOutput(variablesStringArray, indexValue + 1, classTypeOriginal, static, "", specialType, isEffectHandler, keyType, collectionSubType)
             # build from current + subcollection
-            BuildMemoryString(currClassType, variablesStringArray, indexValue + 1, isEffectHandler) 
-            return isFound
+            isFullyFound = BuildMemoryString(currClassType, variablesStringArray, indexValue + 1, isEffectHandler) 
+            IncrementDepthAndNotify(variablesStringArray, indexValue, isFullyFound, classType = classType if abstractMatch else classTypeOriginal)
+            return isFound and isFullyFound
 
     elif currClassType in exportedJson:   
         abstractMatch = IsAbstractClass(classToTest = exportedJson[classType]['Parent'])
@@ -273,9 +278,25 @@ def BuildMemoryString(classType, variablesStringArray, indexValue, isEffectHandl
 
     indexValue += 1
     AppendToOutput(variablesStringArray, indexValue, classTypeOriginal, static, offset, varType, isEffectHandler, keyType, valType)
-    currClassType = classType if abstractMatch else currClassType # reset current class before checking next item in chain.
-    BuildMemoryString(currClassType, variablesStringArray, indexValue, isEffectHandler) 
-    return isFound
+    depthSearched = 0
+    # reset current class before checking next item in chain.
+    isFullyFound = BuildMemoryString(classType = classType if abstractMatch else currClassType, variablesStringArray = variablesStringArray, indexValue = indexValue, isEffectHandler = isEffectHandler) 
+    IncrementDepthAndNotify(variablesStringArray, indexValue-1, (isFound and isFullyFound), classType = classType if abstractMatch else currClassType)
+    return isFound and isFullyFound
+
+def IncrementDepthAndNotify(variablesStringArray, indexValue, isFullyFound, classType):
+    global exportedJson, depthSearched
+    if indexValue >= depthSearched:
+        depthSearched = indexValue
+        if not isFullyFound and classType != "CrusadersGame.Effects.IEffectSource": # nothing further to check for effects - not found
+            # When the class is still not found, test for case mis-match and print alert if found
+            for fieldName in exportedJson[classType]['fields']:
+                if variablesStringArray[indexValue].lower() == fieldName.lower():
+                    appended = ""
+                    if indexValue+1 < (len(variablesStringArray)):
+                        appended = "." + '.'.join(variablesStringArray[indexValue+1:])
+                    print('.'.join(variablesStringArray[:indexValue]) + ".[" + variablesStringArray[indexValue] + "]" + appended + " not found in " + classType + " Did you mean \'" + fieldName + "'?")
+                    break   
 
 # returns the match if an abstract class is detected, otherwise returns None
 def IsAbstractClass(classToTest):  #e.g. CrusadersGame.Effects.BaseActiveEffectKeyHandler`1[T] parent is ActiveEffectKeyHandler 
@@ -296,13 +317,13 @@ def GetInnerCollectionType(currClassType):
 
 # For cases where there is a collection of a base class that can contain objects that may be sub classes of the base class.
 # If the object is not found in the base class, check the derived class, but not its parents.
-def SpecialSubClassCaseCheck(classType, variablesStringArray, indexValue, isEffectHandler):
+def SpecialSubClassCaseCheck(classType, variablesStringArray, indexValue, isEffectHandler, retryAttempt = 0):
     isFound = False
-    # TODO: If multiple sub classes have the same field, the wrong one could be selected. Find a method to verify correct sub class is found.
+    # NOTE: If multiple sub classes have the same field, the wrong one could be selected. 
+    # Only affects collection type recognition (only base types care).
     for subClass in exportedJson:
-        if exportedJson[subClass]['Parent'] == classType:
-            if variablesStringArray[indexValue] in exportedJson[subClass]['fields']:
-                isFound = BuildMemoryString( subClass, variablesStringArray, indexValue, isEffectHandler, False)
+        if exportedJson[subClass]['Parent'] == classType and variablesStringArray[indexValue] in exportedJson[subClass]['fields']:
+            isFound = BuildMemoryString( subClass, variablesStringArray, indexValue, isEffectHandler, False)
         if isFound:
             return isFound
     return isFound
@@ -312,7 +333,7 @@ def SpecialInvalidCharacterInFieldCheck(variablesStringArray, indexValue):
     # AHK Can't handle <> in names, such as k__BackingField
     if variablesStringArray[indexValue].find("k__BackingField") >= 0:
         match = re.search("<.*>", variablesStringArray[indexValue])
-        # fix for activeeffectkeyhandlers using k_backingfields
+        # fix for activeEffectKeyHandlers using k_backingfields
         if variablesStringArray[indexValue] == "<effectKey>k__BackingField":
             return match.group(0)[1:-1]
         return match.group(0)[1:-1] + "_k__BackingField"
@@ -351,13 +372,8 @@ def NotificationForMissingClass(classType, variablesStringArray, indexValue):
 
 # When a field is not found, print a messsage displaying suggested alternative (if available), as well as the offending offset.
 def NotificationForMissingFields(classType, variablesStringArray, indexValue):
-    # When the class is still not found, test for case mis-match and print alert if found
-    for fieldName in exportedJson[classType]['fields']:
-        if variablesStringArray[indexValue].lower() == fieldName.lower():
-            print("Did you mean \'" + fieldName + "'?")
-            break
     # show diagnostic info for failure to find variable
-    print("Variable '" + variablesStringArray[indexValue] + "' not found in class " + classType + ". Checking Parent (" + exportedJson[classType]['Parent'] + ")...")
+    print("Variable '" + variablesStringArray[indexValue] + "' not found in class " + classType + ".")
     appended = ""
     if indexValue+1 < (len(variablesStringArray)):
         appended = "." + '.'.join(variablesStringArray[indexValue+1:])
