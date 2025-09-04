@@ -193,7 +193,7 @@ def BuildMemoryString(classType, variablesStringArray, indexValue, isEffectHandl
             classType = typedClassCheckString
         else:
             # class still not found, lookup failed. Pass.
-            NotificationForMissingClass(classType, variablesStringArray, indexValue)
+            # NotificationForMissingClass(classType, variablesStringArray, indexValue)
             return isFound        
 
     # could not find the variable in the class (Check parent classes?)
