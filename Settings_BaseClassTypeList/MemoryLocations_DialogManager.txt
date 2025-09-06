@@ -1,5 +1,6 @@
 #.  Lines starting with '#.' are ignored and are used as comments in this file. (But whitespace matters)
 #.  Lines starting with '#!' are for the full class location
+#.  Lines starting with '#!!' specify a specific class to look for to start the following lines.
 #!  UnityGameEngine.Dialogs.DialogManager
 dialogs.currentCurrency.ID
 dialogs.forceConvertFavor
@@ -10,3 +11,49 @@ dialogs.Active
 dialogs.dt.<Active>k__BackingField
 dialogs.loader.scrollWindow
 dialogs.loader.activeItems.loadButton
+dialogs._x
+dialogs._y
+dialogs.heroDef
+dialogs.heroDef.name
+dialogs.heroDef.ID
+dialogs.title.sprite.gameObjectName
+dialogs.panel._x
+dialogs.panel._y
+dialogs.panel.numOptions
+dialogs.panel.specializationSelected
+dialogs.panel.options
+dialogs.panel.options._x
+dialogs.panel.options._y
+dialogs.panel.options.currentDef.ID
+dialogs.panel.options.currentDef.name
+dialogs.panel.options.currentDef.HeroID
+dialogs.panel.options.currentDef.specializationName
+dialogs.panel.options.button
+dialogs.panel.options.button._x
+dialogs.panel.options.button._y
+dialogs.selectorItems._x
+dialogs.selectorItems._y
+dialogs.selectorItems.text.lastSetText
+dialogs.selectorItems.isSelected
+dialogs.inventoryPanel._x
+dialogs.inventoryPanel._y
+dialogs.inventoryPanel.itemCategory
+dialogs.inventoryPanel.activePageIndex
+dialogs.inventoryPanel.pages
+dialogs.inventoryPanel.maxCols
+dialogs.inventoryPanel.maxRows
+dialogs.pageSelector._x
+dialogs.pageSelector._y
+dialogs.pageSelector.leftArrow._x
+dialogs.pageSelector.leftArrow._y
+dialogs.pageSelector.rightArrow._x
+dialogs.pageSelector.rightArrow._y
+dialogs.scrollBorder._x
+dialogs.scrollBorder._y
+dialogs.okButton._x
+dialogs.okButton._y
+dialogs.text.lastSetText
+dialogs.activeItems._x
+dialogs.activeItems._y
+dialogs.activeItems.hero.def.name
+dialogs.activeItems.hero.def.ID
