@@ -186,9 +186,9 @@ def BuildMemoryString(classType, variablesStringArray, indexValue, isEffectHandl
     if classType == "CrusadersGame.Effects.IEffectSource": # nothing further to check for effects - not found
         return isFound
     if lastManualClassName != '':
-        test = ".".join(variablesStringArray[:indexValue+1])
-        test = test.replace(".List", "").replace(".Queue", "").replace(".Stack", "").replace("Dict", "").replace(".HashSet", "")   
-        if test == manualLineValue:
+        lineCheck  = ".".join(variablesStringArray[:indexValue+1])
+        lineCheck  = lineCheck .replace(".List", "").replace(".Queue", "").replace(".Stack", "").replace("Dict", "").replace(".HashSet", "")   
+        if lineCheck  == manualLineValue:
             classType = lastManualClassName
 
     classTypeOriginal = classType
