@@ -1,7 +1,8 @@
 #.  Lines starting with '#.' are ignored and are used as comments in this file. (But whitespace matters)
 #.  Lines starting with '#!' are for the full class location
-#.  Lines starting with '#!!' specify a specific class to look for to start the following lines.
+#.  Lines starting with '#!!' specify a specific class to look for in the following line.
 #!  UnityGameEngine.Dialogs.DialogManager
+dialogs
 dialogs.currentCurrency.ID
 dialogs.forceConvertFavor
 dialogs.sprite.gameObjectName
@@ -35,6 +36,8 @@ dialogs.selectorItems._x
 dialogs.selectorItems._y
 dialogs.selectorItems.text.lastSetText
 dialogs.selectorItems.isSelected
+#!!  CrusadersGame.Dialogs.Inventory.InventoryDialogV2
+dialogs.inventoryPanel
 dialogs.inventoryPanel._x
 dialogs.inventoryPanel._y
 dialogs.inventoryPanel.itemCategory
@@ -50,10 +53,16 @@ dialogs.pageSelector.rightArrow._x
 dialogs.pageSelector.rightArrow._y
 dialogs.scrollBorder._x
 dialogs.scrollBorder._y
+#!!  CrusadersGame.Dialogs.PrettyMessageBox
+dialogs.okButton
 dialogs.okButton._x
 dialogs.okButton._y
+#!!  CrusadersGame.Dialogs.PrettyMessageBox
+dialogs.text
 dialogs.text.lastSetText
+#!!  CrusadersGame.Dialogs.HeroSelector.HeroSelectorDialog
+dialogs.activeItems
 dialogs.activeItems._x
 dialogs.activeItems._y
-dialogs.activeItems.hero.def.name
 dialogs.activeItems.hero.def.ID
+dialogs.activeItems.hero.def.name
