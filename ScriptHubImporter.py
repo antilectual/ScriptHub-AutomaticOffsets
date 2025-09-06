@@ -19,6 +19,7 @@ isLegacy = False
 isWarningWritten = False
 
 depthSearched = 0
+lastManualClassName = ''
 
 
 # Main
@@ -73,7 +74,7 @@ def Import(is64Bit = False, isEffectHandler = False):
 
 # Reads files, parses them, and builds valid variables into ScriptHub import code files (AHK).
 def ImportClasses(is64bit, files, isBaseTypes = True):
-    global outputStringsDict, depthSearched, currentEffectClass
+    global outputStringsDict, depthSearched, currentEffectClass, lastManualClassName
     for f in files:
         if(isBaseTypes):
             memoryFileLocation = Path(".", "Settings_BaseClassTypeList", f)
@@ -94,7 +95,8 @@ def ImportClasses(is64bit, files, isBaseTypes = True):
         memoryFileBlocks = {}
         # split by #! sections
         for line in memoryFileLines:
-            if line[0] == '#' and line[1] == '!':
+            # is comment, ! is class, !! is manually set class for next line
+            if line[0] == '#' and line[1] == '!' and line[2] != '!':
                 className = line[2:].strip()
                 if not className in memoryFileBlocks:
                     memoryFileBlocks[className] = []
@@ -113,9 +115,16 @@ def ImportClasses(is64bit, files, isBaseTypes = True):
 
             # iterate lines and build ahk file to outputStringsDict
             for line in classBlock:
+                indexValue = 0
+                if line[:3] =='#!!': # special case of manually defining a collection item's class
+                    lastManualClassName = line[3:].strip()
+                    continue
                 offsetsLocationStringSplit = line.split(".")
+                if lastManualClassName != '': # only check specific variable that has its class manually defined
+                    indexValue = len(offsetsLocationStringSplit) - 1
                 depthSearched = 0
-                BuildMemoryString(className, offsetsLocationStringSplit, 0, not isBaseTypes ) 
+                BuildMemoryString(className if lastManualClassName == '' else lastManualClassName, offsetsLocationStringSplit, indexValue, not isBaseTypes ) 
+                lastManualClassName = ''
             version = "64" if is64bit else "32"
             OutputImportToFile(fileNameBase, version, not isBaseTypes)
             outputStringsDict = {}
@@ -166,7 +175,7 @@ def BuildMemoryString(classType, variablesStringArray, indexValue, isEffectHandl
     #Parent - check parent (chain of extends)
     #Subclass - don't check parent (that's the one we're checking FROM!)
     #Subclass - don't check extends or we could recurse for days; function has the 2 levels we want
-    global exportedJson, depthSearched
+    global exportedJson, depthSearched, lastManualClassName
     if indexValue >= len(variablesStringArray): # search complete
         return True
     isFullyFound = False
@@ -425,13 +434,15 @@ def GetMemoryTypeFromClassType(classType):
 
 # Adds an item to the output strings dictionary if it does not already exist
 def AppendToOutput(variablesStringArray, indexValue, classTypeOriginal, static, offset, varType, isEffectHandler, keyType = "", valType = ""):
-    global currentEffectClass
+    global currentEffectClass, lastManualClassName
     # add new value to dictionary if it is not already there, then build next value
 
     fullNameOfCurrentVariable = '.'.join(variablesStringArray[:indexValue])
     if isEffectHandler:
         fullNameOfCurrentVariable =  currentEffectClass + "." + fullNameOfCurrentVariable
     if fullNameOfCurrentVariable not in outputStringsDict:
+        if(lastManualClassName != ""):
+            classTypeOriginal = lastManualClassName
         parentValue = '.'.join(variablesStringArray[:indexValue-1]) if indexValue > 1 else classTypeOriginal 
         if isEffectHandler:
             if indexValue > 1:
