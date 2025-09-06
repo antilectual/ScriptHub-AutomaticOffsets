@@ -17,7 +17,6 @@ dialogs._y
 dialogs.heroDef
 dialogs.heroDef.name
 dialogs.heroDef.ID
-dialogs.title.sprite.gameObjectName
 dialogs.panel._x
 dialogs.panel._y
 dialogs.panel.numOptions
