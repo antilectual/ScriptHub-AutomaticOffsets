@@ -20,7 +20,7 @@ isWarningWritten = False
 
 depthSearched = 0
 lastManualClassName = ''
-
+manualLineValue = ''
 
 # Main
 def main():
@@ -74,7 +74,7 @@ def Import(is64Bit = False, isEffectHandler = False):
 
 # Reads files, parses them, and builds valid variables into ScriptHub import code files (AHK).
 def ImportClasses(is64bit, files, isBaseTypes = True):
-    global outputStringsDict, depthSearched, currentEffectClass, lastManualClassName
+    global outputStringsDict, depthSearched, currentEffectClass, lastManualClassName, manualLineValue
     for f in files:
         if(isBaseTypes):
             memoryFileLocation = Path(".", "Settings_BaseClassTypeList", f)
@@ -121,9 +121,9 @@ def ImportClasses(is64bit, files, isBaseTypes = True):
                     continue
                 offsetsLocationStringSplit = line.split(".")
                 if lastManualClassName != '': # only check specific variable that has its class manually defined
-                    indexValue = len(offsetsLocationStringSplit) - 1
+                    manualLineValue = line
                 depthSearched = 0
-                BuildMemoryString(className if lastManualClassName == '' else lastManualClassName, offsetsLocationStringSplit, indexValue, not isBaseTypes ) 
+                BuildMemoryString(className, offsetsLocationStringSplit, indexValue, not isBaseTypes ) 
                 lastManualClassName = ''
             version = "64" if is64bit else "32"
             OutputImportToFile(fileNameBase, version, not isBaseTypes)
@@ -185,6 +185,11 @@ def BuildMemoryString(classType, variablesStringArray, indexValue, isEffectHandl
         return isFound
     if classType == "CrusadersGame.Effects.IEffectSource": # nothing further to check for effects - not found
         return isFound
+    if lastManualClassName != '':
+        test = ".".join(variablesStringArray[:indexValue+1])
+        test = test.replace(".List", "").replace(".Queue", "").replace(".Stack", "").replace("Dict", "").replace(".HashSet", "")   
+        if test == manualLineValue:
+            classType = lastManualClassName
 
     classTypeOriginal = classType
     #fix for timescale using GameManager (IdleGameManager extends GameManager) instead of its starting top level of IdleGameManager
