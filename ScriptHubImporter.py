@@ -114,19 +114,22 @@ def ImportClasses(is64bit, files, isBaseTypes = True):
                 effectClassTypeList.append(className)
 
             # iterate lines and build ahk file to outputStringsDict
+            isManualClassFlag = False
             for line in classBlock:
                 indexValue = 0
                 if line[:3] =='#!!': # special case of manually defining a collection item's class
                     lastManualClassName = line[3:].strip()
+                    isManualClassFlag = True
                     continue
                 offsetsLocationStringSplit = line.split(".")
-                if lastManualClassName != '': # only check specific variable that has its class manually defined
+                if isManualClassFlag: # only check specific variable that has its class manually defined
                     manualLineValue = line
+                    isManualClassFlag = False
                 depthSearched = 0
                 BuildMemoryString(className, offsetsLocationStringSplit, indexValue, not isBaseTypes ) 
-                lastManualClassName = ''
             version = "64" if is64bit else "32"
             OutputImportToFile(fileNameBase, version, not isBaseTypes)
+            lastManualClassName = '' # reset for each file
             outputStringsDict = {}
             print(className + " " + version + "bit output complete.")
 
@@ -187,8 +190,8 @@ def BuildMemoryString(classType, variablesStringArray, indexValue, isEffectHandl
         return isFound
     if lastManualClassName != '':
         lineCheck  = ".".join(variablesStringArray[:indexValue+1])
-        lineCheck  = lineCheck .replace(".List", "").replace(".Queue", "").replace(".Stack", "").replace("Dict", "").replace(".HashSet", "")   
-        if lineCheck  == manualLineValue:
+        lineCheck  = lineCheck .replace(".List", "").replace(".Queue", "").replace(".Stack", "").replace(".Dict", "").replace(".HashSet", "")
+        if IsLineManual(variablesStringArray, indexValue):
             classType = lastManualClassName
 
     classTypeOriginal = classType
@@ -216,7 +219,7 @@ def BuildMemoryString(classType, variablesStringArray, indexValue, isEffectHandl
         if checkSubClass and SpecialSubClassCaseCheck(classType, variablesStringArray, indexValue, isEffectHandler):
             return True
         # otherwise, check the parent class
-        if checkParent and BuildMemoryString(exportedJson[classType]['Parent'], variablesStringArray, indexValue, isEffectHandler, checkParent, checkSubClass= False):
+        if checkParent and classType != lastManualClassName and BuildMemoryString(exportedJson[classType]['Parent'], variablesStringArray, indexValue, isEffectHandler, checkParent, checkSubClass= False):
             return True
         NotifyCasing(variablesStringArray, indexValue, isFullyFound = False, classType = classType)    
         if indexValue == 0: # only notify if fully exhausted search
@@ -298,6 +301,12 @@ def BuildMemoryString(classType, variablesStringArray, indexValue, isEffectHandl
     if indexValue == 1 and not isFullyFound: 
         NotificationForMissingFields(classTypeOriginal, variablesStringArray, depthSearched)
     return isFound and isFullyFound
+
+def IsLineManual(variablesStringArray, indexValue):
+    global manualLineValue
+    lineCheck  = ".".join(variablesStringArray[:indexValue+1])
+    lineCheck  = lineCheck .replace(".List", "").replace(".Queue", "").replace(".Stack", "").replace(".Dict", "").replace(".HashSet", "")
+    return True if lineCheck  == manualLineValue else False
 
 # returns the match if an abstract class is detected, otherwise returns None
 def IsAbstractClass(classToTest):  #e.g. CrusadersGame.Effects.BaseActiveEffectKeyHandler`1[T] parent is ActiveEffectKeyHandler 
@@ -446,7 +455,7 @@ def AppendToOutput(variablesStringArray, indexValue, classTypeOriginal, static, 
     if isEffectHandler:
         fullNameOfCurrentVariable =  currentEffectClass + "." + fullNameOfCurrentVariable
     if fullNameOfCurrentVariable not in outputStringsDict:
-        if(lastManualClassName != ""):
+        if IsLineManual(variablesStringArray, indexValue) and lastManualClassName != "":
             classTypeOriginal = lastManualClassName
         parentValue = '.'.join(variablesStringArray[:indexValue-1]) if indexValue > 1 else classTypeOriginal 
         if isEffectHandler:
