@@ -17,6 +17,8 @@ dialogs._y
 dialogs.heroDef
 dialogs.heroDef.name
 dialogs.heroDef.ID
+#!! CrusadersGame.Dialogs.Specialization.SpecializationDialog
+Dialogs.panel
 dialogs.panel._x
 dialogs.panel._y
 dialogs.panel.numOptions
