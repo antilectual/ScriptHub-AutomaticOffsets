@@ -6,5 +6,4 @@ Hash
 Platform
 MobileClientVersion
 VersionPostFix
-_instance
 _instance.instanceID

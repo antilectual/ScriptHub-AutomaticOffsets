@@ -1,18 +1,16 @@
 #.  Lines starting with '#.' are ignored and are used as comments in this file. (But whitespace matters)
 #.  Lines starting with '#!' are for the full class location
 #!  IdleGameManager
-
-game.gameInstances.ResetHandler.resetting
-game.gameInstances.Controller.userData.ActiveUserGameInstance
-
 #. ---======================================================================================
 #. ---UserData Handlers
 #. ---======================================================================================
+game.gameInstances.Controller.userData.ActiveUserGameInstance
 game.gameInstances.Controller.userData.BuffHandler.inventoryBuffs.inventoryAmount
 game.gameInstances.Controller.userData.BuffHandler.inventoryBuffs.ID
 game.gameInstances.Controller.userData.BuffHandler.inventoryBuffs.Name
 game.gameInstances.Controller.userData.BuffHandler.inventoryBuffs.NamePlural
 game.gameInstances.Controller.userData.ChestHandler.chestCounts
+game.gameInstances.Controller.userData.FeatHandler.heroFeatSlots.ID
 game.gameInstances.Controller.userData.HeroHandler.heroes.def.name
 game.gameInstances.Controller.userData.HeroHandler.heroes.def.ID
 game.gameInstances.Controller.userData.HeroHandler.heroes.def.SeatID
@@ -34,12 +32,7 @@ game.gameInstances.Controller.userData.HeroHandler.heroes.slotId
 game.gameInstances.Controller.userData.HeroHandler.heroes.Owned
 game.gameInstances.Controller.userData.HeroHandler.heroes.Benched
 game.gameInstances.Controller.userData.HeroHandler.heroes.level
-game.gameInstances.Controller.userData.LootHandler.inventoryLoot.count
-game.gameInstances.Controller.userData.LootHandler.inventoryLoot.SlotID
-game.gameInstances.Controller.userData.LootHandler.inventoryLoot.HeroID
-game.gameInstances.Controller.userData.LootHandler.inventoryLoot.rarityValue
-game.gameInstances.Controller.userData.LootHandler.inventoryLoot.count
-game.gameInstances.Controller.userData.LootHandler.inventoryLoot.gild
+game.gameInstances.Controller.userData.inited
 game.gameInstances.Controller.userData.LootHandler.LootByHeroID.ID
 game.gameInstances.Controller.userData.LootHandler.LootByHeroID.Name
 game.gameInstances.Controller.userData.LootHandler.LootByHeroID.HeroID
@@ -54,9 +47,12 @@ game.gameInstances.Controller.userData.ModronHandler.modronSaves.InstanceID
 game.gameInstances.Controller.userData.ModronHandler.modronSaves.GridSave
 game.gameInstances.Controller.userData.ModronHandler.modronSaves.Buffs
 game.gameInstances.Controller.userData.ModronHandler.modronSaves.TogglePreferences
+#. --- Gems
+game.gameInstances.Controller.userData.redRubies
+#. --- Gems spent
+game.gameInstances.Controller.userData.redRubiesSpent
 game.gameInstances.Controller.userData.ResetCurrencyHandler.isForceConverting
 game.gameInstances.Controller.userData.ResetUpgradeHandler.activeEffectsByInstance.def.<BaseEffectKeyParams>k__BackingField.OriginalEffectKey
-game.gameInstances.Controller.userData.FeatHandler.heroFeatSlots.ID
 game.gameInstances.Controller.userData.SaveHandler.currentSaveCallId
 game.gameInstances.Controller.userData.SaveHandler.currentSave.Instances
 game.gameInstances.Controller.userData.SaveHandler.lastUserDataSaveTime
@@ -70,7 +66,9 @@ game.gameInstances.BuffHandler.activeBuffs.BaseEffectString
 game.gameInstances.BuffHandler.activeBuffs.RemainingTime
 game.gameInstances.BuffHandler.activeBuffs.Duration
 game.gameInstances.BuffHandler.activeBuffs.TotalDuration
+
 game.gameInstances.HeroHandler.allowHeroPurchase
+
 game.gameInstances.StatHandler.DSpec1HeroId
 game.gameInstances.StatHandler.NordomAwardedEXP
 game.gameInstances.StatHandler.EllywickCardsDrawnThisAdventure
@@ -78,31 +76,29 @@ game.gameInstances.StatHandler.EllywickGemMult
 game.gameInstances.StatHandler.EllywickHandOfCards
 
 #. ---======================================================================================
-#. ---Uncategorized
+#. ---Misc.
 #. ---======================================================================================
 TimeScale
 game.gameStarted
 game.gameInstances.ClickLevel
-game.gameInstances.ResetsSinceLastManual
 game.gameInstances.instanceLoadTimeSinceLastSave
+game.gameInstances.ResetHandler.resetting
+game.gameInstances.ResetsSinceLastManual
+#. --- Area and transitions
 game.gameInstances.Controller.area.Active
 game.gameInstances.Controller.area.basicMonstersSpawnedThisArea
 game.gameInstances.Controller.area.activeMonsters
 game.gameInstances.Controller.area.secondsSinceStarted
-game.gameInstances.ResetHandler.resetting
-game.gameInstances.Controller.userData.inited
 game.gameInstances.Controller.areaTransitioner.<IsTransitioning>k__BackingField
 game.gameInstances.Controller.areaTransitioner.screenWipeEffect.delayTimer.t
 game.gameInstances.Controller.areaTransitioner.transitionDirection
 game.gameInstances.Controller.areaSkipHandler.skipStacks
+#. --- Patrons
 game.gameInstances.PatronHandler.<ActivePatron>k__BackingField.ID
 game.gameInstances.PatronHandler.<ActivePatron>k__BackingField.Tier
+#. --- Screen Dimensions
 game.screenController.activeScreen.currentScreenWidth
 game.screenController.activeScreen.currentScreenHeight
-#. --- Gems
-game.gameInstances.Controller.userData.redRubies
-#. --- Gems spent
-game.gameInstances.Controller.userData.redRubiesSpent
 #. --- Login Credentials
 game.gameUser.Hash
 game.gameUser.ID
@@ -120,6 +116,7 @@ game.gameInstances.ActiveCampaignData.gold
 #. ---===================================
 #. ---Formation save related memory reads
 #. ---===================================
+game.gameInstances.FormationSaveHandler.favoriteIDs
 game.gameInstances.FormationSaveHandler.formationCampaignID
 game.gameInstances.FormationSaveHandler.formationSavesV2.Favorite
 game.gameInstances.FormationSaveHandler.formationSavesV2.SaveID
@@ -128,6 +125,9 @@ game.gameInstances.FormationSaveHandler.formationSavesV2.Formation
 game.gameInstances.FormationSaveHandler.formationSavesV2.Specializations
 game.gameInstances.FormationSaveHandler.formationSavesV2.Familiars
 game.gameInstances.FormationSaveHandler.formationSavesV2.Feats
+game.gameInstances.FormationSaveHandler.mostRecentFormation.Favorite
+game.gameInstances.FormationSaveHandler.mostRecentFormation.Formation
+game.gameInstances.FormationSaveHandler.mostRecentFormation.SaveID
 
 #. ---=========================================================================
 #. ---Formation related memory reads (not save, but the in adventure formation)
@@ -147,15 +147,8 @@ game.gameInstances.Controller.formation.numRangedAttackingMonsters
 #. ---==============================
 #. ---offlineprogress and modronsave
 #. ---==============================
-#. game.gameInstances.offlineProgressHandler.inGameNumSecondsToProcess
-#. game.gameInstances.offlineProgressHandler.monstersSpawnedThisArea
-#. game.gameInstances.offlineProgressHandler.modronSave.ExpTotal
-#. game.gameInstances.offlineProgressHandler.modronSave.targetArea
-#. game.gameInstances.offlineProgressHandler.finishedOfflineProgressType
-#. game.gameInstances.OfflineHandler.currentModronCore.ExpTotal
-#. game.gameInstances.OfflineHandler.currentModronCore.targetArea
 game.gameInstances.OfflineHandler.<OfflineTimeRequested>k__BackingField
-game.gameInstances.OfflineHandler.<OfflineTimeSimulated>k__BackingField
+#game.gameInstances.OfflineHandler.<OfflineTimeSimulated>k__BackingField
 game.gameInstances.OfflineHandler.<CurrentStopReason>k__BackingField
 game.gameInstances.OfflineHandler.<CurrentState>k__BackingField
 
@@ -183,9 +176,6 @@ game.gameInstances.Screen.uiController.notificationManager.notificationDisplay.w
 #. ---Shandie's Dash
 #. ---=========================================
 game.gameInstances.timeScales.Multipliers
-#. --- Dictionary value locations --- unused
-#. game.gameInstances.TimeScales.Multipliers.Count
-#. game.gameInstances.TimeScales.Multipliers.Entries
 
 #. ---======================================================================================
 #. ---Irisiri requests
@@ -196,22 +186,16 @@ game.gameInstances.Screen.uiController.bottomBar.heroPanel.activeBoxes.upgradeBu
 game.gameInstances.Screen.uiController.bottomBar.heroPanel.activeBoxes.levelUpInfoHandler
 game.gameInstances.Screen.uiController.bottomBar.heroPanel.activeBoxes.levelUpInfoHandler.OverrideLevelUpAmount
 game.gameInstances.Screen.uiController.bottomBar.heroPanel.activeBoxes.lastGold
-game.gameInstances.Controller.formation.slots.slotDef
 game.gameInstances.Controller.formation.slots.slotDef.Column
 game.gameInstances.Controller.formation.slots.slotDef.Row
 #. For checking the opening videos
-game.loadingScreen
-game.loadingScreen.splashScreen
 game.loadingScreen.splashScreen.<IsActive>k__BackingField
 #. Champion status
 game.gameInstances.Controller.userData.HeroHandler.heroes.lastMaxHealth
 game.gameInstances.Controller.userData.HeroHandler.heroes.overwhelm
 #. Area and monster details for Briv Boost
-game.gameInstances.ActiveCampaignData.currentArea.areaDef
 game.gameInstances.ActiveCampaignData.currentArea.areaDef.MonsterDamageMultiplier
-game.gameInstances.ActiveCampaignData.currentRules
 game.gameInstances.ActiveCampaignData.currentRules.MonsterDamageModifier
-game.gameInstances.ActiveCampaignData.currentRules.monsterbaseStats
 game.gameInstances.ActiveCampaignData.currentRules.monsterbaseStats.BaseDPS
 game.gameInstances.ActiveCampaignData.currentRules.monsterbaseStats.DPSGrowthRateCurve
 game.gameInstances.Screen.uiController.topBar.dpsMenuBox.menuBox.numberOfUnclaimedQuests
