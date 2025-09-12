@@ -11,6 +11,14 @@ game.gameInstances.Controller.userData.BuffHandler.inventoryBuffs.Name
 game.gameInstances.Controller.userData.BuffHandler.inventoryBuffs.NamePlural
 game.gameInstances.Controller.userData.ChestHandler.chestCounts
 game.gameInstances.Controller.userData.FeatHandler.heroFeatSlots.ID
+game.gameInstances.Controller.userData.HeroHandler.heroes.Benched
+game.gameInstances.Controller.userData.HeroHandler.heroes.health
+game.gameInstances.Controller.userData.HeroHandler.heroes.lastMaxHealth
+game.gameInstances.Controller.userData.HeroHandler.heroes.lastHealthPercent
+game.gameInstances.Controller.userData.HeroHandler.heroes.level
+game.gameInstances.Controller.userData.HeroHandler.heroes.overwhelm
+game.gameInstances.Controller.userData.HeroHandler.heroes.Owned
+game.gameInstances.Controller.userData.HeroHandler.heroes.slotId
 game.gameInstances.Controller.userData.HeroHandler.heroes.def.name
 game.gameInstances.Controller.userData.HeroHandler.heroes.def.ID
 game.gameInstances.Controller.userData.HeroHandler.heroes.def.SeatID
@@ -26,12 +34,6 @@ game.gameInstances.Controller.userData.HeroHandler.heroes.upgradeHandler.upgrade
 game.gameInstances.Controller.userData.HeroHandler.heroes.upgradeHandler.upgradesByUpgradeId.Def.defaultSpecGraphic
 game.gameInstances.Controller.userData.HeroHandler.heroes.upgradeHandler.PurchasedUpgrades
 game.gameInstances.Controller.userData.HeroHandler.heroes.upgradeHandler.upgradeGroupsByLevel
-game.gameInstances.Controller.userData.HeroHandler.heroes.health
-game.gameInstances.Controller.userData.HeroHandler.heroes.lastHealthPercent
-game.gameInstances.Controller.userData.HeroHandler.heroes.slotId
-game.gameInstances.Controller.userData.HeroHandler.heroes.Owned
-game.gameInstances.Controller.userData.HeroHandler.heroes.Benched
-game.gameInstances.Controller.userData.HeroHandler.heroes.level
 game.gameInstances.Controller.userData.inited
 game.gameInstances.Controller.userData.LootHandler.LootByHeroID.ID
 game.gameInstances.Controller.userData.LootHandler.LootByHeroID.Name
@@ -78,12 +80,16 @@ game.gameInstances.StatHandler.EllywickHandOfCards
 #. ---======================================================================================
 #. ---Misc.
 #. ---======================================================================================
+
 TimeScale
 game.gameStarted
 game.gameInstances.ClickLevel
 game.gameInstances.instanceLoadTimeSinceLastSave
+game.gameInstances.isDirty
 game.gameInstances.ResetHandler.resetting
 game.gameInstances.ResetsSinceLastManual
+#. ---Shandie's Dash
+game.gameInstances.timeScales.Multipliers
 #. --- Area and transitions
 game.gameInstances.Controller.area.Active
 game.gameInstances.Controller.area.basicMonstersSpawnedThisArea
@@ -102,6 +108,9 @@ game.screenController.activeScreen.currentScreenHeight
 #. --- Login Credentials
 game.gameUser.Hash
 game.gameUser.ID
+game.gameUser.Loaded
+#. --- Opening videos
+game.loadingScreen.splashScreen.<IsActive>k__BackingField
 
 #. ---======================================================================================
 #. ---ActiveCampaignData related fields - current zone, highest zone, monsters spawned, etc.
@@ -112,6 +121,11 @@ game.gameInstances.ActiveCampaignData.currentArea.level
 game.gameInstances.ActiveCampaignData.currentAreaID
 game.gameInstances.ActiveCampaignData.highestAvailableAreaID
 game.gameInstances.ActiveCampaignData.gold
+#. Area and monster details for Briv Boost
+game.gameInstances.ActiveCampaignData.currentArea.areaDef.MonsterDamageMultiplier
+game.gameInstances.ActiveCampaignData.currentRules.MonsterDamageModifier
+game.gameInstances.ActiveCampaignData.currentRules.monsterbaseStats.BaseDPS
+game.gameInstances.ActiveCampaignData.currentRules.monsterbaseStats.DPSGrowthRateCurve
 
 #. ---===================================
 #. ---Formation save related memory reads
@@ -134,6 +148,8 @@ game.gameInstances.FormationSaveHandler.mostRecentFormation.SaveID
 #. ---=========================================================================
 game.gameInstances.Controller.formation.slots.hero.def.ID
 game.gameInstances.Controller.formation.slots.heroAlive
+game.gameInstances.Controller.formation.slots.slotDef.Column
+game.gameInstances.Controller.formation.slots.slotDef.Row
 #. ---ActionListSize is a count of how many transition overrides have been added to the action list within the dictionary TransitionOverrides.
 #. ---When this value increases from 0 to 1 a briv jump animation can occur. It is possible a future transtiion override occurs increasing the Count
 #. --- to a value greater than 1. But for standard gem farm team should be goood for a while.
@@ -155,47 +171,24 @@ game.gameInstances.OfflineHandler.<CurrentState>k__BackingField
 #. ---=================
 #. ---Screen and UI
 #. ---=================
-game.gameInstances.Screen.uiController.topBar.objectiveProgressBox.areaBar.autoProgressButton.toggled
+game.gameInstances.Screen.uiController.bossPowerupPopup.highestPowerup
 game.gameInstances.Screen.uiController.bottomBar.levelUpAmount
+game.gameInstances.Screen.uiController.bottomBar.heroPanel.activeBoxes.upgradeButton.enabled
+game.gameInstances.Screen.uiController.bottomBar.heroPanel.activeBoxes.levelUpInfoHandler
+game.gameInstances.Screen.uiController.bottomBar.heroPanel.activeBoxes.lastGold
 game.gameInstances.Screen.uiController.bottomBar.heroPanel.activeBoxes.hero.def.ID
 game.gameInstances.Screen.uiController.bottomBar.heroPanel.activeBoxes.hero.upgradeHandler.PurchasedUpgrades
 game.gameInstances.Screen.uiController.bottomBar.heroPanel.activeBoxes.hero.upgradeHandler.upgradesByUpgradeId
 game.gameInstances.Screen.uiController.bottomBar.heroPanel.activeBoxes.hero.upgradeHandler.upgradeGroupsByLevel
+game.gameInstances.Screen.uiController.bottomBar.heroPanel.activeBoxes.levelUpInfoHandler.OverrideLevelUpAmount
 game.gameInstances.Screen.uiController.bottomBar.heroPanel.heroBoxsBySeat.levelUpButtonDisplay.lastCostText
 game.gameInstances.Screen.uiController.bottomBar.formationSaveMenu.formationButtons
 game.gameInstances.Screen.uiController.bottomBar.formationSaveMenu.clearButton._x
 game.gameInstances.Screen.uiController.bottomBar.formationSaveMenu.clearButton._y
 game.gameInstances.Screen.uiController.bottomBar.heroPanel.clickDamageBox.maxLevelUpAllowed
 game.gameInstances.Screen.uiController.bottomBar.heroPanel.clickDamageBox.levelUpButtonDisplay.lastCostText
+game.gameInstances.Screen.uiController.notificationManager.notificationDisplay.welcomeBackNotification.Active
+game.gameInstances.Screen.uiController.topBar.dpsMenuBox.menuBox.numberOfUnclaimedQuests
+game.gameInstances.Screen.uiController.topBar.objectiveProgressBox.areaBar.autoProgressButton.toggled
 game.gameInstances.Screen.uiController.ultimatesBar.ultimateItems.hero.def.ID
 game.gameInstances.Screen.uiController.ultimatesBar.ultimateItems.ultimateAttack.internalCooldownTimer
-game.gameInstances.Screen.uiController.bossPowerupPopup.highestPowerup
-game.gameInstances.Screen.uiController.notificationManager.notificationDisplay.welcomeBackNotification.Active
-
-#. ---=========================================
-#. ---Shandie's Dash
-#. ---=========================================
-game.gameInstances.timeScales.Multipliers
-
-#. ---======================================================================================
-#. ---Irisiri requests
-#. ---======================================================================================
-game.gameUser.Loaded
-game.gameInstances.isDirty
-game.gameInstances.Screen.uiController.bottomBar.heroPanel.activeBoxes.upgradeButton.enabled
-game.gameInstances.Screen.uiController.bottomBar.heroPanel.activeBoxes.levelUpInfoHandler
-game.gameInstances.Screen.uiController.bottomBar.heroPanel.activeBoxes.levelUpInfoHandler.OverrideLevelUpAmount
-game.gameInstances.Screen.uiController.bottomBar.heroPanel.activeBoxes.lastGold
-game.gameInstances.Controller.formation.slots.slotDef.Column
-game.gameInstances.Controller.formation.slots.slotDef.Row
-#. For checking the opening videos
-game.loadingScreen.splashScreen.<IsActive>k__BackingField
-#. Champion status
-game.gameInstances.Controller.userData.HeroHandler.heroes.lastMaxHealth
-game.gameInstances.Controller.userData.HeroHandler.heroes.overwhelm
-#. Area and monster details for Briv Boost
-game.gameInstances.ActiveCampaignData.currentArea.areaDef.MonsterDamageMultiplier
-game.gameInstances.ActiveCampaignData.currentRules.MonsterDamageModifier
-game.gameInstances.ActiveCampaignData.currentRules.monsterbaseStats.BaseDPS
-game.gameInstances.ActiveCampaignData.currentRules.monsterbaseStats.DPSGrowthRateCurve
-game.gameInstances.Screen.uiController.topBar.dpsMenuBox.menuBox.numberOfUnclaimedQuests
