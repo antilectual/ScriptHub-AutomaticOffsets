@@ -65,7 +65,6 @@ def Import(is64Bit = False, isEffectHandler = False):
     memoryFile = ""
     currentBlock = -1
     files = []
-    # TODO: create files list - 1 loop base, 1 loop effects
     files = [f for f in os.listdir(Path(".", "Settings_BaseClassTypeList")) if f.endswith(".txt")]
     ImportClasses(is64Bit, files, isBaseTypes = True)
     files = [f for f in os.listdir(Path(".", "Settings_EffectClassTypeList")) if f.endswith(".txt")]
@@ -285,8 +284,14 @@ def BuildMemoryString(classType, variablesStringArray, indexValue, isEffectHandl
     if currClassType == "UnityGameEngine.Utilities.ProtectedInt":
         offset = hex(int(offset, 16) + int('0x8', 16))
 
+    arrayDimensions = 0
     if(varType == "List" or varType == "Queue" or varType == "Stack"):
         valType = currClassType
+    elif(varType == "Array"):
+        valType = currClassType
+        while(valType.endswith("[]")):
+            arrayDimensions = arrayDimensions + 1
+            valType = valType[:-2]
     elif(varType == "Dict"):
         keyType = FindCollectionValueType(classType, key = True)
         valType = FindCollectionValueType(classType)
@@ -294,7 +299,7 @@ def BuildMemoryString(classType, variablesStringArray, indexValue, isEffectHandl
         keyType = innerClassType if abstractMatch else FindCollectionValueType(classType, key = True)
 
     indexValue += 1
-    AppendToOutput(variablesStringArray, indexValue, classTypeOriginal, static, offset, varType, isEffectHandler, keyType, valType)
+    AppendToOutput(variablesStringArray, indexValue, classTypeOriginal, static, offset, varType, isEffectHandler, keyType, valType, arrayDimensions)
     # reset current class before checking next item in chain.
     isFullyFound = BuildMemoryString(classType = classType if abstractMatch else currClassType, variablesStringArray = variablesStringArray, indexValue = indexValue, isEffectHandler = isEffectHandler) 
     NotifyCasing(variablesStringArray, indexValue-1, (isFound and isFullyFound), classType = classType if abstractMatch else currClassType)
@@ -432,6 +437,8 @@ def GetMemoryTypeFromClassType(classType):
         varType = "Quad"                        # actually 2 sequential Int64
     elif classType == "UnityGameEngine.Utilities.ProtectedInt":
         varType = "Int"
+    elif classType.endswith("[]"):
+        varType = "Array"
     elif classType == "System.Collections.Generic.List":
         varType = "List"
     elif classType == "System.Collections.Generic.Dictionary":
@@ -447,7 +454,7 @@ def GetMemoryTypeFromClassType(classType):
     return varType
 
 # Adds an item to the output strings dictionary if it does not already exist
-def AppendToOutput(variablesStringArray, indexValue, classTypeOriginal, static, offset, varType, isEffectHandler, keyType = "", valType = ""):
+def AppendToOutput(variablesStringArray, indexValue, classTypeOriginal, static, offset, varType, isEffectHandler, keyType = "", valType = "", arrayDimensions = 0):
     global currentEffectClass, lastManualClassName
     # add new value to dictionary if it is not already there, then build next value
 
@@ -470,8 +477,10 @@ def AppendToOutput(variablesStringArray, indexValue, classTypeOriginal, static, 
             if varType == "Dict":
                 outputStringsDict[fullNameOfCurrentVariable + "_key"] = "this." + fullNameOfCurrentVariable + "._CollectionKeyType := \"" + keyType + "\"\n"
                 outputStringsDict[fullNameOfCurrentVariable + "_value"] = "this." + fullNameOfCurrentVariable + "._CollectionValType := \"" + valType + "\"\n"
-            elif ((varType == "List" or varType == "Queue" or varType == "Stack")  and valType is not None):
+            elif ((varType == "List" or varType == "Queue" or varType == "Stack" or varType == "Array")  and valType is not None):
                 outputStringsDict[fullNameOfCurrentVariable + "_key"] = "this." + fullNameOfCurrentVariable + "._CollectionValType := \"" + valType + "\"\n"
+                if varType == "Array":
+                    outputStringsDict[fullNameOfCurrentVariable + "_dimensions"] = "this." + fullNameOfCurrentVariable + "._ArrayDimensions := \"" + str(arrayDimensions) + "\"\n"
             elif varType == "HashSet":
                 outputStringsDict[fullNameOfCurrentVariable + "_key"] = "this." + fullNameOfCurrentVariable + "._CollectionKeyType := \"" + keyType + "\"\n"
         else:
