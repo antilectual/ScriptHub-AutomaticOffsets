@@ -130,7 +130,6 @@ game.gameInstances.ActiveCampaignData.currentRules.monsterbaseStats.DPSGrowthRat
 #. ---===================================
 #. ---Formation save related memory reads
 #. ---===================================
-game.gameInstances.FormationSaveHandler.favoriteIDs
 game.gameInstances.FormationSaveHandler.formationCampaignID
 game.gameInstances.FormationSaveHandler.formationSavesV2.Favorite
 game.gameInstances.FormationSaveHandler.formationSavesV2.SaveID
