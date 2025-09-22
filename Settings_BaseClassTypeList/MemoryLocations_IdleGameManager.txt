@@ -58,6 +58,9 @@ game.gameInstances.Controller.userData.ResetUpgradeHandler.activeEffectsByInstan
 game.gameInstances.Controller.userData.SaveHandler.currentSaveCallId
 game.gameInstances.Controller.userData.SaveHandler.currentSave.Instances
 game.gameInstances.Controller.userData.SaveHandler.lastUserDataSaveTime
+game.gameInstances.Controller.userData.ShopHandler.<ALaCarteHandler>k__BackingField.<RerollCost>k__BackingField
+game.gameInstances.Controller.userData.ShopHandler.<ALaCarteHandler>k__BackingField.<RerollsRemaining>k__BackingField
+game.gameInstances.Controller.userData.ShopHandler.<ALaCarteHandler>k__BackingField.<OffersTimeRemaining>k__BackingField.expireTimeMS
 game.gameInstances.Controller.userData.StatHandler.BlackViperTotalGems
 game.gameInstances.Controller.userData.StatHandler.BrivSteelbonesStacks
 game.gameInstances.Controller.userData.StatHandler.BrivSprintStacks
