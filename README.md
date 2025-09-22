@@ -68,3 +68,26 @@ Script Hub is almost all ``-- ERROR --`` in FullMemoryFunctions after importing.
 * First, make sure the ``Import`` files are in the correct locations.\
 \
 Using an old version of Python could cause the AHK files to build offsets out of order and they won't load correctly in ScriptHhub. Versions 3.10.4 and 3.9.2 have been verified to work correctly. Type ``python -V`` in a cmd or powershell window to see the version.
+
+Additonal note: List of variables in use by script that could affect how the script behaves by overwriting the default behavior used for them.
+```
+    size (collections only)
+    __version (collections only)
+    FullOffsets 
+    FullOffsetsHexString 
+    ValueType 
+    Offset 
+    IsAddedIndex 
+    _CollectionKeyType 
+    _CollectionValType 
+    BasePtr 
+    LastDictVersion 
+    StartAtLastPos 
+    LastDictIndex 
+    DictionaryObject 
+    LastDictPos
+    ReadIsLocked
+    InvalidDictionaryKeyString
+    SystemTypes
+    ValueTypeToBytes
+```
