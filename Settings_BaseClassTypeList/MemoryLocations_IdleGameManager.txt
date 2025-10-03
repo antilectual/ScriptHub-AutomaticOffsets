@@ -57,6 +57,11 @@ game.gameInstances.Controller.userData.redRubies
 #. --- Gems spent
 game.gameInstances.Controller.userData.redRubiesSpent
 game.gameInstances.Controller.userData.ResetCurrencyHandler.isForceConverting
+game.gameInstances.Controller.userData.ResetCurrencyHandler.ResetCurrencyDefs.AmountEarned
+game.gameInstances.Controller.userData.ResetCurrencyHandler.ResetCurrencyDefs.ID
+game.gameInstances.Controller.userData.ResetCurrencyHandler.ResetCurrencyDefs.ForceConvert
+game.gameInstances.Controller.userData.ResetCurrencyHandler.ResetCurrencyDefs.Name
+game.gameInstances.Controller.userData.ResetCurrencyHandler.ResetCurrencyDefs.ShortName
 game.gameInstances.Controller.userData.ResetUpgradeHandler.activeEffectsByInstance.def.<BaseEffectKeyParams>k__BackingField.OriginalEffectKey
 game.gameInstances.Controller.userData.SaveHandler.currentSaveCallId
 game.gameInstances.Controller.userData.SaveHandler.currentSave.Instances
