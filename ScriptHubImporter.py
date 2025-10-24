@@ -443,6 +443,8 @@ def GetMemoryTypeFromClassType(classType):
         varType = "List"
     elif classType == "System.Collections.Generic.Dictionary":
         varType = "Dict"
+    elif classType == "System.Collections.Generic.SortedDictionary":
+        varType = "SortedDict"
     elif classType == "System.Collections.Generic.HashSet":
         varType = "HashSet"
     elif classType == "System.Collections.Generic.Queue":
