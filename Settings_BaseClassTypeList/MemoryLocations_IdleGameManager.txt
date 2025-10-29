@@ -35,7 +35,11 @@ game.gameInstances.Controller.userData.HeroHandler.heroes.upgradeHandler.upgrade
 game.gameInstances.Controller.userData.HeroHandler.heroes.upgradeHandler.upgradesByUpgradeId.Def.specializationName
 game.gameInstances.Controller.userData.HeroHandler.heroes.upgradeHandler.upgradesByUpgradeId.Def.RequiredUpgradeID
 game.gameInstances.Controller.userData.HeroHandler.heroes.upgradeHandler.upgradesByUpgradeId.Def.defaultSpecGraphic
-game.gameInstances.Controller.userData.HeroHandler.heroes.upgradeHandler.PurchasedUpgrades
+game.gameInstances.Controller.userData.HeroHandler.heroes.upgradeHandler.PurchasedUpgrades.handler.upgradesByUpgradeId.Id
+game.gameInstances.Controller.userData.HeroHandler.heroes.upgradeHandler.PurchasedUpgrades.handler.upgradesByUpgradeId.RequiredLevel
+game.gameInstances.Controller.userData.HeroHandler.heroes.upgradeHandler.PurchasedUpgrades.handler.upgradesByUpgradeId.IsSpecialization
+#. game.gameInstances.Controller.userData.HeroHandler.heroes.upgradeHandler.PurchasedUpgrades.handler.UnlockedUpgrades.handler.upgradesByUpgradeId.RequiredLevel
+game.gameInstances.Controller.userData.HeroHandler.heroes.upgradeHandler.UnlockedUpgrades.handler.upgradesByUpgradeId.RequiredLevel
 game.gameInstances.Controller.userData.HeroHandler.heroes.upgradeHandler.upgradeGroupsByLevel
 game.gameInstances.Controller.userData.inited
 game.gameInstances.Controller.userData.LootHandler.LootByHeroID.ID
