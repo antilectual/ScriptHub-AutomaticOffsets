@@ -109,7 +109,7 @@ game.gameInstances.timeScales.Multipliers
 #. --- Area and transitions
 game.gameInstances.Controller.area.Active
 game.gameInstances.Controller.area.basicMonstersSpawnedThisArea
-game.gameInstances.Controller.area.activeMonsters
+game.gameInstances.Controller.area.activeMonsters.monsterDef.HealthRanges
 game.gameInstances.Controller.area.secondsSinceStarted
 game.gameInstances.Controller.areaTransitioner.<IsTransitioning>k__BackingField
 game.gameInstances.Controller.areaTransitioner.screenWipeEffect.delayTimer.t
