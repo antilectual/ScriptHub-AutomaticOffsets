@@ -87,7 +87,7 @@ def ImportClasses(is64bit, files, isBaseTypes = True):
         # remove unused lines (blank/comments)
         memoryFileLines = [i for i in memoryFileLines if isValidLine(i)]
         # ensure an initial class name exists
-        if(memoryFileLines[0][0] != '#' or memoryFileLines[0][1] != '!'):
+        if(len(memoryFileLines) <= 0 or memoryFileLines[0][0] != '#' or memoryFileLines[0][1] != '!'):
             print("File format invalid in " + str(memoryFileLocation) + ". Class definition header not found.")
             return
         className = ""
